@@ -19,13 +19,16 @@ STATE:[0|1]
 값이 최근에 바뀐걸 기준으로!!
 
 오후 7시 35분. 거의 완성된듯.
+
+0913. 오전 8시 13분.
+client에서 현재 상태를 받아올 수 있도록 명령어를 추가해야할듯.
 ******************************/
 
 #include <Servo.h>
 #include <SoftwareSerial.h>
 
-#define TG1 8
-#define LED1 7  // Booting 표시 LED
+#define TG1 7
+#define LED1 8  // Booting 표시 LED
 #define DEBUG true
 
 Servo servo1;
@@ -82,16 +85,30 @@ void loop()
       connectionId = esp.read()-48; // read()함수는 ASCII 코드값을 반환(char형이니까!)하기 때문에 48만큼 뺌.
                                     // 현재 연결된 커넥션.(최대 4개, 0~3)
       esp.find("msg:"); // 메세지를 읽기 위해 msg:로 커서 이동.
-      if (esp.read() == 'T')
+      char command = esp.read();
+      if (command == 'T')
       {
         if (msgState == LOW)
           msgState = HIGH;
         else
           msgState = LOW;
         recentToggle = HIGH;
+        msgBuf = "OK";
+        sendMsg(connectionId, msgBuf);
       }
-      msgBuf += msgState;
-      sendMsg(connectionId, msgBuf);
+      else if (command == 'S')
+      {
+        if (recentToggle == LOW)
+        {
+          msgBuf += switchState;
+          sendMsg(connectionId, msgBuf);
+        }
+        else
+        {
+          msgBuf += msgState;
+          sendMsg(connectionId, msgBuf);
+        }
+      }
     }
   }
 
