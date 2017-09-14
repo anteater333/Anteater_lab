@@ -74,6 +74,7 @@ void loop()
   {
     preswitchState = switchState;
     recentToggle = LOW;
+    msgState = switchState;
   }
   
   if (esp.available()) // 모듈이 메세지를 전송중인지 확인
@@ -98,16 +99,8 @@ void loop()
       }
       else if (command == 'S')
       {
-        if (recentToggle == LOW)
-        {
-          msgBuf += switchState;
-          sendMsg(connectionId, msgBuf);
-        }
-        else
-        {
-          msgBuf += msgState;
-          sendMsg(connectionId, msgBuf);
-        }
+        msgBuf += msgState;
+        sendMsg(connectionId, msgBuf);
       }
     }
   }
