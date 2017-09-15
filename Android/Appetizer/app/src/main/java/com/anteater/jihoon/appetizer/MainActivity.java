@@ -9,6 +9,11 @@
  그러니까 객체지향이 뭐죠?
  오늘은 대충 틀만 잡아보고, 내일은 더 깔끔하게 다듬기.
  만들고 나니까 그냥 이정도로 끝내도 깔끔하게 쓸 수 있을 것 같다.
+ **********************
+ * 날짜 : 2017.09.15
+ * 목표 : tcp 연결 실패시 오류 해결
+ ******* 코멘트 *******
+ 간단하게 isConnected 변수를 하나 만들면 될듯.
  ******************************/
 
 package com.anteater.jihoon.appetizer;
@@ -34,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnToggle, btnState;
     Handler handler;
     String sendMsg;
+    Boolean isConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
                             textState.setText(sendMsg);
                         }
                     });
+
+                    isConnected = true;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -75,44 +83,49 @@ public class MainActivity extends AppCompatActivity {
         btnToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread() {
-                    public void run() {
-                        writeBuf.println("msg:T");
-                        writeBuf.flush();
-                    }
-                }.start();
-                if (textState.getText() == "0")
-                    textState.setText("1");
-                else
-                    textState.setText("0");
+                if (isConnected) {
+                    new Thread() {
+                        public void run() {
+                            writeBuf.println("msg:T");
+                            writeBuf.flush();
+                        }
+                    }.start();
+                    if (textState.getText() == "0")
+                        textState.setText("1");
+                    else
+                        textState.setText("0");
 
-                Toast.makeText(getApplicationContext(), "Toggled!", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getApplicationContext(), "Toggled!", Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(getApplicationContext(), "연결이 안됨!", Toast.LENGTH_LONG).show();
             }
         });
 
         btnState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread() {
-                    public void run() {
-                        try {
-                            writeBuf.println("msg:S");
-                            writeBuf.flush();
-                            sendMsg = readBuf.readLine();
+                if (isConnected) {
+                    new Thread() {
+                        public void run() {
+                            try {
+                                writeBuf.println("msg:S");
+                                writeBuf.flush();
+                                sendMsg = readBuf.readLine();
 
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    textState.setText(sendMsg);
-                                    Toast.makeText(getApplicationContext(), "State?", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        textState.setText(sendMsg);
+                                        Toast.makeText(getApplicationContext(), "State?", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }.start();
+                    }.start();
+                } else
+                    Toast.makeText(getApplicationContext(), "연결이 안됨!", Toast.LENGTH_LONG).show();
             }
         });
     }
