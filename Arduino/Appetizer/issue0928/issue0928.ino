@@ -23,7 +23,7 @@ Servo servo1;
 SoftwareSerial esp(2,4); // RX, TX 핀 설정 (주의. Rx --- Tx로 연결)
 
 int switchState; // 아두이노에 연결된 toggle switch의 상태
-int preswitchState = LOW;
+int preswitchState;
 int msgState = LOW; // client에서 온 msg에 따른 toggle 상태
 int recentToggle = 0; // 0 : Not Toggled, 1 : toggle switch, 2 : msg
 int connectionId; // 연결된 커넥션 id
@@ -38,6 +38,9 @@ void setup()
   servo1.attach(A0);
   pinMode(TG1, INPUT_PULLUP);
   pinMode(LED1, OUTPUT);
+  
+  switchState = digitalRead(TG1);
+  preswitchState = switchState;
 
   servo1.write(135);
   delay(500);
