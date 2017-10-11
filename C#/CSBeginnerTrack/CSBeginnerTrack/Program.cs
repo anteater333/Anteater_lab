@@ -88,6 +88,108 @@ Null-coalescing operator
 왼쪽 피연산자의 값이 NULL인 경우 ?? 뒤의 피연사자 값을 리턴. 아니면 ?? 앞의 피연산자 값을 리턴.
 **************************************************/
 
+/***************************************************
+* 날짜 : 2017.10.11
+* 목표 : 제어문, yield, 예외 처리
+             ******* 코멘트 *******
+**조건문
+if, switch-case 끝. 특별할거 없음.
+
+**반복문
+for 똑같음. while도 똑같음.
+
+**foreach
+배열이나 컬렉션의 각 요소를 하나씩 꺼내서 블럭 실행할 때 사용.
+다차 배열을 처리할때 루프 한번으로 처리할 수 있다.
+백문이 불여일견 코드 참고.
+
+**yield
+호출자에게 컬렉션 데이터를 하나씩 리턴할 때 사용. 또는 리턴을 중지하고 루프를 빠져나올때 사용.
+yield return <expression>;
+yield break;
+IEnumerable과 같이 사용
+
+    static IEnumerable<int> GetNumber()
+    {
+        yield return 10;  // 첫번째 루프에서 리턴되는 값
+        yield return 20;  // 두번째 루프에서 리턴되는 값
+        yield return 30;  // 세번째 루프에서 리턴되는 값
+    }
+
+    static void Main(string[] args)
+    {
+        foreach (int num in GetNumber())
+        {
+            Console.WriteLine(num);
+            /* 출력형태는
+             * 10
+             * 20
+             * 30
+             * /
+        }             
+    }
+
+왜 써야하나?
+10만개 짜리 데이터를 리턴하는것 보다 필요할때마다 10개씩만 리턴하는게 더 효과적.
+ex. UI에서 리스트에 한번에 10개까지만 출력 가능할경우. * On demand *
+
+GetEnumerator() 메소드와 yield
+public class MyList
+{
+    private int[] data = { 1, 2, 3, 4, 5 };
+    
+    public IEnumerator GetEnumerator()
+    {
+        int i = 0;
+        while (i < data.Length)
+        {
+            yield return data[i];
+            i++;                
+        }
+    }
+}
+
+var list = new MyList();
+
+foreach (var item in list)  
+{
+    Console.WriteLine(item);
+}
+
+**yield 실행 순서
+1. 호출자가 IEnumerable을 리턴하는 메서드를 호출
+2. yield return문에서 값을 하나 리턴
+3. 해당 메서드 위치 기억
+4. 호출자가 다시 루프를 돌아 다음 값을 메서드에 요청
+5. 메서드의 기억된 위치 다음 문장부터 실행하더 다음 yield문을 만나 값을 리턴
+6. 반복...
+
+예외처리
+try-catch-finally
+기본적인 사용법은 java와 흡사함.
+throw방식은 알아봐둘 필요가 있음
+try
+    ...
+catch (IndexOutOfRangeException ex) // throw #1
+{
+    throw new MyException("Invalid array index", ex); // 새로운 Exception을 생성하여 thorw
+}
+catch (FileNotFoundException ex) // throw #2
+{
+    bool success = CreateLog();
+    if (!succcess)
+    {
+        throw ex; // 기존 Exception을 throw
+    }
+}
+catch (Exception ex)
+{
+    Log(ex);
+    thorw; // 발생된 Exception을 그대로 호출자에 throw
+}
+***************************************************/
+
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,31 +198,76 @@ using System.Threading.Tasks;
 
 namespace CSBeginnerTrack
 {
+    public class MyList
+    {
+        private int[] data = { 1, 2, 3, 4, 5 };
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            int i = 0;
+            while (i < data.Length)
+            {
+                yield return data[i];
+                i++;
+            }
+        }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("안녕하세요, 여러분!");
-            Console.Write("다음?");
-            Console.ReadLine();
-            Console.WriteLine();
+            Console.WriteLine("몇일차?");
+            string select = Console.ReadLine();
 
-            DateTime date = new DateTime(2017, 10, 10, 15, 23, 0);
-            Console.WriteLine(date.ToString());
-            string[] players = new string[10]; // 10개짜리 string 배열
-            string[] regions = { "서울", "경기", "대구" }; // 선언과 초기화.
-            string[,] Depts = { { "김과장", "경리부" }, { "이과장", "총무부" } }; // 2차원 배열 선언, 초기화
-            Console.WriteLine(Depts[0, 0]);
-            Console.WriteLine(players.Length);
-            StringBuilder sb = new StringBuilder("StringBuilder");
-            sb.Append("Append!");
-            Console.WriteLine(sb);
-            int? i = null;
-            i = i ?? 3;
-            Console.WriteLine(i);
-            Console.Write("다음?");
-            Console.ReadLine();
-            Console.WriteLine();
+            switch (select)
+            {
+                case "1":
+                    {
+                        Console.WriteLine("안녕하세요, 여러분!");
+                        break;
+                    }
+                case "2":
+                    {
+                        DateTime date = new DateTime(2017, 10, 10, 15, 23, 0);
+                        Console.WriteLine(date.ToString());
+                        string[] players = new string[10]; // 10개짜리 string 배열
+                        string[] regions = { "서울", "경기", "대구" }; // 선언과 초기화.
+                        string[,] Depts = { { "김과장", "경리부" }, { "이과장", "총무부" } }; // 2차원 배열 선언, 초기화
+                        Console.WriteLine(Depts[0, 0]);
+                        Console.WriteLine(players.Length);
+                        StringBuilder sb = new StringBuilder("StringBuilder");
+                        sb.Append("Append!");
+                        Console.WriteLine(sb);
+                        int? i = null;
+                        i = i ?? 3;
+                        Console.WriteLine(i);
+                        break;
+                    }
+                case "3":
+                    {
+                        string[,,] array = new string[,,]
+                        {
+                            { {"1", "2"}, {"11", "22"} },
+                            { {"3", "4"}, {"33", "44"} }
+                        };
+                        Console.WriteLine("foreach");
+                        foreach (var s in array)
+                        {
+                            Console.WriteLine(s);
+                        }
+                        var list = new MyList();
+                        Console.WriteLine("yield & IEnumerator");
+                        foreach (var item in list)
+                        {
+                            Console.WriteLine(item);
+                        }
+                        break;
+                    }
+                default:
+                    Console.WriteLine("프로그램 끝");
+                    break;
+            }
+
 
         }
     }
