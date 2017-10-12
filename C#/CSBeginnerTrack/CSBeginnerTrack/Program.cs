@@ -189,6 +189,51 @@ catch (Exception ex)
 }
 ***************************************************/
 
+/***************************************************
+* 날짜 : 2017.10.12
+* 목표 : 네임스페이스, 구조체, 클래스
+             ******* 코멘트 *******
+네임스페이스
+넘쳐나는 클래스들을 충돌업이 편리하게 관리, 사용하기 위해서 사용.
+namespace 키워드로 정의하고, 네임스페이스 안에서는 클래스가 정의된다.
+물론 네임스페이스 없어도 정의가 되긴 되는데, 불편하구로 굳이 그럴 필요는 없겠다.
+네임스페이스를 참조하는 키워드는 지금껏 계속 써온 using
+자바에서 import 같은 느낌이라고 보면 될것같다.
+참고로 System도 네임스페이스로, using System;을 안했다면
+System.Console.WriteLine(); 이런 식으로 참조를 해야한다. 그냥 참고용.
+using으로 불러오는건 다 네임스페이스. import와 다른점이 이거.
+(.*) 이라던가, (.클래스) 가 필요없다.
+
+구조체 struct
+! struct는 Value Type. class는 Reference Type.
+예를 들어 Int32는 struct. String은 class.
+Value와 Reference의 차이점을 기억하자.
+!! C#의 구조체는 클래스처럼 메서드와 프로퍼티가 있다. 비슷한 구조.
+다만 상속은 할 수 없다. 인터페이스를 구현할수는 있다.
+
+클래스 class
+거의 핵심개념.
+구성요소 - 메서드, 프로퍼티, 필드, 이벤트
+**메서드
+실제 행동을 일으키는 코드 블럭.
+참고로 작명은 동사 혹은 동사+명사로 하자.
+**프로퍼티
+클래스의 내부 데이터를 외부에서 사용할 수 있게 하거나, 외부에서 클래스 내부의 데이터를 간단하게 설정할때 사용.
+설명이 한줄 길지만 간단히 getter와 setter를 가지는 멤버변수를 생각하면 될듯.
+다만 C#에선 사용법이 다르다. getter와 setter를 설정하는 법을 유심히 보도록 하자.
+**필드
+객체의 상태를 유지하는데 이용. 클래스의 내부 데이터를 저장.
+멤버변수. 여러 과목에서 여러번 강조되었듯이 public으로 만드는것은 OOP에 어긋난다.
+private 필드를 만들고 public 프로퍼티를 이용해 필드값을 외부로 전달하는 방식으로 만들어야 한다.
+getter와 setter.
+**이벤트
+객체 내부의 특정 상태 혹은 말그대로 이벤트를 외부로 전달하는데 이용.
+ex)버튼 클래스의 버튼이 클릭되었으면, 버튼클릭 이벤트에 가입한 모든 외부 객체들에게 사실을 casting하는거.
+
+Partial 클래스
+클래스 하나를 여러 파일에 나누어 정의할 수 있는 기능. 약간 심화내용같음.
+지금은 알아만 두고 나중에 다시 나오니까 그때 제대로 배우자.
+***************************************************/
 
 using System;
 using System.Collections.Generic;
@@ -212,8 +257,71 @@ namespace CSBeginnerTrack
             }
         }
     }
+
+    public class MyCustomer // 초심자에게 유용한 문법이 많으니까 눈여겨 보자.
+    {
+        // Field
+        private string name;
+        private int age;
+
+        // Event
+        public event EventHandler NameChanged;
+
+        // Constructor (생성자, 인스턴스 생성시 수행되는 메서드)
+        public MyCustomer()
+        {
+            name = string.Empty;
+            age = -1;
+        }
+
+        // Property
+        public string Name
+        {
+            get { return this.name; }
+            set
+            {
+                if (this.name != value)
+                {
+                    this.name = value;
+                    if (NameChanged != null)
+                    {
+                        NameChanged(this, EventArgs.Empty);
+                    }
+                }
+            }
+        }
+        public int Age
+        {
+            get { return this.age; }
+            set { this.age = value; }
+        }
+
+        // Method
+        public string GetCustomerData()
+        {
+            string data = string.Format("Name: {0} (Age: {1})", this.Name, this.Age);
+            return data;
+        }
+    }
+
     class Program
     {
+        struct MyPoint
+        {
+            public int X;
+            public int Y;
+
+            public MyPoint(int x, int y)
+            {
+                this.X = x;
+                this.Y = y;
+            }
+
+            public override string ToString()
+            {
+                return string.Format("({0}, {1})", X, Y);
+            }
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("몇일차?");
@@ -263,12 +371,24 @@ namespace CSBeginnerTrack
                         }
                         break;
                     }
+                case "4":
+                    {
+                        Console.WriteLine("Struct");
+                        MyPoint point1 = new MyPoint(5, 5);
+                        Console.WriteLine(point1.ToString());
+                        Console.WriteLine("Class");
+                        MyCustomer customer1 = new MyCustomer();
+                        customer1.Name = "이지훈";                      // setName
+                        customer1.Age = 23;                             // setAge
+                        Console.WriteLine(customer1.Name);              // getName
+                        Console.WriteLine(customer1.Age);               // getAge
+                        Console.WriteLine(customer1.GetCustomerData()); // 메소드 사용
+                        break;
+                    }
                 default:
                     Console.WriteLine("프로그램 끝");
                     break;
             }
-
-
         }
     }
 }
