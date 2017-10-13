@@ -235,6 +235,75 @@ Partial 클래스
 지금은 알아만 두고 나중에 다시 나오니까 그때 제대로 배우자.
 ***************************************************/
 
+/***************************************************
+* 날짜 : 2017.10.13
+* 목표 : 메서드, 이벤트, 전처리기. 기초학습 마무리.
+             ******* 코멘트 *******
+Nullable 원리 보충
+기본 아이디어. 정수형 변수 i에 값이 설정되지 않은 상태를 할당하려한다. (알고리즘 시간때 많이 봤던 상황)
+해결책은 정수 중 안쓸것같은 값을 따로 할당하던가, bool iHasValue; 같은 변수를 추가하는것.
+Nullable 타입은 HasValue 기능을 가지고있는 구조체. (따라서 Value Type이면서 NULL을 가질 수 있다.)
+참고로 System.Nullable 이라는 static 클래스로 Nullable 객체에 대한 메서드를 쓸 수도 있음. 비교한다던가. Value타입을 알아낸다던가.
+
+메서드
+어제 알아봤듯이, 그리고 계속 배워왔듯이 클래스 내에서 일련의 코드 블럭을 실행시키는 함수를 메서드라고 부른다.
+! C#은 Pass by Value 방식을 따른다. Call by Value.
+근데 C나 Java나 다 PbV인걸로 기억. 사실 조금 모호하긴 함. C에서도 포인터를 인수로 주면 PbR같은 느낌이 들었으니까.
+! 근데 Pass by Reference도 가능하다.
+대놓고 PbR을 하겠다는 키워드 ref가 있다. 참고로 ref로 전달되는 변수는 반드시 사전에 초기화되어져야 한다.
+ex.
+static double GetData(ref int a, ref double b)
+{ return ++a *  ++b; }
+ref와 비슷한 기능을 하는 키워드 out도 있다.
+out으로 전달되는 변수는 메서드 내에서 그 값을 반드시 지정하여 전달하게 되어 있다.
+마치 함수의 출력처럼 쓸 수 있다는 말. 그러므로 ref와 달리 사전에 초기화할 필요는 없다.
+
+그 외의 특별한 매개변수들
+** Named Parameter
+명시된 매개변수. 원래는 메서드 선언 시 매개변수 위치에 따라 순차적으로 변수가 전달되는데,
+이름을 명시해서 위치와 상관없이 변수를 전달할 수 있게 하는 매개변수.
+ex.
+Method1(name: "John", age: 10, score: 90);
+**Optional Parameter
+default값을 가지는 매개변수. 말 그대로 선택적으로 생략할수도 있는 매개변수.
+참고로 Optional Parameter는 일반적인 매개변수 뒤에 위치해야한다.
+사용법은 메소드 선언 시 매개변수에 값을 할당하면 됨.
+ex.
+int Calc(int a, int b, string calcType = "+")
+    ...
+** params
+매개변수 개수를 미리 알 수 없는 경우에 쓰는 키워드. 가변적인 배열을 인수로 갖게 해줌.
+! 매개변수들 중 params는 반드시 하나만 존재해야 하며, 마지막에 위치해야 한다.
+ex.
+int Calc(params int[] values)   // 선언
+    ...
+int s = Calc(1,2,3,4);          // 호출1
+s = Calc(6,7,8,9,10,11);        // 호출2
+
+참고로 Named Parameter는 가독성을 증가시키고, Optional Parameter화한 값을 어떤것으로 호출하는지 확인하기 좋게 해준다고한다.
+
+전처리기
+C계열 언어인 만큼 #로 표현.
+자주 사용되는 전처리기는 #define과 #if ... #else ... #endif
+
+#define
+보통 symbol을 정의할때 사용. #define DEBUG라던가 #define RELEASE라던가.
+symbol은 다른 전처리기 지시어에서 사용된다. ex) #if (DEBUG)
+#undef로 symbol 해제가능
+
+#region
+코드 블럭을 논리적으로 묶을 때 사용한다.
+Public 메소드들만 묶어서 [Public Methods]라고 명명한다던가,
+Private 메소드를 묶어서 [Privates]라고 명명한다던가.
+#region은 #endregion과 쌍을 이뤄서 영역을 형성한다.
+Visual Studio가 #region을 인식하기때문에 가독성에 매우 좋아보인다.
+
+기타 전처리기 지시어는 필요할때 찾아서 쓰자.
+***************************************************/
+
+#define DEBUG_TEST
+//#define DEBUG_NOT_TEST
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -326,7 +395,7 @@ namespace CSBeginnerTrack
         {
             Console.WriteLine("몇일차?");
             string select = Console.ReadLine();
-
+            #region switch
             switch (select)
             {
                 case "1":
@@ -385,10 +454,22 @@ namespace CSBeginnerTrack
                         Console.WriteLine(customer1.GetCustomerData()); // 메소드 사용
                         break;
                     }
+                case "5":
+                    {
+#if (DEBUG_NOT_TEST)
+                        Console.WriteLine("이 문장이 나오면 안돼!");
+#elif (DEBUG_TEST)
+                        Console.WriteLine("안녕하세요?");
+#else
+                        Console.WriteLine("이 문장도 나오면 안돼!");
+#endif
+                        break;
+                    }
                 default:
                     Console.WriteLine("프로그램 끝");
                     break;
             }
+            #endregion
         }
     }
 }
