@@ -176,6 +176,112 @@ public void Run()
 }
 ***************************************************/
 
+/***************************************************
+* 날짜 : 2017.10.18
+* 목표 : delegate
+             ******* 코멘트 *******
+참고 사이트를 보면 delegate 하나만 4 페이지에 걸쳐서 설명함.
+
+delegate(v. 위임하다)가 뭔가?
+메서드를 다른 메서드의 파라미터로써 전달하는것.
+void Run(MyDelegate method1) { ... }
+MyDelegate는 deleate type으로, 어떤 메서드 method1를 Run() 메서드에 전달하는 것.
+
+delegate 정의법
+delegate 키워드를 통해 정의한다.
+delegate int MyDelegate(string s);
+! 만약 어떤 메서드가 델리게이트 메서드 원형과 일치하다면,
+! 즉, 입력 파라미터 타입 및 갯수, 리턴 타입이 동일하다면
+! 그 메서드는 해당 델리게이트에서 사용될 수 있다.
+! 따라서 델리게이트 정의에서입력 파라미터들과 리턴 타입이 중요하다!
+보이기엔 메서드를 그냥 선언하는 것 처럼 보이지만, 내부적으로 이 선언식은 컴파일러에 의해 클래스로 변환된다.
+
+delegate 사용
+int StringToInt(string s) { ... }
+...
+MyDelegate m = new MyDelegate(StringToInt);
+Run(m);
+클래스를 다루듯이 생성하고, 생성된 객체를 메서드 호출 파라미터에 넣으면 된다.
+(풀어서 해석하자면 메서드 정보를 갖는 Wrapper 클래스의 객체를 파라미터로 전달하는것.)
+
+전달받은 메서드 호출법
+앞서 인스턴스 변수 m으로 메서드를 받았는데, 이를 실행해야한다.
+1) m.Invoke() 메서드를 호출한다.
+2) m을 메서드처럼 사용한다. m();
+메서드의 매개변수는 Invoke를 쓰던, m을 그대로 쓰던 뒤에 있는 괄호에다가 넣으면 된다.
+
+delegate 개념
+정리하자면, delegate는 함수 포인터와 비슷한 개념이다.
+동일한 파라미터와 리턴 타입을 가진 메서드를 서로 호환해서 불러 쓸 수 있는 기능이다.
+따라서 delegate 클래스타입 변수엔 함수의 레퍼런스를 대입할 수 있다.
+리턴 타입과 파라미터가 서로 같은 두 함수 RunThis와 RunThat이 있다고 가정하면,
+MyDelegate run = new RunDelegate(RunThis);  // 이렇게 인스턴스를 생성했다가.
+run = RunThat;                              // 이렇게 대입할 수 있다.
+
+delegate 응용. 메서드 파라미터로 전달.
+Sort 함수에 매개변수로 CompareDelegate 변수를 넣는다고 하자.
+public static void Sort(int[] arr, CompareDelegate comp)
+{
+    ...
+}
+여기서 comp에 넣는 함수에 따라 오름차순, 내림차순을 정할 수 있다.
+int AscendingCompare(int i1, int i2) { (오름차순 비교) }
+int DecendingCompare(int i1, int i2) { (내림차순 비교) }
+
+delegate 필드/프로퍼티
+delegate는 여러모로 복잡해 보이지만 결국엔 내부적으론 클래스이고, Ref type 변수로 쓰일 수 있다.
+따라서 당연히 어떤 클래스의 필드나 프로퍼티로써 사용될 수도 있다.
+클래스 내부 필드로써 Delegate 변수를 놔두고 내부 동작에 따라 할당된 메서드를 바꾼다던가...
+
+Multicast Delegate
+delegate에 메서드를 여러개 할당하고 싶다면 += 연산자를 쓰면 된다.
+내부적으로 .NET MulticastDelegate 클래스에서 메서드들을 리스트로 관리하게 된다. (InvocationList)
+그리고 delegate가 실행될 때 리스트에서 메서드를 하나씩 가져와 실행한다.
+
+delegate 단점
+delegate는 문제를 야기할 수 있다.
+! 첫 번째로, delegate 필드에 추가 연산(+=)을 하지 않고 할당 연산(=)을 할 경우,
+할당 연산은 기존에 가입된 모든 메서드 리스트를 지워버리고 마지막으로 할당된 메서드 1개만 리스트에 넣게 한다.
+즉, 누구든 할당 연사자를 한번 사용하면 기존에 가입받은 모든 메서드 호출요구를 삭제하는 문제가 발생한다.
+! 두 번째로, delegate는 해당 클래스 내부 뿐 아니라 외부에서도 누구라도 메서드를 호출하듯 호출할 수 있다는 점이다.
+예를 들어 area 클래스가 delegate 필드나 프로퍼티를 가지고 있다고 가정했을 때,
+Main에서 area 객체를 만들고
+area.MyDelegate(null);
+이런 식으로 호출할 수 있게 된다.
+
+Delegate와 Event
+event는 delegate의 문제점을 해결한 특별한 형태의 delegate이다.
+event는 할당 연산자를 사용할 수 없고, +=/-=을 통해 이벤트 추가/삭제만 가능하다.
+또한 해당 클래스 외부에서는 직접 호출할 수 없다.
+이벤트 선언 예
+public delegate void ClickEvent(object sender);
+public event ClickEvent MyClick;
+void MyAreaClicked()
+{
+    if (MyClick != null)
+    {
+        MyClick(this);
+    }
+}
+
+Delegate VS 함수포인터
+참고용. 몰라도 프로그래밍은 할 수 있을듯.
+1)  C에서는 클래스 개념이 없다. 따라서 함수 포인터는 말 그대로 함수에 대한 주소값만을 가진다.
+    delegate는 객체의 인스턴스 메서드에 대한 레퍼런스를 갖기 위해 그 객체의 주소와 메서드 주소를 함께 가지고 있다.
+    C++에서는 Pointer to member function, 한 클래스의 멤버 함수에 대한 포인터가 있는데, delegate와 비슷하다.
+    단 Pointer to member는 함수 포인터 선언 시 특정 클래스를 지정해주기 때문에 한 클래스에 대해서만 사용할 수 있다.
+2)  함수 포인터는 하나의 함수 포인터를 갖는데, delegate는 하나 이상의 메서드 레퍼런스들을 가질 수 있다. Multicast가 가능.
+3)  함수 포인터는 type safety를 보장하지 않는다. delegate는 type safety를 엄격하게 보장한다.
+Type-Safe?
+참고자료 http://egloos.zum.com/jerrypop/v/3409768
+어떠한 연산도 정의되자 않은 결과를 내놓지 않는것. 예측불가능한 결과를 내지 않는 것.
+1 + 1 = 2. 이는 쉽게 알 수 있지만,
+1 + "1" = ???
+Type safe한 언어에서는 이를 에러처리 하고
+그렇지 않은 언어(ex. Javascript)는 이것을 계산한다. "11" 이라던지.
+C# / java는 일반적으로 type safe.
+***************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -288,7 +394,7 @@ namespace CSIntermediateTrack
 
             Console.WriteLine(cls[9]);*/
 
-            Bird eagle = new Bird(5, "독수리");
+            /*Bird eagle = new Bird(5, "독수리");
             //eagle.Age = 3; // protected이기에 접근 불가.
             eagle.Jump();
 
@@ -301,7 +407,32 @@ namespace CSIntermediateTrack
                 Console.WriteLine("독수리는 개입니다.");
 
             Console.WriteLine("멍멍아 짖어!");
-            husky.Bark(3);
+            husky.Bark(3);*/
+
+            new Program().DelTest();
         }
+
+        #region DELEGATE
+        delegate int MyDelegate(string s);
+
+        void DelTest()
+        {
+            MyDelegate m = new MyDelegate(StringToInt);
+
+            Run(m);
+        }
+
+        int StringToInt(string s)
+        {
+            return int.Parse(s);
+        }
+
+        void Run(MyDelegate m)
+        {
+            int i = m("123");
+
+            Console.WriteLine(i);
+        }
+        #endregion
     }
 }
