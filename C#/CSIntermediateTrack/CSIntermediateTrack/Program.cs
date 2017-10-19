@@ -282,6 +282,144 @@ Type safe한 언어에서는 이를 에러처리 하고
 C# / java는 일반적으로 type safe.
 ***************************************************/
 
+/***************************************************
+* 날짜 : 2017.10.19
+* 목표 : 무명 메서드, 람다식, 익명 타입, 확장 메서드
+             ******* 코멘트 *******
+무명 메서드
+C# 2.0에서부터 지원된 기능. 어제 배운 delegate는 모두 이미 정의된 메서드를 가리키고 있었다.
+어떤 메서드가 일회용으로 단순한 문장들로만 구성되어 있다면 굳이 별도의 메서드를 정의하지 않아도 된다.
+이것이 바로 무명 메서드.
+delegate(Params) { Executions };
+아래 예를 보면 더 이해가 쉬울것이다.
+this.button2.Click += new System.EventHandler(this.button1_Click); // 메서드명 지정. 기존 방식
+this.button2.Click += delegate(object s, EventArgs e)
+{
+    MessageBox.Show("버튼2 클릭");
+};  // 무명 메서드
+
+! delegate 키워드는 Delegate 타입을 정의할 때도 사용되고, 무명 메서드를 정의할 때도 사용된다.
+Delegate 타입을 사용해야 하는 곳에 무명메서드를 집어넣는경우 컴파일 에러가 발생할 수 있다.
+예를들어, Invoke()나 BeginInvoke() 메서드는 Delegate 타입을 파라미터로 받아들인다.
+this.Invoke(delegate {Button1.Text = s;} ); // 컴파일 에러 발생. 참고로 무명메서드에 파라미터가 없으면 생략 가능.
+
+MethodInvoker mi = new MethodInvoker(delegate() { button1.Text = s; });
+this.Invoke(mi);    // 맞는 표현
+
+this.Invoke((MethodInvoker) delegate { button1.Text = s; });    // 축약된 표현
+
+람다식. =>
+람다식은 무명 메서드와 비슷하게 무명 함수를 표현하는데 사용된다.
+람다식은 아래와 같이 입력 파라미터(0~N개)를 => 연산자 왼쪽에, 실행 문장들을 오른쪽에 둔다.
+람다 Syntax : (입력 파라미터) => { 문장블럭 };
+문자열을 받아 메세지 박스를 띄우는 람다식 예.
+str => { MessageBox.Show(str); }
+람다식 파라미터의 입력 타입은 일반적으로 컴파일러가 알아서 찾아내지만, 애매한 경우 명시할 수 있다.
+(string s, int i) => Write(s, i);
+
+delegate의 축약 과정
+===================================================
+다음과 같은 delegate 사용 코드가 있다.
+
+this.button1.Click += new System.EventHandler(button1_Click);
+private void button1_Click(object sender, EventArgs e)
+{
+    ((Button)sender).BackColor = Color.Red;
+}
+
+여기서 new System.EventHandler(button1_Click)은 간단히 button1_Click 메서드명만 사용하여 줄일 수 있다.
+
+this.button1.Click += button1_Click;
+private void button1_Click(object sender, EventArgs e)
+{
+    ((Button)sender).BackColor = Color.Red;
+}
+
+여기에 무명 메서드를 사용해 더 축약한다.
+
+this.button.Click += delegate(object sender, EventArgs e)
+{
+    ((Button)sender).BackColor = Color.Red;
+};
+
+그리고 람다식을 사용해 코드를 한줄로 줄일 수 있다.
+
+this.button1.Click += (sender, e) => ((Button)sender).BackColor = Color.Red;    // 실행 블럭이 한 문장일땐 {} 생략 가능
+
+===================================================
+
+(참고) 람다식이 대체 뭐야?
+람다식 람다식 말만 많이 들어봤고 솔직히 우리학교 프로그래밍 언어론 수업이 몹시... 안좋았기 때문에
+그냥 개념에 대해 하나도 모르겠다.
+람다식이 그냥 delegate를 더 효율적으로 만든다는건 결과론적인 이야기 같고.
+소위 말하는 트렌디한 언어들이 어떤 근거로 람다식을 채용하는건지 알 필요가 있지 않을까.
+그래서 준비했다
+자바에 왜 람다식이 필요한가?
+Reference https://dzone.com/articles/why-we-need-lambda-expressions
+기존 for문의 문제점을 알려주는 일화를 알아보자
+나 : "Sofia, 이 장난감들을 치우자꾸나. 지금 바닥에 어떤 장난감들이 있지?"
+Sofia : "네. 공이 있어요."
+나 : "좋아. 그 공을 상자에 넣자. 다른 장난감이 남아 있니?"
+Sofia : "네. 인형이 있어요."
+나 : "좋아. 그 인형을 상자에 넣자. 다른게 더 남아있니?"
+Sofia : "네. 책이 있어요."
+나 : "좋아. 그 책을 상자에 넣자. 다른게 더 남아있니?"
+Sofia : "아니요. 다 넣었어요."
+나 : "그래, 다했구나."
+기존 반복문의 사이클을 되짚어보면, 루프를 한번 실행하고 조건을 확인하고... 이 과정을 반복한다.
+즉, 각각의 요소들을 하나하나 일일이 검증하며 순차적으로 값을 확인하여 조건절이 끝날 때 까지 진행된다.
+이런 작동보다 더 효율적인건 그냥
+"바닥에 있는 장난감들을 모두 치우렴"
+이라고 한 번 말하는거다.
+그래서 반복문과 람다식이 무슨 관련인가?
+람다식은 익명 함수를 지칭하는 용어이다. 따라서 앞서 제기한 반복문의 문제점을 해결해 다음과 같은 코드
+for (int i = 0; i < 10; i++)
+{
+    System.Console.Write(i);
+}
+를
+Enumerable.Range(0, 10).ToList().ForEach((int i) => System.Console.Write(i));
+이렇게 바꿀 수 있는거지.
+0에서 9까지 하나씩 출력하렴에서,
+0에서 9까지 있는 리스트를 그냥 싹 다 출력하렴으로.
+코드가 간략해지고 따라서 이해도 쉽고.
+
+익명 타입
+어떤 클래스를 사용하기 위해서는 일반적으로 먼저 클래스를 정의한 후 사용한다. 당연한 이야기.
+익명타입이란 클래스를 미리 정의하지 않고 사용할 수 있는 타입이다.
+var t = new { Name="홍길동", Age=20 };
+var 키워드는 컴파일러가 타입을 추론해서 찾아내도록 할 때 사용된다.
+익명 타입 객체를 변수에 할당할 때는 특별히 타입명이 없으므로 var를 사용한다.
+주의점은, 익명 타입은 읽기 전용이므로 속성값을 갱신할 수 없다는것.
+익명 타입은 어디에 쓰나?
+익명 타입은 간단히 말해 임시 타입이다. 다음과 같은 예제를 보자.
+var v = new[] {
+    new { Name="Lee", Age=33 },
+    new { Name="Kim", Age=25 },
+    new { Name="Park", Age=37 }
+};
+이렇게 만들어낸 객체는 LINQ(Language Intergrated Query)로 DB에 보내는데 사용한다던가.
+어쨌든 여러 방면으로 쓸 수 있겠지 뭐.
+
+확장 메서드
+확장 메서드는 특수한 종류의 static 메서드로서 마치 다른 클래스의 인스턴스 메서드인 것처럼 사용된다.
+확장 메서드는 메서드가 사용될 클래스명을 첫번째 파라미터로 지정한다.
+마치 해당 클래스가 확장메서드를 인스턴스 메서드로 갖는것과 같은 효과를 낸다.
+이해가 잘 안가지만 백문이 불여일견
+정의
+        public static bool Found(this String str, char ch)
+        {
+            int position = str.IndexOf(ch);
+            return position >= 0;
+        }
+사용
+string s = "This is a Test";
+bool found = s.Found('z');
+밑에 코드를 보면 Found() 메서드는 ExClass 클래스의 static 멤버이다.
+그런데 ExClass.Found() 가 아니라 s.Found() 로 호출된다.
+
+***************************************************/
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -384,6 +522,31 @@ namespace CSIntermediateTrack
         }
         #endregion
     }
+
+    public static class ExClass
+    {
+        public static string ToChangeCase(this String str)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var ch in str)
+            {
+                if (ch >= 'A' && ch <= 'Z')
+                    sb.Append((char)('a' + ch - 'A'));
+                else if (ch >= 'a' && ch <= 'x')
+                    sb.Append((char)('A' + ch - 'a'));
+                else
+                    sb.Append(ch);
+            }
+            return sb.ToString();
+        }
+
+        public static bool Found(this String str, char ch)
+        {
+            int position = str.IndexOf(ch);
+            return position >= 0;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -409,7 +572,27 @@ namespace CSIntermediateTrack
             Console.WriteLine("멍멍아 짖어!");
             husky.Bark(3);*/
 
-            new Program().DelTest();
+            //new Program().DelTest();
+
+            /*
+            Enumerable.Range(0, 10).ToList().ForEach((int i) => System.Console.Write(i));
+
+            var v = new[]
+            {
+                new { Name="Lee", Age=33 },
+                new { Name="Kim", Age=25 },
+                new { Name="Park", Age=37},
+            };
+            var under30 = v.FirstOrDefault(p => p.Age > 30);
+            if (under30 != null)
+                Console.WriteLine(under30.Name);
+            */
+
+            string s = "This is a Test";
+
+            string s2 = s.ToChangeCase();
+
+            bool found = s.Found('z');
         }
 
         #region DELEGATE
