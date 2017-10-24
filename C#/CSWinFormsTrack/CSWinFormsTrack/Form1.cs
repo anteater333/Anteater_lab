@@ -16,5 +16,12 @@ namespace CSWinFormsTrack
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button1.BackColor = Color.Aqua;
+            button1.ForeColor = Color.Green;
+            button1.Text = "누름!";
+        }
     }
 }

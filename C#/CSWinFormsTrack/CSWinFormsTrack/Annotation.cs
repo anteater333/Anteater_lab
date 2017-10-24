@@ -40,3 +40,53 @@ Form1.Designer.cs 코드를 살펴보면 InitializeComponent()는 사실 #region
 물론 이벤트 처리하고 그런건 코드에서 해결해야 할테지만.
 오늘은 가벼운 마음으로 여기까지.
 ***************************************************/
+
+/***************************************************
+* 날짜 : 2017.10.24
+* 목표 : 컴포넌트 다루기
+         ******* 코멘트 *******
+인터넷이 끊켰다. 정확히는 정전. 10시부터 1시까지 무슨 점검하는지 아파트에서 전기 끊음.
+오늘은 가볍게 컴포넌트를 어떻게 배치하고. 코드에서 어떻게 만져줘야 할지 알아보자.
+
+컴포넌트 배치
+비주얼 스튜디오 화면 왼쪽을 보면 도구 상자가 있음.
+거기서 원하는 컴포넌트를 찾아서 Form1.cs의 디자이너 화면에 드래그 앤 드롭. 끝.
+Button 컨트롤을 배치하니 Form1.Designer.cs의 InitiallizeComponent() 메서드에 다음과 같은 코드가 생성되었다.
+            this.button1 = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(224, 89);
+            this.button1.TabIndex = 0;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+생성에서 프로퍼티 설정까지 다 알아서 해준다.
+
+컴포넌트 프로퍼티 설정
+디자이너 화면에서 배치한 컴포넌트를 선택하면 속성 창에 값이 나온다. 거기서 수정해주면됨.
+
+이벤트 핸들링
+속성 창을 잘 보면 번개모양 아이콘이 있는데,
+누르면 어떤 이벤트들이 있는지 확인할 수 있음.
+디폴트 이벤트의 경우 컨트롤을 더블 클릭하면 바로 이벤트 핸들러 코드가 생성됨.
+디폴트 이벤트가 아닌 경우는 속성창에서 해당 이벤트를 찾아 더블 클릭.
+Button 컴포넌트를 더블클릭하니까 자동으로 Form1.cs에
+private void button1_Click(object sender, EventArgs e)
+메서드가 생성됐다.
+그리고 Form1.Designer.cs의 Initialize 메서드에 이벤트를 추가하는 코드가 자동으로 생성됐다.
+그러니까 내가 직접 Form1.cs에다가 코드 따라 적어넣으니까 안됨. 당연한 이야기지 이벤트 등록을 안했는데.
+
+그리곤 계속 컴포넌트 하나씩 쭉 설명하는데... 하나하나 다 보긴 좀 걸릴거같고.
+사용법은 직관적이라 굳이...
+
+오늘 코딩하면서 알게된 VS의 기능 하나.
+메서드 위에다가 /// 를 타이핑하니까 자동으로
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arg1"></param>
+이렇게 만들어줌. 두고두고 써먹자.
+***************************************************/
