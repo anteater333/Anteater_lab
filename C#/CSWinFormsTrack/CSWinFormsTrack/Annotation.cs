@@ -90,3 +90,58 @@ private void button1_Click(object sender, EventArgs e)
         /// <param name="arg1"></param>
 이렇게 만들어줌. 두고두고 써먹자.
 ***************************************************/
+
+/***************************************************
+* 날짜 : 2017.10.24
+* 목표 : ProgressBar, 멀티 쓰레딩.
+         ******* 코멘트 *******
+ProgressBar
+진행상태를 알려주는 컨트롤.
+멀티 쓰레딩을 위해 한번 배워보자. 코드 참고.
+
+BackgroundWorker
+별도의 쓰레드에게 어떤 일을 시키기 위해 사용하는 클래스.
+보통 백그라운드 쓰레드/워커 쓰레드라고 부르는 쓰레드는 UI 쓰레드와 별도로 어떤 작업을 수행하는데 사용됨.
+BackgroundWorker로부터 생성된 객체는
+DoWork 이벤트 핸들러를 통해 실제 작업할 내용을 지정하고,
+ProgressChanged 이벤트를 통해 진척 사항을 전달하며,
+RunWorkerCompleted 이벤트를 통해 완료 후 실행될 작업을 지정한다.
+정리해서,
+DoWork 이벤트 핸들러는 워커 쓰레드에서.
+ProgressChanged와 RunWorkerCompleted 이벤트 핸들러는 UI 쓰레드에서.
+자세한것은 Form1.cs 코드 참고.
+
+윈도우 멀티 쓰레딩
+멀티쓰레드를 사용하는 방법
+1) Thread 클래스로 새로운 쓰레드를 만듬
+2) 쓰레드풀/Task 등을 이용
+3) BackgroundWorker Wrapper 클래스를 사용
+!! UI 컨트롤들을 갱신하기 위해서는 항상 해당 UI 컨트롤을 생성한 UI 쓰레드에서 갱신해야한다.
+--> 예전에 이거때문에 고생한 경험이 있는거같은데...
+어쨌든 이를 어기고 워커 쓰레드에서 UI 컨트롤에 접근하면 에러가 뜸.
+"Cross-thread operation not valid: Control [progressBar1] accessed from a thread other than the thread it was created on."
+
+InvokeRequired 속성
+쓰레드 함수에서 UI 컨트롤에 접근할 때, 항상 Control 클래스의 InvokeRequired 속성을 체크해서
+현재 쓰레드로 컨트롤을 엑세스할 수 있는지를 검사해야 한다.
+InvokeRequired값이 true이면 현재 쓰레드는 Worker Thread니까 Invoke(동기 호출)나 BeginInvoke(비동기 호출)를 사용해서 UI 쓰레드로 메서드 호출을 보내야함.
+delegate void ShowDelegate(int percent);
+private void ShowProgress(int pct)
+{
+   if (InvokeRequired)
+   {
+      ShowDelegate del = new ShowDelegate(ShowProgress);
+      //또는 ShowDelegate del = p => ShowProgress(p);
+      Invoke(del, pct);
+   }
+   else
+   {
+      progressBar1.Value = pct;
+   }
+}
+이런식으로.
+
+근데 아까 BackgroundWorker 예제를 보면 저런 코드는 없음.
+            worker.RunWorkerAsync();
+전에 봤던 async 기능의 추가로 Async 메서드들을 통해 비동기 처리가 간단해짐.
+***************************************************/
