@@ -35,6 +35,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtDropSource = new System.Windows.Forms.TextBox();
+            this.txtDropTarget = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -97,11 +99,33 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "Style=Marquee";
             // 
+            // txtDropSource
+            // 
+            this.txtDropSource.Location = new System.Drawing.Point(16, 400);
+            this.txtDropSource.Name = "txtDropSource";
+            this.txtDropSource.Size = new System.Drawing.Size(376, 25);
+            this.txtDropSource.TabIndex = 4;
+            this.txtDropSource.Text = "SRC";
+            this.txtDropSource.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txtDropSource_MouseDown);
+            // 
+            // txtDropTarget
+            // 
+            this.txtDropTarget.AllowDrop = true;
+            this.txtDropTarget.Location = new System.Drawing.Point(16, 440);
+            this.txtDropTarget.Name = "txtDropTarget";
+            this.txtDropTarget.Size = new System.Drawing.Size(376, 25);
+            this.txtDropTarget.TabIndex = 4;
+            this.txtDropTarget.Text = "TGT";
+            this.txtDropTarget.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtDropTarget_DragDrop);
+            this.txtDropTarget.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtDropTarget_DragEnter);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(406, 427);
+            this.ClientSize = new System.Drawing.Size(406, 489);
+            this.Controls.Add(this.txtDropTarget);
+            this.Controls.Add(this.txtDropSource);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -126,6 +150,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtDropSource;
+        private System.Windows.Forms.TextBox txtDropTarget;
     }
 }
 

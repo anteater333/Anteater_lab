@@ -92,7 +92,7 @@ private void button1_Click(object sender, EventArgs e)
 ***************************************************/
 
 /***************************************************
-* 날짜 : 2017.10.24
+* 날짜 : 2017.10.25
 * 목표 : ProgressBar, 멀티 쓰레딩.
          ******* 코멘트 *******
 ProgressBar
@@ -144,4 +144,89 @@ private void ShowProgress(int pct)
 근데 아까 BackgroundWorker 예제를 보면 저런 코드는 없음.
             worker.RunWorkerAsync();
 전에 봤던 async 기능의 추가로 Async 메서드들을 통해 비동기 처리가 간단해짐.
+***************************************************/
+
+/***************************************************
+* 날짜 : 2017.10.26
+* 목표 : 드래그 앤 드롭, App.config
+         ******* 코멘트 *******
+Drag & Drop
+마우스로 어떠한 아이템을 끌어서 원하는 장소에 이동시키는 행동.
+디자이너 화면에서 컴포넌트를 배치할때 쓴 그것.
+드래그 앤 드롭은 두가지 작업으로 구성된다.
+
+Drop Source
+윈폼의 기본 Base클래스인 Control 클래스는 DoDragDrop() 이라는 메서드를 가지고 있다.
+Drop Source가 되는 컨트롤에서 DoDragDrop 메서드를 호출하면 드래그 앤 드롭을 시작하게 된다.
+DoDragDrop 메서드는 Drop Source 컨트롤의 MouseDown 이벤트 핸들러에서 실행하게된다.
+다만 ListView나 TreeView 등 일부 컨트롤에서는 특별한 ItemDrag라는 이벤트를 사용하기 때문에 ItemDrag 이벤트핸들러 안에서 실행된다.
+    DoDragDrop(txtDropSource.Text, DragDropEffects.Copy);
+DoDragDrop의 첫번째 파라미터는 타겟에 전달할 데이터. 두번째 파라미터는 Drop 방식.
+
+Drop Target
+Source에서 가져온 아이템을 옮길 Target이 될 컨트롤에선 다음과 같은 일을 해야한다.
+1) Drop Target 컨트롤에서 AllowDrop 속성을 true로 설정한다.
+2) Drop Target 컨트롤에서 DragEnter 이벤트 핸들러를 구현하여 e.Effect 속성을 지정한다.
+3) Drop Target 컨트롤에서 DragDrop 이벤트 핸들러를 구현한다.
+DragEnter 이벤트는 마우스가 컨트롤 내로 들어왔을 때 발생하는 이벤트로, 데이터를 받아들일지 아닐지를 결정한다.
+DragDrop 이벤트는 마우스를 Release, 그러니까 버튼을 땜으로 Drop이 이루어졌을 때 발생하는 이벤트로, Drop된 데이터를 타겟에 복사하거나 이동하는등의 일을 하게 된다.
+
+ListView에서의 드래그 앤 드롭
+앞서 말했듯이 ListView같은 일부 컨트롤은 ItemDrag라는 특별한 커스텀 이벤트를 통해 드래그 앤 드롭을 수행한다.
+소스만 간단하게 보도록 하자.
+// Drop Source: ItemDrag 이벤트 핸들러에서 DoDragDrop 호출
+private void lvwSrc_ItemDrag(object sender, ItemDragEventArgs e)
+{
+    DoDragDrop(e.Item, DragDropEffects.Copy);
+}
+
+// Drop Target: DragEnter 핸들러에서 해당 소스가 ListViewItem 인지 체크
+private void lvwTgt_DragEnter(object sender, DragEventArgs e)
+{
+    if (e.Data.GetDataPresent(typeof(ListViewItem)))
+    {
+        e.Effect = DragDropEffects.Copy;
+    }
+    else
+    {
+        e.Effect = DragDropEffects.None;
+    }
+}
+
+// Drop Target: DragDrop 핸들러에서 복사 실행
+private void lvwTgt_DragDrop(object sender, DragEventArgs e)
+{
+    if (e.Data.GetDataPresent(typeof(ListViewItem)))
+    {
+        // 드래그된 소스 ListViewItem
+        var item = e.Data.GetData(typeof(ListViewItem)) as ListViewItem;        
+
+        // ListViewItem를 Clone하여 추가
+        lvwTgt.Items.Add(item.Clone() as ListViewItem);
+    }        
+}
+
+App.config
+윈폼 프로그램은 그 프로그램에서 사용할 옵션들을 실행파일 외부에 텍스트 파일 형태로 저장할 수 있다.
+그 파일이 바로 App.Config. 프로젝트 생성하면 자동으로 생성된다.
+참고로 이름은 실행파일명.config로 생성된다.
+App.config 파일은 XML 형태로 저장된다. 사용자는 이 파일을 텍스트 에디터로 열어서 실행 옵션들을 임의로 지정할 수 있다.
+예를 들면, 디폴트 Data  Directory를 C:\Data로 해서 App.config에 적어놨는데 사용자가 D:\Temp로 수정한다던가.
+<appSettings>
+    <add key="DataDirectory" value="C:\Data" />
+</appSettings>
+
+App.config 사용
+윈폼 프로그램 내에서 App.config 파일에 지정된 옵션을 사용하기 위해서는
+System.Configuration.ConfigurationManager 클래스를 사용해야 한다.
+그런데 이게 기본으로 윈폼 프로젝트에 포함된게 아니라서 직접 추가해야함.
+VS-솔루션탐색기-참조 마우스 오른쪽 클릭-참조 추가
+참조를 추가했으면 ConfigurationManager 클래스를 통해 App.config의 옵션들을 사용할 수 있다.
+using System.Configuration; 한 다음
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // 2. AppSettings 에서 DataDirectory 값 읽기
+            this.dataDirectory = ConfigurationManager.AppSettings["DataDirectory"];
+        }
+이렇게 접근.
 ***************************************************/

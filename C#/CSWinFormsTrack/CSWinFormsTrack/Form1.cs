@@ -127,5 +127,31 @@ namespace CSWinFormsTrack
             }
             MessageBox.Show("성공적으로 완료되었습니다.");
         }
+
+        // 드래그 앤 드롭 예제
+        private void txtDropSource_MouseDown(object sender, MouseEventArgs e)
+        {
+            DoDragDrop(txtDropSource.Text, DragDropEffects.Copy);
+            //txtDropSource.Text = "";  // Move일때 소스의 텍스트를 지우는 코드
+        }
+
+        private void txtDropTarget_DragEnter(object sender, DragEventArgs e)
+        {
+            // 문자열인 경우에만 복사
+            if (e.Data.GetDataPresent(typeof(string)))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void txtDropTarget_DragDrop(object sender, DragEventArgs e)
+        {
+            // e.Data.GetData() 메서드를 통해 드래그 앤 드롭에서 전달된 데이터를 가져옴.
+            txtDropTarget.Text = (string)e.Data.GetData(DataFormats.StringFormat);
+        }
     }
 }
