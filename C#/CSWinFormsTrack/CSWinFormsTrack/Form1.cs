@@ -153,5 +153,12 @@ namespace CSWinFormsTrack
             // e.Data.GetData() 메서드를 통해 드래그 앤 드롭에서 전달된 데이터를 가져옴.
             txtDropTarget.Text = (string)e.Data.GetData(DataFormats.StringFormat);
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DZipper dzip = new DZipper();
+            dzip.Owner = this;
+            dzip.ShowDialog();
+        }
     }
 }
