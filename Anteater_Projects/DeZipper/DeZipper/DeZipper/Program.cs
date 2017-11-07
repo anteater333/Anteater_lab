@@ -10,7 +10,7 @@ namespace DeZipper
     {
         static void Main(string[] args)
         {
-            new ZipTest(@"D:\Temp\_Zip\audacity-win-2.1.0.zip");
+            new ZipTest(@"D:/Temp/_Zip\audacity-win-2.1.0.zip").ZipDeleteTest(@"D:\Temp\_Zip\TG\");
         }
     }
 }
