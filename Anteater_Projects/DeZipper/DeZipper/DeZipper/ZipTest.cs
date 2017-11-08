@@ -47,7 +47,7 @@ namespace DeZipper
         /// ZIP 파일에서 얻은 경로로 파일들을 삭제하는 메소드.
         /// </summary>
         /// <param name="dirPath">삭제 작업을 수행할 폴더 경로</param>
-        public void ZipDeleteTest(string dirPath)
+        public void ZipDeleteTest(string dirPath, bool deleteEmptyDir)
         {
             string delPath;
 
@@ -57,19 +57,43 @@ namespace DeZipper
             else
                 delPath = dirPath + "/";
 
-            int delCount = 0;   // 삭제한 파일 갯수
+            int delCount = 0;   // 삭제한 파일 개수
 
+            Stack<string> zipDirPaths = new Stack<string>();    // zip파일의 폴더들을 stack에 보관
+            int dirCount = 0;   // 삭제할 폴더 개수
+
+            // 파일 삭제
             foreach (ZipArchiveEntry entry in zipAchv.Entries)
             {
-                if (entry.Name == "")
-                    Console.WriteLine("Dir : " + delPath + entry.FullName);
+                if (entry.Name == "")   // entry가 폴더인 경우
+                {
+                    zipDirPaths.Push(entry.FullName);
+                    dirCount++;
+                }
                 else
                 {
                     File.Delete(delPath + entry.FullName);
-                    Console.WriteLine("Deleted " + entry.Name);
+                    Console.WriteLine("Deleted " + entry.FullName);
                     delCount++;
                 }
             }
+
+            // 폴더 삭제
+            if (deleteEmptyDir)
+            {
+                string strTmp;
+                Console.WriteLine();
+                Console.WriteLine("Start deleting directories.");
+                for (int i = 0; i < dirCount; i++)
+                {
+                    strTmp = zipDirPaths.Pop();
+                    Directory.Delete(delPath + strTmp);
+                    Console.WriteLine("Deleted " + strTmp);
+                    delCount++;
+                }
+            }
+
+
             Console.WriteLine("total deleted : " + delCount);
         }
     }
