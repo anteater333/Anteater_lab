@@ -10,7 +10,12 @@ namespace DeZipper
     {
         static void Main(string[] args)
         {
-            new ZipTest(@"D:/Temp/_Zip\audacity-win-2.1.0.zip").ZipDeleteTest(@"D:\Temp\_Zip\TG\", true);
+            // 테스트용 임시 코드!!!
+            DeZipper tmp = new DeZipper(@"D:\Temp\_Zip\audacity-win-2.1.0.zip", @"D:\Temp\_Zip\TG", DeleteOptions.DeleteSourceZipFile | DeleteOptions.DeleteEmptyDirectory);
+            foreach (string str in tmp.ExcuteDelete())
+            {
+                Console.WriteLine(str);
+            }
         }
     }
 }
