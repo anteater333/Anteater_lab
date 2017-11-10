@@ -225,4 +225,73 @@ DeZipper에서 가져오는 Entries가 뭐 트리 구조를 가지고있는게 �
 폴더 하나를 리스트에서 날리기엔 좀 불편할듯.
 
 아 File.Exist 메소드로 파일이 존재하지 않을때 상황을 처리하면 될 듯.
+
+11/10 11:57 PM
+현재 당면한 문제,
+foreach문의 조건에서 예외가 발생하면 어떻게 예외를 catch할것인가?
+참고자료 https://stackoverflow.com/questions/12522870/catch-exception-thrown-in-foreach-condition
+다행이도 나랑 똑같은 사람이 있다.
+위 링크의 질문자가 한 질문이랑 똑같은 상황
+foreach문의 밖에 try-catch문을 넣으니 예외가 발생하면 한 번만 예외를 잡고 그냥 프로그램이 끝나버린다.
+foreach문의 안에 try-catch문을 넣으니 예외를 잡지 못한다. 조건에서 발생한 예외니까.
+일단... foreach문 대신 수동으로 반복문을 돌리는 방법이 있고... C# 문법 배우면서 본 그거... IEnumrator...
+
+TryForEach라는 메소드를 구현하는 방법이 있다.
+    public static IEnumerable<T> TryForEach<T>(this IEnumerable<T> sequence, Action<Exception> handler)
+    {
+        if (sequence == null)
+        {
+            throw new ArgumentNullException("sequence");
+        }
+
+        if (handler == null)
+        {
+            throw new ArgumentNullException("handler");
+        }
+
+        var mover = sequence.GetEnumerator();
+        bool more;
+        try
+        {
+            more = mover.MoveNext();
+        }
+        catch (Exception e)
+        {
+            handler(e);
+            yield break;
+        }
+
+        while (more)
+        {
+            yield return mover.Current;
+            try
+            {
+                more = mover.MoveNext();
+            }
+            catch (Exception e)
+            {
+                handler(e);
+                yield break;
+            }
+        }
+    }
+이해하려는데 아주...
+확장 메서드, 람다식, yield...
+그냥 위 코드 쓰는대신 foreach 말고 while로 하자...
+
+https://social.msdn.microsoft.com/Forums/vstudio/en-US/d4f6b528-f271-4a72-b2a1-57b02ca8628a/is-it-possible-to-resume-a-ienumerator-after-exception?forum=netfxbcl
+IEnumrator에서 예외가 throw되면 열거가 끝난것으로 간주한다.
+폭망... 코드 대폭 수정해야할듯.
+그렇다면 예외를 발생시키는게 아니라 yield return에 특별한 오류 메세지를 string으로 반환해야하나...
+윈도우 시스템상 파일명에 들어갈 수 없는 기호로 구분해서.
+그럼 DeZipperException.cs 는 결국 필요없는 짓이 된다.
+오류 메세지는 < > 기호로 묶어서 구분하자
+DeZipperCMD 쪽에서 반환값을 받았을때 이게 에러코드인지, 삭제한 파일경로인지 알아낼 수 있어야 하니까.
+흠... 잠을 못자서 머리가 안돌아간건가.
+return할 문자열에 에러 메세지를 넣어버리면 출력할때 이상하잖아...
+
+11/11 02:38 AM
+얼추 다 한 것 처럼 보인다.
+이제 CMD 버전에서 남은건 Main에서 args로 입력하는것만 남았다.
+그건 다음주에.
 ***************************************************/

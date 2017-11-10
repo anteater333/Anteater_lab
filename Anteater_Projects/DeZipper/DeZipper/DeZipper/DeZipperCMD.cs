@@ -39,8 +39,16 @@ namespace DeZipper
         /// <param name="tgPath">타겟 디렉토리 경로</param>
         public DeZipperCMD(string zipPath, string tgPath) : base(zipPath, tgPath)
         {
-            base.deZipper = new DeZipper(base.zipPath, base.tgPath);
-            base.Options = DeleteOptions.None;
+            try
+            {
+                base.deZipper = new DeZipper(base.zipPath, base.tgPath);
+                base.Options = DeleteOptions.None;
+                this.Silenced = false;
+            }
+            catch (Exception e)
+            {
+                PrintException(e);
+            }
         }
 
         /// <summary>
@@ -87,34 +95,32 @@ namespace DeZipper
         public override void Delete()
         {
             int delCount = 0;
-
             deZipper.Options = base.Options;
 
-
-            foreach (string deleted in deZipper.ExecuteDelete())
+            try
             {
-                try
+                foreach (string entry in deZipper.ExecuteDelete())
                 {
-                    PrintMsg("Deleted " + deleted, MSG);
-                    delCount++;
-                }
-                catch (DirectoryNotEmptyException e)
-                {
-                    PrintMsg(e.DirectoryPath + " is not empty.", MSG);
-                }
-                catch (FileNotFoundException e)
-                {
-                    PrintMsg(e.FilePath + " does not exist.", MSG);
-                }
-                catch (DirectoryNotFoundException e)
-                {
-                    PrintMsg(e.Message, ERR);
-                }
-                catch (Exception e)
-                {
-                    PrintException(e);
+                    if (entry.Contains(DeZipper.FIlE_NOT_FOUND))
+                        PrintMsg(entry.Replace(DeZipper.FIlE_NOT_FOUND, "") + " does not exist.", MSG);
+                    else if (entry.Contains(DeZipper.DIR_NOT_EMPTY))
+                        PrintMsg(entry.Replace(DeZipper.DIR_NOT_EMPTY, "") + " is not empty.", MSG);
+                    else
+                    {
+                        delCount++;
+                        PrintMsg("Deleted " + entry, MSG);
+                    }
                 }
             }
+            catch (DirectoryNotFoundException e)
+            {
+                PrintMsg("Cannot find " + e.Message, ERR);
+            }
+            catch (Exception e)
+            {
+                PrintException(e);
+            }
+            PrintMsg("Deleted " + delCount + " File(s).", MSG);
         }
 
         /// <summary>
@@ -132,24 +138,24 @@ namespace DeZipper
             }
             else
             {
-                Console.WriteLine("ERR : " + msg);
+                Console.WriteLine("Error : " + msg);
             }
         }
 
         /// <summary>
-        /// 예측하지 못한 예외 발생 시 콘솔 창에 오류를 출력합니다.
+        /// 예측하지 못한 예외 발생 시 콘솔 창에 오류를 출력하고 프로그램을 종료합니다.
         /// </summary>
-        /// <param name="e">예외</param>
+        /// <param name="e">발생한 예외</param>
         private void PrintException(Exception e)
         {
             PrintMsg("Unexpected Error!", ERR);
-            Console.WriteLine("Massage :");
-            Console.WriteLine(e.Message);
+            Console.WriteLine("==>" + e.Message);
             if (DEBUG)
             {
                 Console.WriteLine(e.Source);
                 Console.WriteLine(e.StackTrace);
             }
+            Environment.Exit(1);
         }
         #endregion
     }

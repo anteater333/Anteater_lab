@@ -13,6 +13,11 @@ namespace DeZipper
     /// </summary>
     public class DeZipper
     {
+        #region Error Message
+        public const string FIlE_NOT_FOUND = "<FILE_NOT_FOUND>";
+        public const string DIR_NOT_EMPTY = "<DIR_NOT_EMPTY>";
+        #endregion
+
         #region Fields
         private string zipPath;
         private string tgPath;
@@ -162,6 +167,8 @@ namespace DeZipper
             Stack<string> zipDirPaths = new Stack<string>();
             int dirCount = 0;
 
+            string rtStr;
+
             foreach (KeyValuePair<string, ZipArchiveEntry> entry in Entries)
             {
                 if (entry.Value.Name == "")
@@ -173,47 +180,44 @@ namespace DeZipper
                 {
                     try
                     {
-                        if (File.Exists(tgPath + entry.Value.FullName))
-                            File.Delete(tgPath + entry.Value.FullName);
+                        rtStr = tgPath + entry.Value.FullName;
+                        if (File.Exists(rtStr))
+                            File.Delete(rtStr);
                         else
-                            throw new FileNotFoundException(tgPath + entry.Value.FullName);
-                    }
-                    catch (DirectoryNotFoundException)
-                    {
-                        throw new DirectoryNotFoundException(tgPath + entry.Value.FullName);
+                            rtStr = FIlE_NOT_FOUND + rtStr;
                     }
                     catch
                     {
                         throw;
                     }
-                    yield return tgPath + entry.Value.FullName;
+                    yield return rtStr;
                 }
             }
 
             if ((Options & DeleteOptions.DeleteEmptyDirectory) != 0)
             {
-                string strTmp;
                 for (int i = 0; i < dirCount; i++)
                 {
-                    strTmp = zipDirPaths.Pop();
+                    rtStr = tgPath + zipDirPaths.Pop();
 
                     try
                     {
-                        if (!Directory.EnumerateFileSystemEntries(tgPath + strTmp).Any())
-                            Directory.Delete(tgPath + strTmp);
+                        if (!Directory.EnumerateFileSystemEntries(rtStr).Any())
+                            Directory.Delete(rtStr);
                         else
-                            throw new DirectoryNotEmptyException(tgPath + strTmp);
+                            rtStr = DIR_NOT_EMPTY + rtStr;
+
                     }
                     catch (DirectoryNotFoundException)
                     {
-                        throw new DirectoryNotFoundException(tgPath + strTmp);
+                        throw new DirectoryNotFoundException(rtStr);
                     }
                     catch
                     {
                         throw;
                     }
 
-                    yield return tgPath + strTmp;
+                    yield return rtStr;
                 }
             }
 
