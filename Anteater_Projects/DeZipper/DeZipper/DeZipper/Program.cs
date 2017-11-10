@@ -11,11 +11,8 @@ namespace DeZipper
         static void Main(string[] args)
         {
             // 테스트용 임시 코드!!!
-            DeZipper tmp = new DeZipper(@"D:\Temp\_Zip\audacity-win-2.1.0.zip", @"D:\Temp\_Zip\TG", DeleteOptions.DeleteSourceZipFile | DeleteOptions.DeleteEmptyDirectory);
-            foreach (string str in tmp.ExcuteDelete())
-            {
-                Console.WriteLine(str);
-            }
+            DeZipperCMD tmp = new DeZipperCMD(@"D:\Temp\_Zip\audacity-win-2.1.0.zip", @"D:\Temp\_Zip\TG");
+            tmp.PrintList();
         }
     }
 }

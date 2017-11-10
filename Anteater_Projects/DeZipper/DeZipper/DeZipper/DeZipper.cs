@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -12,7 +11,7 @@ namespace DeZipper
     /// <summary>
     /// 프로그램 핵심 기능을 담당하는 클래스입니다.
     /// </summary>
-    class DeZipper
+    public class DeZipper
     {
         #region Fields
         private string zipPath;
@@ -22,7 +21,7 @@ namespace DeZipper
 
         #region Properties
         /// <summary>
-        /// 삭제시 옵션을 설정할 수 있습니다.
+        /// 삭제 시 옵션을 설정할 수 있습니다.
         /// </summary>
         public DeleteOptions Options { get; set; }
         /// <summary>
@@ -34,6 +33,10 @@ namespace DeZipper
         /// </summary>
         public string TargetDirectory
         {
+            get
+            {
+                return tgPath;
+            }
             set
             {
                 if (value[value.Length - 1].Equals('\\') || value[value.Length - 1].Equals('/'))
@@ -58,11 +61,18 @@ namespace DeZipper
             this.TargetDirectory = tgPath;
             this.Options = DeleteOptions.None;
 
-            using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+            try
             {
-                this.entries = new Dictionary<string, ZipArchiveEntry>(zipAchv.Entries.Count);
-                foreach (ZipArchiveEntry entry in zipAchv.Entries)
-                    this.Entries.Add(entry.FullName, entry);
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                {
+                    this.entries = new Dictionary<string, ZipArchiveEntry>();
+                    foreach (ZipArchiveEntry entry in zipAchv.Entries)
+                        this.Entries.Add(entry.FullName, entry);
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
         /// <summary>
@@ -78,11 +88,18 @@ namespace DeZipper
             this.TargetDirectory = tgPath;
             this.Options = options;
 
-            using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+            try
             {
-                this.entries = new Dictionary<string, ZipArchiveEntry>(zipAchv.Entries.Count);
-                foreach (ZipArchiveEntry entry in zipAchv.Entries)
-                    this.Entries.Add(entry.FullName, entry);
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                {
+                    this.entries = new Dictionary<string, ZipArchiveEntry>();
+                    foreach (ZipArchiveEntry entry in zipAchv.Entries)
+                        this.Entries.Add(entry.FullName, entry);
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
 
@@ -94,20 +111,53 @@ namespace DeZipper
         public ZipArchiveEntry Delist(string path)
         {
             ZipArchiveEntry val;
-            if (Entries.TryGetValue(path, out val))
+            try
             {
-                Entries.Remove(path);
-                return val;
+                if (Entries.TryGetValue(path, out val))
+                {
+                    Entries.Remove(path);
+                    return val;
+                }
+                else
+                    return null;
             }
-            else
-                return null;
+            catch
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 새로운 ZIP 파일을 엽니다.
+        /// </summary>
+        /// <param name="zipPath">ZIP 파일 경로</param>
+        public void NewZip(string zipPath)
+        {
+            this.zipPath = zipPath;
+            this.zipPath.Replace('\\', '/');
+
+            entries.Clear();
+
+            try
+            {
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                {
+                    this.entries = new Dictionary<string, ZipArchiveEntry>(zipAchv.Entries.Count);
+                    foreach (ZipArchiveEntry entry in zipAchv.Entries)
+                        this.Entries.Add(entry.FullName, entry);
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
         /// 파일 삭제를 실행합니다.
         /// </summary>
         /// <returns>삭제한 파일들의 전체 경로.</returns>
-        public IEnumerable<string> ExcuteDelete()
+        public IEnumerable<string> ExecuteDelete()
         {
             Stack<string> zipDirPaths = new Stack<string>();
             int dirCount = 0;
@@ -121,7 +171,21 @@ namespace DeZipper
                 }
                 else
                 {
-                    File.Delete(tgPath + entry.Value.FullName);
+                    try
+                    {
+                        if (File.Exists(tgPath + entry.Value.FullName))
+                            File.Delete(tgPath + entry.Value.FullName);
+                        else
+                            throw new FileNotFoundException(tgPath + entry.Value.FullName);
+                    }
+                    catch (DirectoryNotFoundException)
+                    {
+                        throw new DirectoryNotFoundException(tgPath + entry.Value.FullName);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
                     yield return tgPath + entry.Value.FullName;
                 }
             }
@@ -132,29 +196,44 @@ namespace DeZipper
                 for (int i = 0; i < dirCount; i++)
                 {
                     strTmp = zipDirPaths.Pop();
-                    Directory.Delete(tgPath + strTmp);
+
+                    try
+                    {
+                        if (!Directory.EnumerateFileSystemEntries(tgPath + strTmp).Any())
+                            Directory.Delete(tgPath + strTmp);
+                        else
+                            throw new DirectoryNotEmptyException(tgPath + strTmp);
+                    }
+                    catch (DirectoryNotFoundException)
+                    {
+                        throw new DirectoryNotFoundException(tgPath + strTmp);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+
                     yield return tgPath + strTmp;
                 }
             }
 
             if ((Options & DeleteOptions.DeleteSourceZipFile) != 0)
             {
-                File.Delete(zipPath);
+                try
+                {
+                    File.Delete(zipPath);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    throw new DirectoryNotFoundException(zipPath);
+                }
+                catch
+                {
+                    throw;
+                }
                 yield return zipPath;
             }
         }
         #endregion
-    }
-
-    /// <summary>
-    /// 삭제 시 옵션을 지정합니다.
-    /// </summary>
-    [Flags]
-    enum DeleteOptions
-    {
-        None = 0x0,                     // 000
-        ToRecycleBin = 0x1,             // 001
-        DeleteEmptyDirectory = 0x2,     // 010
-        DeleteSourceZipFile = 0x4       // 100
     }
 }

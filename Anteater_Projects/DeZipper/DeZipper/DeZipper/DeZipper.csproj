@@ -46,8 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotation.cs" />
+    <Compile Include="DeleteOptions.cs" />
     <Compile Include="DeZipper.cs" />
     <Compile Include="DeZipperCMD.cs" />
+    <Compile Include="DeZipperException.cs" />
+    <Compile Include="DeZipperInterface.cs" />
     <Compile Include="DeZipperUI.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
