@@ -18,7 +18,11 @@ namespace DeZipper
         private const bool MSG = false;
         #endregion
         #region DEBUG
+#if DEBUG
         private bool DEBUG = true;
+#else
+        private bool DEBUG = false;
+#endif
         #endregion
 
         #region Fields
@@ -26,7 +30,8 @@ namespace DeZipper
 
         #region Properties
         /// <summary>
-        /// 삭제 작업 시 콘솔창에 작업 상황을 출력할지 정합니다. false일 경우 출력됩니다.
+        /// 삭제 작업 시 콘솔창에 작업 상황을 출력할지 정합니다.
+        /// 기본 값은 false이며, false인 경우 출력합니다.
         /// </summary>
         public bool Silenced { get; set; }
         #endregion
@@ -121,6 +126,34 @@ namespace DeZipper
                 PrintException(e);
             }
             PrintMsg("Deleted " + delCount + " File(s).", MSG);
+        }
+
+        /// <summary>
+        /// readme.txt 파일을 출력합니다.
+        /// </summary>
+        public static void PrintHelp()
+        {
+            try
+            {
+                string current = Environment.CurrentDirectory;
+                using (StreamReader readme = new StreamReader(current + @"\readme.txt"))
+                {
+                    while(readme.Peek() >= 0)
+                    {
+                        Console.WriteLine(readme.ReadLine());
+                    }
+                    Console.WriteLine();
+                }
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine("readme.txt를 찾을 수 없습니다.");
+                Console.WriteLine("(usage : DeZipper.exe [source_zip] [target_dir])");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         /// <summary>

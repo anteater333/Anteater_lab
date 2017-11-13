@@ -8,6 +8,7 @@ using System.IO.Compression;    // Zip-classes
 
 namespace DeZipper
 {
+#if DEBUG
     class ZipTest
     {
         private string zipPath;
@@ -97,4 +98,5 @@ namespace DeZipper
             Console.WriteLine("total deleted : " + delCount);
         }
     }
+#endif
 }
