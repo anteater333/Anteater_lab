@@ -20,30 +20,31 @@ namespace DeZipper
             }
             else if (argc == 1) // 리스트 출력 또는 -help
             {
-                if (args[1].Equals("-h") || args[1].Equals("-help"))
+                if (args[0].Equals("-h") || args[0].Equals("-help"))
                 {
                     DeZipperCMD.PrintHelp();
                 }
-                else if (!args[1].Contains(".zip"))
+                else if (!args[0].Contains(".zip"))
                 {
                     Console.WriteLine(args[1] + " is not a ZIP file.");
                 }
                 else
                 {
-                    dezipper = new DeZipperCMD(args[1], "");
+                    dezipper = new DeZipperCMD(args[0], ".");
                     dezipper.PrintList();
                 }
             }
             else if (argc == 2) // 기본 옵션으로 파일 삭제. 그 외의 경우는 없음. 없겠지뭐.
             {
-                dezipper = new DeZipperCMD(args[1], args[2]);
+                dezipper = new DeZipperCMD(args[0], args[1]);
                 dezipper.Delete();
             }
             else if (argc >= 3) // 옵션을 사용해서 파일 삭제.
             {
-                dezipper = new DeZipperCMD(args[1], args[2]);
+                bool isExecutable = true;
+                dezipper = new DeZipperCMD(args[0], args[1]);
 
-                for (int i = 3; i <= argc; i++)
+                for (int i = 2; i < argc; i++)
                 {
                     switch (args[i])
                     {
@@ -62,24 +63,27 @@ namespace DeZipper
                         case "-r":
                         case "-recycle":
                             dezipper.Options |= DeleteOptions.ToRecycleBin;
+                            isExecutable = false;
+                            Console.WriteLine("Sorry, \"-recycle\" function is incomplete.");
                             break;
                         case "-ex":
                         case "-exclude":
                             i++;
-                            while (i <= argc)
+                            while (i < argc)
                             {
-                                dezipper.Delist(args[i]);
+                                isExecutable = dezipper.Delist(args[i]);
                                 i++;
                             }
                             break;
                         default:
                             WhenUserDemandsWrongOptions();
-                            Environment.Exit(0);
+                            isExecutable = false;
                             break;
                     }
                 }
 
-                dezipper.Delete();
+                if (isExecutable)
+                    dezipper.Delete();
             }
             else
             {

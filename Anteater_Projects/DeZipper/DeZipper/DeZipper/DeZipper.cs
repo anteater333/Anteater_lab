@@ -68,7 +68,7 @@ namespace DeZipper
 
             try
             {
-                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Read))
                 {
                     this.entries = new Dictionary<string, ZipArchiveEntry>();
                     foreach (ZipArchiveEntry entry in zipAchv.Entries)
@@ -95,7 +95,7 @@ namespace DeZipper
 
             try
             {
-                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Read))
                 {
                     this.entries = new Dictionary<string, ZipArchiveEntry>();
                     foreach (ZipArchiveEntry entry in zipAchv.Entries)
@@ -116,6 +116,7 @@ namespace DeZipper
         public ZipArchiveEntry Delist(string path)
         {
             ZipArchiveEntry val;
+            path = path.Replace('\\', '/');
             try
             {
                 if (Entries.TryGetValue(path, out val))

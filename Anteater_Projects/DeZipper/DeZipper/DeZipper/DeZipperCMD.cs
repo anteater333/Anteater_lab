@@ -74,7 +74,8 @@ namespace DeZipper
         /// 삭제할 ZIP 파일 리스트에서 특정 파일을 제외합니다.
         /// </summary>
         /// <param name="path">제외할 파일의 ZIP 파일 내부 경로</param>
-        public override void Delist(string path)
+        /// <returns>파일 제외 성공 여부</returns>
+        public override bool Delist(string path)
         {
             try
             {
@@ -82,15 +83,18 @@ namespace DeZipper
                 if (zipEntry == null)
                 {
                     PrintMsg("File " + path + " not found.", ERR);
+                    return false;
                 }
                 else
                 {
                     PrintMsg("Excluded " + zipEntry.FullName, MSG);
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 PrintException(e);
+                return false;
             }
         }
 

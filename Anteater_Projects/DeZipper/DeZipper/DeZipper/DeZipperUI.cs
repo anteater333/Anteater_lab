@@ -53,7 +53,8 @@ namespace DeZipper
         /// 삭제할 ZIP 파일 리스트에서 특정 파일을 제외합니다.
         /// </summary>
         /// <param name="path">제외할 파일의 ZIP 파일 내부 경로</param>
-        public abstract void Delist(string path);
+        /// <returns>파일 제외 성공 여부</returns>
+        public abstract bool Delist(string path);
 
         /// <summary>
         /// ZIP 파일 리스트에 따라 파일을 삭제합니다.
