@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DeZipper
 {
     class DeZipperMain
     {
+#if COMPILE_CLI
+        #region CLI
         static void Main(string[] args)
         {
             int argc = args.Length;
@@ -114,5 +117,17 @@ namespace DeZipper
 
             Console.WriteLine("Help : DeZipper.exe -help");
         }
+        #endregion
+#elif COMPILE_GUI
+        #region GUI
+        [STAThread]
+        static void Main()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new DeZipperForm());
+        }
+        #endregion
+#endif
     }
 }
