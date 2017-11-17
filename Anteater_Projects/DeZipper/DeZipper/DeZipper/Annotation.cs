@@ -413,3 +413,59 @@ TableLayoutPanel 컴포넌트를 쓰도록 하자.
 디자인은 얼추 괜찮게 된것같고.
 이제 DeZipperGUI 구현하고 이벤트 연결하면 될거같다.
 ***************************************************/
+
+/***************************************************
+* 날짜 : 2017.11.17
+* 목표 : DeZipperGUI : DeZipperUI, ZipArchiveEntries to Tree Algorithm
+     ******* 코멘트 *******
+오늘 할 일은 DeZipperGUI 클래스를 구현하기.
+
+GUI 버전의 호출관계를 정리해보자.
+DeZipperMain -> DeZipperForm -> DeZipperGUI -> DeZipper
+DeZipperForm은 GUI 자체를 구성하는 클래스.
+DeZipper는 프로그램의 연산 작업을 수행하는 클래스.
+DeZipperGUI는 DeZipper를 호출하고,
+연산 결과에 따른 데이터를 얻어 Form에 적용시키는 클래스.
+
+DeZipperForm이랑 DeZipperGUI가 좀 모호하다.
+Form에서 바로 DeZipper를 호출하면 안되나?
+그러니까 DeZipperForm을 DeZipperGUI로 rename하면 어떨까.
+근데 또 DeZipperForm은 DeZipperUI를 상속받지 못함. Form을 이미 상속받고있으니까.
+DeZipperGUI가 중계자 역할을 하려하니 메소드들의 리턴값이 다 void네...
+Form이랑 완전히 분리해서 어떻게 나타낼 수 있을까.
+모듈화를 너무 과하게 한건 아닐까. 배우기 위해 만든다곤 하지만.
+
+DeZipperGUI의 프로퍼티를 통해 어떻게 해결할 수 있을 것 같다.
+
+중간에 추가된 DeZipperForm을 얼마나 깔끔하게 다루는지 중요할듯.
+정확히는 form에서 DeZipperGUI를 얼마나 깔끔하게 호출할지.
+
+다만 그 전에 Entries를 tree로 표현하는 방법을 생각하자. 오늘은 반드시.
+이 부분은 DeZipper에서 엔트리를 만들 때 부터 트리 구조를 따를 수 있도록 해보자.
+목표는 폴더를 탐색하면 폴더 내부에 있는 파일들을 우선적으로 출력하고, 하위 폴더를 탐색하도록.
+여기서 파일들을 우선적으로 출력할 때, 폴더도 같이 출력할 필요는 없어보인다.
+
+아무리 생각해도 계속 시간복잡도가 우주를 초월할거같은데.
+일단은 침착하고.
+원형큐가 작동하는 방식으로 만들어보자.
+
+PM 04:15
+다 집어치워!
+파일을 담는 List,
+폴더를 담는 Stack,
+Dictionary에 역순으로 정렬해서 담기위해 사용한 Stack 하나 더 써서,
+깔끔하게 정렬됐다. 시간복잡도는 O(n^2) 정도 되는 것 같다. 그리 효율적이진 않아보임 군더더기 반복문이 많아서.
+일단 폴더, 파일 각각 자료구조에 담고,
+폴더를 하나씩 pop 하면서 FullName에 이 폴더의 FullName을 포함하는 파일들을 찾아서 Entries에 담는다.
+실은 Entries에 바로 담진 않았고 앞서 말했듯 Stack 하나 더 만들어서 거기다가 넣었다.
+처음엔 폴더에 스택 대신 큐를 썼는데 원하는대로 안됨.
+예를 들어
+Audacity/TEMP/temp.exe
+는
+Audacity/TEMP/
+가 DQ됐을때 나와야하는데
+Audacity/
+가 DQ됐을때 나오게 되니까.
+
+어쨌든 GUI부분 구현은 다음주로 넘어가야겠다. 다음주에도 골치아플 예정.
+***************************************************/

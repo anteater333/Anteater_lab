@@ -61,13 +61,16 @@ namespace DeZipper
         /// </summary>
         public override void PrintList()
         {
+            int count = 0;
             foreach (KeyValuePair<string, ZipArchiveEntry> entry in deZipper.Entries)
             {
                 if (entry.Value.Name.Equals(""))
-                    PrintMsg("Folder : " + entry.Value.FullName, MSG);
+                    PrintMsg("Folder\t: " + entry.Value.FullName, MSG);
                 else
-                    PrintMsg("File : " + entry.Value.FullName, MSG);
+                    PrintMsg("File\t: " + entry.Value.FullName, MSG);
+                count++;
             }
+            PrintMsg("Total : " + count, MSG);
         }
 
         /// <summary>

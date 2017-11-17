@@ -11,6 +11,6 @@ namespace DeZipper
     /// </summary>
     interface IOpenable
     {
-        void OpenZip();
+        void OpenZip(string zipPath, string tgPath);
     }
 }

@@ -16,5 +16,30 @@ namespace DeZipper
         {
             InitializeComponent();
         }
+
+        private void DeZipperForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void zipPathButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void targetPathButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void excludeButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

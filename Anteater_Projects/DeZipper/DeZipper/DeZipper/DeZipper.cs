@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
@@ -58,6 +59,27 @@ namespace DeZipper
         /// ZIP 파일을 엽니다.
         /// </summary>
         /// <param name="zipPath">ZIP 파일 경로</param>
+        public DeZipper(string zipPath)
+        {
+            this.zipPath = zipPath;
+            this.zipPath.Replace('\\', '/');
+            this.TargetDirectory = "./";
+            this.Options = DeleteOptions.None;
+
+            try
+            {
+                this.entries = new Dictionary<string, ZipArchiveEntry>();
+                NewZip(this.zipPath);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// ZIP 파일을 엽니다.
+        /// </summary>
+        /// <param name="zipPath">ZIP 파일 경로</param>
         /// <param name="tgPath">타겟 디렉토리 경로</param>
         public DeZipper(string zipPath, string tgPath)
         {
@@ -68,12 +90,8 @@ namespace DeZipper
 
             try
             {
-                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Read))
-                {
-                    this.entries = new Dictionary<string, ZipArchiveEntry>();
-                    foreach (ZipArchiveEntry entry in zipAchv.Entries)
-                        this.Entries.Add(entry.FullName, entry);
-                }
+                this.entries = new Dictionary<string, ZipArchiveEntry>();
+                NewZip(this.zipPath);
             }
             catch
             {
@@ -95,12 +113,8 @@ namespace DeZipper
 
             try
             {
-                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Read))
-                {
-                    this.entries = new Dictionary<string, ZipArchiveEntry>();
-                    foreach (ZipArchiveEntry entry in zipAchv.Entries)
-                        this.Entries.Add(entry.FullName, entry);
-                }
+                this.entries = new Dictionary<string, ZipArchiveEntry>();
+                NewZip(this.zipPath);
             }
             catch
             {
@@ -141,16 +155,52 @@ namespace DeZipper
         {
             this.zipPath = zipPath;
             this.zipPath.Replace('\\', '/');
-
+            
             entries.Clear();
-
+            
             try
             {
-                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Update))
+                List<ZipArchiveEntry> fileList = new List<ZipArchiveEntry>();       // files
+                Stack<ZipArchiveEntry> dirStack = new Stack<ZipArchiveEntry>();     // directories
+                Stack<ZipArchiveEntry> entryStack = new Stack<ZipArchiveEntry>();   // temporary stack
+
+                using (ZipArchive zipAchv = ZipFile.Open(this.zipPath, ZipArchiveMode.Read))
                 {
-                    this.entries = new Dictionary<string, ZipArchiveEntry>(zipAchv.Entries.Count);
                     foreach (ZipArchiveEntry entry in zipAchv.Entries)
+                    {
+                        if (entry.Name == "")
+                            dirStack.Push(entry);
+                        else
+                            fileList.Add(entry);
+                    }
+
+                    while (dirStack.Count != 0)
+                    {
+                        var dirItem = dirStack.Pop();
+                        for (int i = fileList.Count - 1; i >= 0; i--)
+                        {
+                            if (fileList.ElementAt(i).FullName.Contains(dirItem.FullName))
+                            {
+                                var fileItem = fileList.ElementAt(i);
+                                fileList.RemoveAt(i);
+                                entryStack.Push(fileItem);
+                            }
+                        }
+                        entryStack.Push(dirItem);
+                    }
+
+                    for (int i = fileList.Count - 1; i >= 0; i--)
+                    {
+                        var item = fileList.ElementAt(i);
+                        fileList.RemoveAt(i);
+                        entryStack.Push(item);
+                    }
+
+                    foreach(ZipArchiveEntry entry in entryStack)
+                    {
                         this.Entries.Add(entry.FullName, entry);
+                    }
+                    
                 }
             }
             catch
@@ -172,7 +222,7 @@ namespace DeZipper
 
             foreach (KeyValuePair<string, ZipArchiveEntry> entry in Entries)
             {
-                if (entry.Value.Name == "")
+                if (entry.Value.Name == "")     // if the entry is directory.
                 {
                     zipDirPaths.Push(entry.Value.FullName);
                     dirCount++;

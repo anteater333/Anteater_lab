@@ -128,6 +128,13 @@ namespace DeZipper
             Application.Run(new DeZipperForm());
         }
         #endregion
+#elif COMPILE_TEST
+        #region test
+        static void Main(string[] args)
+        {
+            new DeZipperCMD(@"D:\Temp\_Zip\audacity-win-2.1.0.zip", ".").PrintList();
+        }
+        #endregion
 #endif
     }
 }
