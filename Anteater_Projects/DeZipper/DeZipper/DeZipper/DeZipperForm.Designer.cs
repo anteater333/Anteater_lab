@@ -37,10 +37,10 @@
             this.deleteSourceZipFile = new System.Windows.Forms.CheckBox();
             this.deleteEmptyDirectory = new System.Windows.Forms.CheckBox();
             this.excludeButton = new System.Windows.Forms.Button();
-            this.targetPath = new System.Windows.Forms.TextBox();
+            this.tgPath = new System.Windows.Forms.TextBox();
             this.zipPath = new System.Windows.Forms.TextBox();
             this.zipPathButton = new System.Windows.Forms.Button();
-            this.buttonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.fileImageList = new System.Windows.Forms.ImageList(this.components);
             this.targetPathButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -73,7 +73,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.zipEntryTreeView.Location = new System.Drawing.Point(203, 67);
             this.zipEntryTreeView.Name = "zipEntryTreeView";
-            this.zipEntryTreeView.Size = new System.Drawing.Size(402, 470);
+            this.zipEntryTreeView.Size = new System.Drawing.Size(422, 470);
             this.zipEntryTreeView.TabIndex = 3;
             // 
             // optionPanel
@@ -130,21 +130,22 @@
             this.excludeButton.UseVisualStyleBackColor = true;
             this.excludeButton.Click += new System.EventHandler(this.excludeButton_Click);
             // 
-            // targetPath
+            // tgPath
             // 
-            this.targetPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPath.Location = new System.Drawing.Point(0, 0);
-            this.targetPath.Name = "targetPath";
-            this.targetPath.Size = new System.Drawing.Size(367, 25);
-            this.targetPath.TabIndex = 4;
+            this.tgPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.tgPath.Location = new System.Drawing.Point(0, 0);
+            this.tgPath.Name = "tgPath";
+            this.tgPath.Size = new System.Drawing.Size(387, 25);
+            this.tgPath.TabIndex = 4;
             // 
             // zipPath
             // 
             this.zipPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.zipPath.Location = new System.Drawing.Point(0, 0);
             this.zipPath.Name = "zipPath";
-            this.zipPath.Size = new System.Drawing.Size(367, 25);
+            this.zipPath.Size = new System.Drawing.Size(387, 25);
             this.zipPath.TabIndex = 5;
+            this.zipPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.zipPath_KeyDown);
             // 
             // zipPathButton
             // 
@@ -153,20 +154,20 @@
             this.zipPathButton.FlatAppearance.BorderSize = 0;
             this.zipPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.zipPathButton.ImageIndex = 0;
-            this.zipPathButton.ImageList = this.buttonImageList;
-            this.zipPathButton.Location = new System.Drawing.Point(367, 1);
+            this.zipPathButton.ImageList = this.fileImageList;
+            this.zipPathButton.Location = new System.Drawing.Point(387, 1);
             this.zipPathButton.Name = "zipPathButton";
             this.zipPathButton.Size = new System.Drawing.Size(25, 23);
             this.zipPathButton.TabIndex = 6;
             this.zipPathButton.UseVisualStyleBackColor = true;
             this.zipPathButton.Click += new System.EventHandler(this.zipPathButton_Click);
             // 
-            // buttonImageList
+            // fileImageList
             // 
-            this.buttonImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("buttonImageList.ImageStream")));
-            this.buttonImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.buttonImageList.Images.SetKeyName(0, "zip_placeholder.ico");
-            this.buttonImageList.Images.SetKeyName(1, "folder_placeholder.ico");
+            this.fileImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("fileImageList.ImageStream")));
+            this.fileImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.fileImageList.Images.SetKeyName(0, "zip_placeholder.ico");
+            this.fileImageList.Images.SetKeyName(1, "folder_placeholder.ico");
             // 
             // targetPathButton
             // 
@@ -175,8 +176,8 @@
             this.targetPathButton.FlatAppearance.BorderSize = 0;
             this.targetPathButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.targetPathButton.ImageIndex = 1;
-            this.targetPathButton.ImageList = this.buttonImageList;
-            this.targetPathButton.Location = new System.Drawing.Point(367, 1);
+            this.targetPathButton.ImageList = this.fileImageList;
+            this.targetPathButton.Location = new System.Drawing.Point(387, 1);
             this.targetPathButton.Name = "targetPathButton";
             this.targetPathButton.Size = new System.Drawing.Size(25, 23);
             this.targetPathButton.TabIndex = 7;
@@ -196,10 +197,11 @@
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.Location = new System.Drawing.Point(69, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(128, 30);
+            this.label2.Size = new System.Drawing.Size(128, 32);
             this.label2.TabIndex = 9;
             this.label2.Text = "Target Directory :";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -225,7 +227,7 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(608, 540);
+            this.tableLayoutPanel.Size = new System.Drawing.Size(628, 540);
             this.tableLayoutPanel.TabIndex = 10;
             // 
             // targetPathPanel
@@ -233,12 +235,12 @@
             this.targetPathPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.targetPathPanel.Controls.Add(this.targetPath);
+            this.targetPathPanel.Controls.Add(this.tgPath);
             this.targetPathPanel.Controls.Add(this.targetPathButton);
             this.targetPathPanel.Location = new System.Drawing.Point(203, 35);
             this.targetPathPanel.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.targetPathPanel.Name = "targetPathPanel";
-            this.targetPathPanel.Size = new System.Drawing.Size(405, 26);
+            this.targetPathPanel.Size = new System.Drawing.Size(425, 26);
             this.targetPathPanel.TabIndex = 2;
             // 
             // zipPathPanel
@@ -251,7 +253,7 @@
             this.zipPathPanel.Location = new System.Drawing.Point(203, 3);
             this.zipPathPanel.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.zipPathPanel.Name = "zipPathPanel";
-            this.zipPathPanel.Size = new System.Drawing.Size(405, 26);
+            this.zipPathPanel.Size = new System.Drawing.Size(425, 26);
             this.zipPathPanel.TabIndex = 1;
             // 
             // executionPanel
@@ -269,8 +271,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(622, 553);
+            this.ClientSize = new System.Drawing.Size(642, 553);
             this.Controls.Add(this.tableLayoutPanel);
+            this.MinimumSize = new System.Drawing.Size(440, 590);
             this.Name = "DeZipperForm";
             this.Text = "DeZipper";
             this.Load += new System.EventHandler(this.DeZipperForm_Load);
@@ -294,7 +297,7 @@
         private System.Windows.Forms.CheckBox toRecycleBin;
         private System.Windows.Forms.CheckBox deleteSourceZipFile;
         private System.Windows.Forms.Button excludeButton;
-        private System.Windows.Forms.TextBox targetPath;
+        private System.Windows.Forms.TextBox tgPath;
         private System.Windows.Forms.TextBox zipPath;
         private System.Windows.Forms.Button zipPathButton;
         private System.Windows.Forms.Button targetPathButton;
@@ -304,6 +307,6 @@
         private System.Windows.Forms.Panel targetPathPanel;
         private System.Windows.Forms.Panel zipPathPanel;
         private System.Windows.Forms.Panel executionPanel;
-        private System.Windows.Forms.ImageList buttonImageList;
+        private System.Windows.Forms.ImageList fileImageList;
     }
 }

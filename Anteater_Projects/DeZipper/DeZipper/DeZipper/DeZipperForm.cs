@@ -12,6 +12,8 @@ namespace DeZipper
 {
     public partial class DeZipperForm : Form
     {
+        private DeZipperGUI deZipCaller;
+
         public DeZipperForm()
         {
             InitializeComponent();
@@ -19,7 +21,10 @@ namespace DeZipper
 
         private void DeZipperForm_Load(object sender, EventArgs e)
         {
+            zipEntryTreeView.ImageList = fileImageList;
 
+            deZipCaller = new DeZipperGUI();
+            deZipCaller.EntryTree = zipEntryTreeView;
         }
 
         private void zipPathButton_Click(object sender, EventArgs e)
@@ -40,6 +45,17 @@ namespace DeZipper
         private void deleteButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void zipPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                deZipCaller.OpenZip(zipPath.Text, tgPath.Text);
+                deZipCaller.PrintList();
+                Cursor.Current = Cursors.Default;
+            }
         }
     }
 }

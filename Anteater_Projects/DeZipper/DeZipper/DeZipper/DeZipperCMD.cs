@@ -42,11 +42,13 @@ namespace DeZipper
         /// </summary>
         /// <param name="zipPath">ZIP 파일 경로</param>
         /// <param name="tgPath">타겟 디렉토리 경로</param>
-        public DeZipperCMD(string zipPath, string tgPath) : base(zipPath, tgPath)
+        public DeZipperCMD(string zipPath, string tgPath)
         {
             try
             {
-                base.deZipper = new DeZipper(base.zipPath, base.tgPath);
+                base.ZipDirectory = zipPath;
+                base.TargetDirectory = tgPath;
+                base.deZipper = new DeZipper(base.ZipDirectory, base.TargetDirectory);
                 base.Options = DeleteOptions.None;
                 this.Silenced = false;
             }

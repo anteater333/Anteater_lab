@@ -56,6 +56,17 @@ namespace DeZipper
         
         #region Methods
         /// <summary>
+        /// 임시 인스턴스를 만듭니다.
+        /// 이 생성자를 통해 생성된 인스턴스는 추가적으로 ZIP 파일 경로를 설정한 다음 사용해야합니다.
+        /// ZIP 파일이 열리는 시기가 불확실한 경우 사용합니다.
+        /// </summary>
+        public DeZipper()
+        {
+            this.TargetDirectory = "./";
+            this.Options = DeleteOptions.None;
+            this.entries = new Dictionary<string, ZipArchiveEntry>();
+        }
+        /// <summary>
         /// ZIP 파일을 엽니다.
         /// </summary>
         /// <param name="zipPath">ZIP 파일 경로</param>
@@ -155,7 +166,7 @@ namespace DeZipper
         {
             this.zipPath = zipPath;
             this.zipPath.Replace('\\', '/');
-            
+
             entries.Clear();
             
             try
