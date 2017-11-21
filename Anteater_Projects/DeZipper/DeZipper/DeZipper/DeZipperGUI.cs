@@ -48,17 +48,33 @@ namespace DeZipper
             EntryTree.BeginUpdate();
             EntryTree.Nodes.Clear();
             
+            List<string> dirList = new List<string>();
             TreeNodeCollection branch = EntryTree.Nodes;
-            TreeNode node;
 
             foreach (KeyValuePair<string, ZipArchiveEntry> entry in deZipper.Entries)
             {
-                if (!entry.Value.Name.Equals(""))
-                    branch.Add(entry.Value.FullName, entry.Value.Name);
-                else
+                string path = entry.Value.FullName;
+                path = path.TrimEnd('/');
+                path = path.Remove(path.LastIndexOf('/') + 1);
+
+                if (entry.Value.Name.Equals(""))    // Folder
                 {
-                    string text = entry.Value.FullName.Split('/')[entry.Value.FullName.Split('/').Length - 2];
-                    branch.Add(entry.Value.FullName, text, 1, 1);
+                    string name = entry.Value.FullName.Split('/')[entry.Value.FullName.Split('/').Length - 2];
+
+                    dirList.Add(entry.Value.FullName);
+
+                    if (dirList.Contains(path))
+                        branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, name, 1, 1);
+                    else
+                        branch.Add(entry.Value.FullName, name, 1, 1);
+                }
+                else                                // Files
+                {
+                    if (dirList.Contains(path))
+                        branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, entry.Value.Name);
+                    else
+                        branch.Add(entry.Value.FullName, entry.Value.Name);
+
                 }
             }
 

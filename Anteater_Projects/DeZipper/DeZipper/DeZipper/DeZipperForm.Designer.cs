@@ -48,6 +48,7 @@
             this.targetPathPanel = new System.Windows.Forms.Panel();
             this.zipPathPanel = new System.Windows.Forms.Panel();
             this.executionPanel = new System.Windows.Forms.Panel();
+            this.totalFilesLable = new System.Windows.Forms.Label();
             this.optionPanel.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.targetPathPanel.SuspendLayout();
@@ -73,7 +74,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.zipEntryTreeView.Location = new System.Drawing.Point(203, 67);
             this.zipEntryTreeView.Name = "zipEntryTreeView";
-            this.zipEntryTreeView.Size = new System.Drawing.Size(422, 470);
+            this.zipEntryTreeView.Size = new System.Drawing.Size(422, 469);
             this.zipEntryTreeView.TabIndex = 3;
             // 
             // optionPanel
@@ -220,14 +221,16 @@
             this.tableLayoutPanel.Controls.Add(this.zipEntryTreeView, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.zipPathPanel, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.executionPanel, 0, 2);
+            this.tableLayoutPanel.Controls.Add(this.totalFilesLable, 1, 3);
             this.tableLayoutPanel.Location = new System.Drawing.Point(8, 8);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 3;
+            this.tableLayoutPanel.RowCount = 4;
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 6F));
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(628, 540);
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(628, 565);
             this.tableLayoutPanel.TabIndex = 10;
             // 
             // targetPathPanel
@@ -262,16 +265,28 @@
             this.executionPanel.Controls.Add(this.excludeButton);
             this.executionPanel.Controls.Add(this.optionPanel);
             this.executionPanel.Controls.Add(this.deleteButton);
-            this.executionPanel.Location = new System.Drawing.Point(3, 304);
+            this.executionPanel.Location = new System.Drawing.Point(3, 303);
             this.executionPanel.Name = "executionPanel";
             this.executionPanel.Size = new System.Drawing.Size(194, 233);
             this.executionPanel.TabIndex = 4;
+            // 
+            // totalFilesLable
+            // 
+            this.totalFilesLable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.totalFilesLable.Font = new System.Drawing.Font("굴림", 11F);
+            this.totalFilesLable.Location = new System.Drawing.Point(203, 539);
+            this.totalFilesLable.Name = "totalFilesLable";
+            this.totalFilesLable.Size = new System.Drawing.Size(422, 23);
+            this.totalFilesLable.TabIndex = 10;
+            this.totalFilesLable.Text = "0 File(s), 0 Folder(s)";
+            this.totalFilesLable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // DeZipperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(642, 553);
+            this.ClientSize = new System.Drawing.Size(642, 578);
             this.Controls.Add(this.tableLayoutPanel);
             this.MinimumSize = new System.Drawing.Size(440, 590);
             this.Name = "DeZipperForm";
@@ -308,5 +323,6 @@
         private System.Windows.Forms.Panel zipPathPanel;
         private System.Windows.Forms.Panel executionPanel;
         private System.Windows.Forms.ImageList fileImageList;
+        private System.Windows.Forms.Label totalFilesLable;
     }
 }
