@@ -45,7 +45,9 @@ namespace DeZipper
             }
             set
             {
-                if (value[value.Length - 1].Equals('\\') || value[value.Length - 1].Equals('/'))
+                if (value.Equals(""))
+                    tgPath = value;
+                else if (value[value.Length - 1].Equals('\\') || value[value.Length - 1].Equals('/'))
                     tgPath = value;
                 else
                     tgPath = value + "/";

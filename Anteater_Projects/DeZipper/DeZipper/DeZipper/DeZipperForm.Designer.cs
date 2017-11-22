@@ -48,7 +48,9 @@
             this.targetPathPanel = new System.Windows.Forms.Panel();
             this.zipPathPanel = new System.Windows.Forms.Panel();
             this.executionPanel = new System.Windows.Forms.Panel();
-            this.totalFilesLable = new System.Windows.Forms.Label();
+            this.treeViewCount = new System.Windows.Forms.Label();
+            this.zipOpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.optionPanel.SuspendLayout();
             this.tableLayoutPanel.SuspendLayout();
             this.targetPathPanel.SuspendLayout();
@@ -221,7 +223,7 @@
             this.tableLayoutPanel.Controls.Add(this.zipEntryTreeView, 1, 2);
             this.tableLayoutPanel.Controls.Add(this.zipPathPanel, 1, 0);
             this.tableLayoutPanel.Controls.Add(this.executionPanel, 0, 2);
-            this.tableLayoutPanel.Controls.Add(this.totalFilesLable, 1, 3);
+            this.tableLayoutPanel.Controls.Add(this.treeViewCount, 1, 3);
             this.tableLayoutPanel.Location = new System.Drawing.Point(8, 8);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel.Name = "tableLayoutPanel";
@@ -270,17 +272,23 @@
             this.executionPanel.Size = new System.Drawing.Size(194, 233);
             this.executionPanel.TabIndex = 4;
             // 
-            // totalFilesLable
+            // treeViewCount
             // 
-            this.totalFilesLable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.treeViewCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.totalFilesLable.Font = new System.Drawing.Font("굴림", 11F);
-            this.totalFilesLable.Location = new System.Drawing.Point(203, 539);
-            this.totalFilesLable.Name = "totalFilesLable";
-            this.totalFilesLable.Size = new System.Drawing.Size(422, 23);
-            this.totalFilesLable.TabIndex = 10;
-            this.totalFilesLable.Text = "0 File(s), 0 Folder(s)";
-            this.totalFilesLable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.treeViewCount.Font = new System.Drawing.Font("굴림", 11F);
+            this.treeViewCount.Location = new System.Drawing.Point(203, 539);
+            this.treeViewCount.Name = "treeViewCount";
+            this.treeViewCount.Size = new System.Drawing.Size(422, 23);
+            this.treeViewCount.TabIndex = 10;
+            this.treeViewCount.Text = "0 File(s), 0 Folder(s)";
+            this.treeViewCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // zipOpenDialog
+            // 
+            this.zipOpenDialog.FileName = "*.zip";
+            this.zipOpenDialog.Filter = "Zip 파일|*.zip";
+            this.zipOpenDialog.Title = "Zip 파일 열기";
             // 
             // DeZipperForm
             // 
@@ -323,6 +331,8 @@
         private System.Windows.Forms.Panel zipPathPanel;
         private System.Windows.Forms.Panel executionPanel;
         private System.Windows.Forms.ImageList fileImageList;
-        private System.Windows.Forms.Label totalFilesLable;
+        private System.Windows.Forms.Label treeViewCount;
+        private System.Windows.Forms.OpenFileDialog zipOpenDialog;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }

@@ -15,10 +15,26 @@ namespace DeZipper
     class DeZipperGUI : DeZipperUI, IOpenable
     {
         #region Fields
+        private int cFiles;
+        private int cDirs;
         #endregion
 
         #region Properties
         public TreeView EntryTree { get; set; }
+        public int CountFiles
+        {
+            get
+            {
+                return cFiles;
+            }
+        }
+        public int CountDirs
+        {
+            get
+            {
+                return cDirs;
+            }
+        }
         #endregion
 
         #region Methods
@@ -28,15 +44,44 @@ namespace DeZipper
         public DeZipperGUI()
         {
             base.deZipper = new DeZipper();
+            base.Options = DeleteOptions.None;
+            this.cFiles = 0;
+            this.cDirs = 0;
         }
 
+        /// <summary>
+        /// 삭제할 ZIP 파일 리스트에서 특정 파일을 제외합니다.
+        /// </summary>
+        /// <param name="path">제외하려는 TreeNode의 Name</param>
+        /// <returns></returns>
         public override bool Delist(string path)
         {
-            throw new NotImplementedException();
+            EntryTree.BeginUpdate();
+
+            foreach (var key in deZipper.Entries.ToList())
+            {
+                if (key.Value.FullName.Contains(path))
+                {
+                    deZipper.Delist(key.Value.FullName);
+                    if (key.Value.Name.Equals(""))
+                        cDirs--;
+                    else
+                        cFiles--;
+                }
+            }
+
+            TreeNode delNode = EntryTree.Nodes.Find(path, true)[0];
+            
+            EntryTree.Nodes.Remove(delNode);
+            EntryTree.EndUpdate();
+
+            return true;
         }
 
         public override void Delete()
         {
+            if (deZipper.TargetDirectory.Equals(""))
+                throw new Exception("Empty Path Error");    /// 수정필요
             throw new NotImplementedException();
         }
 
@@ -67,6 +112,8 @@ namespace DeZipper
                         branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, name, 1, 1);
                     else
                         branch.Add(entry.Value.FullName, name, 1, 1);
+
+                    cDirs++;
                 }
                 else                                // Files
                 {
@@ -75,6 +122,7 @@ namespace DeZipper
                     else
                         branch.Add(entry.Value.FullName, entry.Value.Name);
 
+                    cFiles++;
                 }
             }
 
@@ -89,7 +137,7 @@ namespace DeZipper
         /// <param name="tgPath">타겟 디렉토리 경로</param>
         public void OpenZip(string zipPath, string tgPath)
         {
-            deZipper.TargetDirectory = tgPath;
+            base.TargetDirectory = tgPath;
             deZipper.NewZip(zipPath);
         }
         #endregion
