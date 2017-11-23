@@ -119,6 +119,8 @@ namespace DeZipper
                         PrintMsg(entry.Replace(DeZipper.FIlE_NOT_FOUND, "") + " does not exist.", MSG);
                     else if (entry.Contains(DeZipper.DIR_NOT_EMPTY))
                         PrintMsg(entry.Replace(DeZipper.DIR_NOT_EMPTY, "") + " is not empty.", MSG);
+                    else if (entry.Contains(DeZipper.DIR_NOT_FOUND))
+                        PrintMsg(entry.Replace(DeZipper.DIR_NOT_FOUND, "") + " does not exist.", MSG);
                     else
                     {
                         delCount++;

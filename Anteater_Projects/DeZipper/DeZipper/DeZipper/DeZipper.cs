@@ -17,6 +17,7 @@ namespace DeZipper
         #region Error Message
         public const string FIlE_NOT_FOUND = "<FILE_NOT_FOUND>";
         public const string DIR_NOT_EMPTY = "<DIR_NOT_EMPTY>";
+        public const string DIR_NOT_FOUND = "<DIR_NOT_FOUND>";
         #endregion
 
         #region Fields
@@ -51,7 +52,7 @@ namespace DeZipper
                     tgPath = value;
                 else
                     tgPath = value + "/";
-                tgPath.Replace('\\', '/');
+                tgPath = tgPath.Replace('\\', '/');
             }
         }
         #endregion
@@ -75,7 +76,7 @@ namespace DeZipper
         public DeZipper(string zipPath)
         {
             this.zipPath = zipPath;
-            this.zipPath.Replace('\\', '/');
+            this.zipPath = this.zipPath.Replace('\\', '/');
             this.TargetDirectory = "./";
             this.Options = DeleteOptions.None;
 
@@ -97,7 +98,7 @@ namespace DeZipper
         public DeZipper(string zipPath, string tgPath)
         {
             this.zipPath = zipPath;
-            this.zipPath.Replace('\\', '/');
+            this.zipPath = this.zipPath.Replace('\\', '/');
             this.TargetDirectory = tgPath;
             this.Options = DeleteOptions.None;
 
@@ -120,7 +121,7 @@ namespace DeZipper
         public DeZipper(string zipPath, string tgPath, DeleteOptions options)
         {
             this.zipPath = zipPath;
-            this.zipPath.Replace('\\', '/');
+            this.zipPath = this.zipPath.Replace('\\', '/');
             this.TargetDirectory = tgPath;
             this.Options = options;
 
@@ -167,7 +168,7 @@ namespace DeZipper
         public void NewZip(string zipPath)
         {
             this.zipPath = zipPath;
-            this.zipPath.Replace('\\', '/');
+            this.zipPath = this.zipPath.Replace('\\', '/');
 
             entries.Clear();
             
@@ -266,11 +267,12 @@ namespace DeZipper
 
                     try
                     {
-                        if (!Directory.EnumerateFileSystemEntries(rtStr).Any())
+                        if (!Directory.Exists(rtStr))
+                            rtStr = DIR_NOT_FOUND + rtStr;
+                        else if (!Directory.EnumerateFileSystemEntries(rtStr).Any())
                             Directory.Delete(rtStr);
                         else
                             rtStr = DIR_NOT_EMPTY + rtStr;
-
                     }
                     catch (DirectoryNotFoundException)
                     {

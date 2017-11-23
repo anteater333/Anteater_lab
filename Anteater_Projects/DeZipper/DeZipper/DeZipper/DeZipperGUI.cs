@@ -80,9 +80,41 @@ namespace DeZipper
 
         public override void Delete()
         {
+            deZipper.Options = base.Options;
+            deZipper.TargetDirectory = this.TargetDirectory;
             if (deZipper.TargetDirectory.Equals(""))
                 throw new Exception("Empty Path Error");    /// 수정필요
-            throw new NotImplementedException();
+
+            DeZipperProgressForm deleteProgressForm = new DeZipperProgressForm()
+            {
+                ProgressMax = cFiles
+            };
+            if ((Options & DeleteOptions.DeleteEmptyDirectory) != 0)
+                deleteProgressForm.ProgressMax += cDirs;
+            if ((Options & DeleteOptions.DeleteSourceZipFile) != 0)
+                deleteProgressForm.ProgressMax += 1;
+            deleteProgressForm.Show();
+
+            int delCount = 0;
+            string progressLog = "";
+            foreach (string entry in deZipper.ExecuteDelete())
+            {
+                if (entry.Contains(DeZipper.FIlE_NOT_FOUND))
+                    progressLog = entry.Replace(DeZipper.FIlE_NOT_FOUND, "") + " : 해당 파일이 존재하지 않습니다.";
+                else if (entry.Contains(DeZipper.DIR_NOT_EMPTY))
+                    progressLog = entry.Replace(DeZipper.DIR_NOT_EMPTY, "") + " : 빈 폴더가 아니기 때문에 삭제되지 않았습니다.";
+                else if (entry.Contains(DeZipper.DIR_NOT_FOUND))
+                    progressLog = entry.Replace(DeZipper.DIR_NOT_FOUND, "") + " : 경로를 찾을 수 없습니다.";
+                else
+                {
+                    delCount++;
+                    progressLog = entry + " : 정상적으로 삭제되었습니다.";
+                }
+                if (!deleteProgressForm.ProgressPerform(progressLog))
+                    break;
+            }
+
+            deleteProgressForm.FinishDelete(delCount);
         }
 
         /// <summary>

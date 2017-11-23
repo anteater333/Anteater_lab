@@ -84,14 +84,38 @@ namespace DeZipper
             }
             else
             {
+                string msgboxText = "";
+                string msgboxOptionText = "";
+                int total = deZipCaller.CountFiles;
+                deZipCaller.Options = DeleteOptions.None;
                 if (toRecycleBin.Checked)
+                {
                     deZipCaller.Options |= DeleteOptions.ToRecycleBin;
+                    msgboxOptionText += " - 휴지통으로 보내기" + Environment.NewLine;
+                }
                 if (deleteEmptyDirectory.Checked)
+                {
                     deZipCaller.Options |= DeleteOptions.DeleteEmptyDirectory;
+                    total += deZipCaller.CountDirs;
+                    msgboxOptionText += " - 빈 폴더 삭제" + Environment.NewLine;
+                }
                 if (deleteSourceZipFile.Checked)
+                {
                     deZipCaller.Options |= DeleteOptions.DeleteSourceZipFile;
+                    total += 1;
+                    msgboxOptionText += " - 원본 zip 파일 삭제" + Environment.NewLine;
+                }
+                deZipCaller.TargetDirectory = this.tgPath.Text;
 
+                msgboxText += "총 " + total + " 파일이 삭제됩니다." + Environment.NewLine;
+                msgboxText += "선택한 옵션" + Environment.NewLine;
+                msgboxText += msgboxOptionText + Environment.NewLine;
+                msgboxText += "삭제하시겠습니까?";
 
+                if (MessageBox.Show(msgboxText, "경고!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    deZipCaller.Delete();
+                }
             }
         }
 
