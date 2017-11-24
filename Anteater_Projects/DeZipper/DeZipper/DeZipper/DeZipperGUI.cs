@@ -43,10 +43,17 @@ namespace DeZipper
         /// </summary>
         public DeZipperGUI()
         {
-            base.deZipper = new DeZipper();
-            base.Options = DeleteOptions.None;
-            this.cFiles = 0;
-            this.cDirs = 0;
+            try
+            {
+                base.deZipper = new DeZipper();
+                base.Options = DeleteOptions.None;
+                this.cFiles = 0;
+                this.cDirs = 0;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -56,65 +63,82 @@ namespace DeZipper
         /// <returns></returns>
         public override bool Delist(string path)
         {
-            EntryTree.BeginUpdate();
-
-            foreach (var key in deZipper.Entries.ToList())
+            try
             {
-                if (key.Value.FullName.Contains(path))
+                EntryTree.BeginUpdate();
+
+                foreach (var key in deZipper.Entries.ToList())
                 {
-                    deZipper.Delist(key.Value.FullName);
-                    if (key.Value.Name.Equals(""))
-                        cDirs--;
-                    else
-                        cFiles--;
+                    if (key.Value.FullName.Contains(path))
+                    {
+                        deZipper.Delist(key.Value.FullName);
+                        if (key.Value.Name.Equals(""))
+                            cDirs--;
+                        else
+                            cFiles--;
+                    }
                 }
+
+                TreeNode delNode = EntryTree.Nodes.Find(path, true)[0];
+
+                EntryTree.Nodes.Remove(delNode);
+                EntryTree.EndUpdate();
+
+                return true;
             }
-
-            TreeNode delNode = EntryTree.Nodes.Find(path, true)[0];
-            
-            EntryTree.Nodes.Remove(delNode);
-            EntryTree.EndUpdate();
-
-            return true;
+            catch
+            {
+                throw;
+            }
         }
 
+        /// <summary>
+        /// ZIP 파일 리스트에 따라 파일을 삭제합니다.
+        /// </summary>
         public override void Delete()
         {
-            deZipper.Options = base.Options;
-            deZipper.TargetDirectory = this.TargetDirectory;
-            if (deZipper.TargetDirectory.Equals(""))
-                throw new Exception("Empty Path Error");    /// 수정필요
-
-            DeZipperProgressForm deleteProgressForm = new DeZipperProgressForm()
+            try
             {
-                ProgressMax = cFiles
-            };
-            if ((Options & DeleteOptions.DeleteEmptyDirectory) != 0)
-                deleteProgressForm.ProgressMax += cDirs;
-            if ((Options & DeleteOptions.DeleteSourceZipFile) != 0)
-                deleteProgressForm.ProgressMax += 1;
-            deleteProgressForm.Show();
+                deZipper.Options = base.Options;
+                deZipper.TargetDirectory = this.TargetDirectory;
+                if (deZipper.TargetDirectory.Equals(""))
+                    throw new Exception("Empty Path Error");    /// 수정필요
 
-            int delCount = 0;
-            string progressLog = "";
-            foreach (string entry in deZipper.ExecuteDelete())
-            {
-                if (entry.Contains(DeZipper.FIlE_NOT_FOUND))
-                    progressLog = entry.Replace(DeZipper.FIlE_NOT_FOUND, "") + " : 해당 파일이 존재하지 않습니다.";
-                else if (entry.Contains(DeZipper.DIR_NOT_EMPTY))
-                    progressLog = entry.Replace(DeZipper.DIR_NOT_EMPTY, "") + " : 빈 폴더가 아니기 때문에 삭제되지 않았습니다.";
-                else if (entry.Contains(DeZipper.DIR_NOT_FOUND))
-                    progressLog = entry.Replace(DeZipper.DIR_NOT_FOUND, "") + " : 경로를 찾을 수 없습니다.";
-                else
+                DeZipperProgressForm deleteProgressForm = new DeZipperProgressForm()
                 {
-                    delCount++;
-                    progressLog = entry + " : 정상적으로 삭제되었습니다.";
-                }
-                if (!deleteProgressForm.ProgressPerform(progressLog))
-                    break;
-            }
+                    ProgressMax = cFiles
+                };
+                if ((Options & DeleteOptions.DeleteEmptyDirectory) != 0)
+                    deleteProgressForm.ProgressMax += cDirs;
+                if ((Options & DeleteOptions.DeleteSourceZipFile) != 0)
+                    deleteProgressForm.ProgressMax += 1;
+                deleteProgressForm.Show();
 
-            deleteProgressForm.FinishDelete(delCount);
+                int delCount = 0;
+                string progressLog = "";
+                foreach (string entry in deZipper.ExecuteDelete())
+                {
+                    if (entry.Contains(DeZipper.FIlE_NOT_FOUND))
+                        progressLog = entry.Replace(DeZipper.FIlE_NOT_FOUND, "") + " : 해당 파일이 존재하지 않습니다.";
+                    else if (entry.Contains(DeZipper.DIR_NOT_EMPTY))
+                        progressLog = entry.Replace(DeZipper.DIR_NOT_EMPTY, "") + " : 빈 폴더가 아니기 때문에 삭제되지 않았습니다.";
+                    else if (entry.Contains(DeZipper.DIR_NOT_FOUND))
+                        progressLog = entry.Replace(DeZipper.DIR_NOT_FOUND, "") + " : 경로를 찾을 수 없습니다.";
+                    else
+                    {
+                        delCount++;
+                        progressLog = entry + " : 정상적으로 삭제되었습니다.";
+                    }
+                    if (!deleteProgressForm.ProgressPerform(progressLog))
+                        break;
+                }
+
+                deleteProgressForm.FinishDelete(delCount);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -122,44 +146,51 @@ namespace DeZipper
         /// </summary>
         public override void PrintList()
         {
-            EntryTree.BeginUpdate();
-            EntryTree.Nodes.Clear();
-            
-            List<string> dirList = new List<string>();
-            TreeNodeCollection branch = EntryTree.Nodes;
-
-            foreach (KeyValuePair<string, ZipArchiveEntry> entry in deZipper.Entries)
+            try
             {
-                string path = entry.Value.FullName;
-                path = path.TrimEnd('/');
-                path = path.Remove(path.LastIndexOf('/') + 1);
+                EntryTree.BeginUpdate();
+                EntryTree.Nodes.Clear();
 
-                if (entry.Value.Name.Equals(""))    // Folder
+                List<string> dirList = new List<string>();
+                TreeNodeCollection branch = EntryTree.Nodes;
+
+                foreach (KeyValuePair<string, ZipArchiveEntry> entry in deZipper.Entries)
                 {
-                    string name = entry.Value.FullName.Split('/')[entry.Value.FullName.Split('/').Length - 2];
+                    string path = entry.Value.FullName;
+                    path = path.TrimEnd('/');
+                    path = path.Remove(path.LastIndexOf('/') + 1);
 
-                    dirList.Add(entry.Value.FullName);
+                    if (entry.Value.Name.Equals(""))    // Folder
+                    {
+                        string name = entry.Value.FullName.Split('/')[entry.Value.FullName.Split('/').Length - 2];
 
-                    if (dirList.Contains(path))
-                        branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, name, 1, 1);
-                    else
-                        branch.Add(entry.Value.FullName, name, 1, 1);
+                        dirList.Add(entry.Value.FullName);
 
-                    cDirs++;
+                        if (dirList.Contains(path))
+                            branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, name, 1, 1);
+                        else
+                            branch.Add(entry.Value.FullName, name, 1, 1);
+
+                        cDirs++;
+                    }
+                    else                                // Files
+                    {
+                        if (dirList.Contains(path))
+                            branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, entry.Value.Name);
+                        else
+                            branch.Add(entry.Value.FullName, entry.Value.Name);
+
+                        cFiles++;
+                    }
                 }
-                else                                // Files
-                {
-                    if (dirList.Contains(path))
-                        branch.Find(path, true)[0].Nodes.Add(entry.Value.FullName, entry.Value.Name);
-                    else
-                        branch.Add(entry.Value.FullName, entry.Value.Name);
 
-                    cFiles++;
-                }
+                EntryTree.EndUpdate();
+                EntryTree.ExpandAll();
             }
-
-            EntryTree.EndUpdate();
-            EntryTree.ExpandAll();
+            catch
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -169,8 +200,15 @@ namespace DeZipper
         /// <param name="tgPath">타겟 디렉토리 경로</param>
         public void OpenZip(string zipPath, string tgPath)
         {
-            base.TargetDirectory = tgPath;
-            deZipper.NewZip(zipPath);
+            try
+            {
+                base.TargetDirectory = tgPath;
+                deZipper.NewZip(zipPath);
+            }
+            catch
+            {
+                throw;
+            }
         }
         #endregion
     }

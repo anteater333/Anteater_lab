@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 namespace DeZipper
 {
@@ -17,16 +18,31 @@ namespace DeZipper
 
         public DeZipperForm()
         {
-            zipLoaded = false;
-            InitializeComponent();
+            try
+            {
+                zipLoaded = false;
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMsg(ex);
+            }
         }
 
+        #region Events
         private void DeZipperForm_Load(object sender, EventArgs e)
         {
             zipEntryTreeView.ImageList = fileImageList;
 
-            deZipCaller = new DeZipperGUI();
-            deZipCaller.EntryTree = zipEntryTreeView;
+            try
+            {
+                deZipCaller = new DeZipperGUI();
+                deZipCaller.EntryTree = zipEntryTreeView;
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMsg(ex);
+            }
         }
 
         private void zipPathButton_Click(object sender, EventArgs e)
@@ -53,10 +69,6 @@ namespace DeZipper
                 tgPath.Text = folderBrowserDialog.SelectedPath;
                 deZipCaller.TargetDirectory = tgPath.Text;
             }
-            else
-            {
-                tgPath.ResetText();
-            }
         }
 
         private void excludeButton_Click(object sender, EventArgs e)
@@ -64,16 +76,25 @@ namespace DeZipper
             TreeNode selected = zipEntryTreeView.SelectedNode;
             if (selected == null || !zipLoaded)
             {
-
+                // Do Nothing
             }
             else
             {
-                Cursor.Current = Cursors.WaitCursor;
-                deZipCaller.Delist(selected.Name);
-                UpdateTreeViewCount();
-                Cursor.Current = Cursors.Default;
-            }
+                try
+                {
+                    Cursor.Current = Cursors.WaitCursor;
+                    deZipCaller.Delist(selected.Name);
+                    UpdateTreeViewCount();
+                    Cursor.Current = Cursors.Default;
 
+                    zipEntryTreeView.SelectedNode = null;
+                    excludeButton.Enabled = false;
+                }
+                catch (Exception ex)
+                {
+                    ShowExceptionMsg(ex);
+                }
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -84,37 +105,44 @@ namespace DeZipper
             }
             else
             {
-                string msgboxText = "";
-                string msgboxOptionText = "";
-                int total = deZipCaller.CountFiles;
-                deZipCaller.Options = DeleteOptions.None;
-                if (toRecycleBin.Checked)
+                try
                 {
-                    deZipCaller.Options |= DeleteOptions.ToRecycleBin;
-                    msgboxOptionText += " - 휴지통으로 보내기" + Environment.NewLine;
-                }
-                if (deleteEmptyDirectory.Checked)
-                {
-                    deZipCaller.Options |= DeleteOptions.DeleteEmptyDirectory;
-                    total += deZipCaller.CountDirs;
-                    msgboxOptionText += " - 빈 폴더 삭제" + Environment.NewLine;
-                }
-                if (deleteSourceZipFile.Checked)
-                {
-                    deZipCaller.Options |= DeleteOptions.DeleteSourceZipFile;
-                    total += 1;
-                    msgboxOptionText += " - 원본 zip 파일 삭제" + Environment.NewLine;
-                }
-                deZipCaller.TargetDirectory = this.tgPath.Text;
+                    string msgboxText = "";
+                    string msgboxOptionText = "";
+                    int total = deZipCaller.CountFiles;
+                    deZipCaller.Options = DeleteOptions.None;
+                    if (toRecycleBin.Checked)
+                    {
+                        deZipCaller.Options |= DeleteOptions.ToRecycleBin;
+                        msgboxOptionText += " - 휴지통으로 보내기" + Environment.NewLine;
+                    }
+                    if (deleteEmptyDirectory.Checked)
+                    {
+                        deZipCaller.Options |= DeleteOptions.DeleteEmptyDirectory;
+                        total += deZipCaller.CountDirs;
+                        msgboxOptionText += " - 빈 폴더 삭제" + Environment.NewLine;
+                    }
+                    if (deleteSourceZipFile.Checked)
+                    {
+                        deZipCaller.Options |= DeleteOptions.DeleteSourceZipFile;
+                        total += 1;
+                        msgboxOptionText += " - 원본 zip 파일 삭제" + Environment.NewLine;
+                    }
+                    deZipCaller.TargetDirectory = this.tgPath.Text;
 
-                msgboxText += "총 " + total + " 파일이 삭제됩니다." + Environment.NewLine;
-                msgboxText += "선택한 옵션" + Environment.NewLine;
-                msgboxText += msgboxOptionText + Environment.NewLine;
-                msgboxText += "삭제하시겠습니까?";
+                    msgboxText += "총 " + total + " 파일이 삭제됩니다." + Environment.NewLine;
+                    msgboxText += "선택한 옵션:" + Environment.NewLine;
+                    msgboxText += msgboxOptionText + Environment.NewLine;
+                    msgboxText += "삭제하시겠습니까?";
 
-                if (MessageBox.Show(msgboxText, "경고!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (MessageBox.Show(msgboxText, "경고!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        deZipCaller.Delete();
+                    }
+                }
+                catch (Exception ex)
                 {
-                    deZipCaller.Delete();
+                    ShowExceptionMsg(ex);
                 }
             }
         }
@@ -127,6 +155,30 @@ namespace DeZipper
             }
         }
 
+        private void zipEntryTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            excludeButton.Enabled = true;
+        }
+
+        private void DeZipperForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+                e.Effect = DragDropEffects.Copy | DragDropEffects.Scroll;
+        }
+
+        private void DeZipperForm_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] strZips = (string[])e.Data.GetData(DataFormats.FileDrop);
+                zipPath.Text = strZips[0];
+
+                ZipLoad();
+            }
+        }
+        #endregion
+
+        #region Private Methods
         private void UpdateTreeViewCount()
         {
             // # File(s), # Folder(s)
@@ -136,13 +188,40 @@ namespace DeZipper
 
         private void ZipLoad()
         {
-            Cursor.Current = Cursors.WaitCursor;
-            deZipCaller.OpenZip(zipPath.Text, tgPath.Text);
-            deZipCaller.PrintList();
-            UpdateTreeViewCount();
-            Cursor.Current = Cursors.Default;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                deZipCaller.OpenZip(zipPath.Text, tgPath.Text);
+                deZipCaller.PrintList();
+                zipEntryTreeView.Nodes[0].EnsureVisible();
+                zipEntryTreeView.Nodes[0].ExpandAll();
+                UpdateTreeViewCount();
+                Cursor.Current = Cursors.Default;
 
-            zipLoaded = true;
+                if (tgPath.Text.Equals(""))
+                {
+                    tgPath.Text = ConfigurationManager.AppSettings["DefaultDirectory"];
+                }
+                zipLoaded = true;
+            }
+            catch (Exception e)
+            {
+                ShowExceptionMsg(e);
+            }
         }
+
+        private void ShowExceptionMsg(Exception e)
+        {
+            string errMsg = "예상치 못한 에러가 발생했습니다:" + Environment.NewLine;
+            errMsg += e.Message + Environment.NewLine + Environment.NewLine;
+
+#if DEBUG
+            errMsg += e.Source + Environment.NewLine;
+            errMsg += e.StackTrace + Environment.NewLine;
+#endif
+
+            MessageBox.Show(errMsg, "에러!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+        #endregion
     }
 }

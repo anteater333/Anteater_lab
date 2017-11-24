@@ -78,6 +78,7 @@
             this.zipEntryTreeView.Name = "zipEntryTreeView";
             this.zipEntryTreeView.Size = new System.Drawing.Size(422, 469);
             this.zipEntryTreeView.TabIndex = 3;
+            this.zipEntryTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.zipEntryTreeView_AfterSelect);
             // 
             // optionPanel
             // 
@@ -124,6 +125,7 @@
             // 
             // excludeButton
             // 
+            this.excludeButton.Enabled = false;
             this.excludeButton.Font = new System.Drawing.Font("나눔고딕", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.excludeButton.Location = new System.Drawing.Point(8, 16);
             this.excludeButton.Name = "excludeButton";
@@ -135,6 +137,7 @@
             // 
             // tgPath
             // 
+            this.tgPath.AllowDrop = true;
             this.tgPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tgPath.Location = new System.Drawing.Point(0, 0);
             this.tgPath.Name = "tgPath";
@@ -143,6 +146,7 @@
             // 
             // zipPath
             // 
+            this.zipPath.AllowDrop = true;
             this.zipPath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.zipPath.Location = new System.Drawing.Point(0, 0);
             this.zipPath.Name = "zipPath";
@@ -292,6 +296,7 @@
             // 
             // DeZipperForm
             // 
+            this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(642, 578);
@@ -300,6 +305,8 @@
             this.Name = "DeZipperForm";
             this.Text = "DeZipper";
             this.Load += new System.EventHandler(this.DeZipperForm_Load);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DeZipperForm_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.DeZipperForm_DragEnter);
             this.optionPanel.ResumeLayout(false);
             this.tableLayoutPanel.ResumeLayout(false);
             this.targetPathPanel.ResumeLayout(false);
