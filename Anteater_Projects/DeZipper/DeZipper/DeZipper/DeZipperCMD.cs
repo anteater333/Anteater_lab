@@ -149,7 +149,8 @@ namespace DeZipper
                 string current = Environment.CurrentDirectory;
                 using (StreamReader readme = new StreamReader(current + @"\readme.txt"))
                 {
-                    while(readme.Peek() >= 0)
+                    Console.WriteLine();
+                    while (readme.Peek() >= 0)
                     {
                         Console.WriteLine(readme.ReadLine());
                     }
@@ -158,8 +159,34 @@ namespace DeZipper
             }
             catch (FileNotFoundException e)
             {
-                Console.WriteLine("readme.txt를 찾을 수 없습니다.");
-                Console.WriteLine("(usage : DeZipper.exe [source_zip] [target_dir])");
+                Console.WriteLine("readme.txt를 찾을 수 없습니다.\n");
+                #region Print Usage
+                Console.WriteLine(" = 기본 사용법 = ");
+                Console.WriteLine("DeZipper.exe [source_zip]");
+                Console.WriteLine(" : [source_zip] 에서 파일 리스트를 읽어 출력합니다.");
+                Console.WriteLine("DeZipper.exe [source_zip] [target_dir]");
+                Console.WriteLine(" : [source_zip] 에서 파일 리스트를 읽어서 [target_dir] 에서 삭제합니다.");
+                Console.WriteLine("DeZipper.exe [source_zip] [target_dir] [options]");
+                Console.WriteLine(" : [options] 에 따라 옵션을 설정할 수 있습니다. [options] 는 띄어쓰기로 구분됩니다.");
+                Console.WriteLine("");
+                Console.WriteLine(" = 옵션 =");
+                Console.WriteLine(" (옵션은 파일 삭제시에만 사용 가능합니다.)");
+                Console.WriteLine("-s, -silence");
+                Console.WriteLine(" : 에러 메세지를 제외한 나머지 메세지를 출력하지 않습니다.");
+                Console.WriteLine("-e, -empty");
+                Console.WriteLine(" : 파일 삭제 후 파일 리스트에 존재하는 폴더 중 빈 폴더를 삭제합니다.");
+                Console.WriteLine("-z, -zip");
+                Console.WriteLine(" : 파일 삭제 후 사용된 zip 파일을 삭제합니다.");
+                Console.WriteLine("-r, -recycle");
+                Console.WriteLine(" : 파일을 삭제하는 대신 휴지통으로 보냅니다.");
+                Console.WriteLine("   (주의!) 아직 구현되지 않은 기능입니다.");
+                Console.WriteLine("-ex [file], -exclude [file]");
+                Console.WriteLine(" : 삭제할 파일 리스트에서 [file] 을 제외합니다. 여러 파일을 제외할 경우 띄어쓰기로 구분합니다.");
+                Console.WriteLine("   다중 옵션 사용 시 해당 옵션은 마지막에 위치하는것을 권장합니다.");
+                Console.WriteLine("   제외할 파일을 찾지 못한 경우 삭제는 진행되지 않습니다.");
+                Console.WriteLine("-h, -help");
+                Console.WriteLine(" : readme.txt 파일을 출력합니다.");
+                #endregion
             }
             catch (Exception e)
             {
