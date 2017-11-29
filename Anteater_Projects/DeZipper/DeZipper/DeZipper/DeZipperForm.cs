@@ -103,6 +103,10 @@ namespace DeZipper
             {
 
             }
+            else if (tgPath.Text.Equals(""))
+            {
+                MessageBox.Show("삭제 경로를 입력해주세요.", "에러!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             else
             {
                 try
