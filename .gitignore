@@ -76,7 +76,6 @@ freeline_project_description.json
 *.jar
 *.war
 *.ear
-*.zip
 *.tar.gz
 *.rar
 
