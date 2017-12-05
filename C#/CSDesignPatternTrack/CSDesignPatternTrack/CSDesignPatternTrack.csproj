@@ -43,11 +43,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class00.cs" />
+    <Compile Include="Class01.cs" />
+    <Compile Include="Class01_2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DesignPatternBook.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

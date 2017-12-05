@@ -22,6 +22,9 @@ using System.Threading.Tasks;
 
 namespace CSDesignPatternTrack
 {
+    /// <summary>
+    /// 디자인 패턴 Orientation
+    /// </summary>
     class Class00
     {
         public Class00()
