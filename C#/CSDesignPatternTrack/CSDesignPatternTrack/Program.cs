@@ -15,7 +15,7 @@ namespace CSDesignPatternTrack
         static void Main(string[] args)
         {
             Console.WriteLine(" = Section #01 = ");
-            new Class01();
+            new Class02();
         }
     }
 }

@@ -217,6 +217,9 @@ namespace CSDesignPatternTrack
 {
     partial class Class01
     {
+        /// <summary>
+        /// strategy pattern
+        /// </summary>
         public Class01()
         {
             GoodDuck redheadDuck = new RedheadDuck();
@@ -306,7 +309,7 @@ p.60에 이에 캡슐화된 SimUDuck 프로그램을 나타내는 그림이 있�
 /*****************************
 어머나 세상에! 이렇게 첫 번째 패턴을 배웠다! 패턴 도감에 추가하자!
 
-Pattern #01 Strategy Pattern
+Pattern #01 Strategy
 스트래티지 패턴에서는 알고리즘군을 정의하고 각각을 캡슐화하여 교환해서 사용할 수 있도록 만든다.
 스트래티지 패턴을 활용하면 알고리즘을 사용하는 클라이언트와는 독립적으로 알고리즘을 변경할 수 있다.
 ******************************/

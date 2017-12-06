@@ -22,11 +22,11 @@ using System.Threading.Tasks;
 
 namespace CSDesignPatternTrack
 {
-    /// <summary>
-    /// 디자인 패턴 Orientation
-    /// </summary>
     class Class00
     {
+        /// <summary>
+        /// 디자인 패턴 Orientation
+        /// </summary>
         public Class00()
         {
             Console.WriteLine("Hello, Design Patterns!");

@@ -45,6 +45,8 @@
     <Compile Include="Class00.cs" />
     <Compile Include="Class01.cs" />
     <Compile Include="Class01_2.cs" />
+    <Compile Include="Class02.cs" />
+    <Compile Include="Class02_2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

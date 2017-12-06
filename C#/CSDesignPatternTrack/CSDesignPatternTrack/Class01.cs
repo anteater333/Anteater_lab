@@ -17,18 +17,6 @@ using System.Threading.Tasks;
 
 namespace CSDesignPatternTrack
 {
-#region MainClass
-
-    /// <summary>
-    /// strategy pattern
-    /// </summary>
-    partial class Class01
-    {
-
-    }
-
-#endregion
-
 /*****************************
  = SimUDuck 개발자의 이야기 = 
 다음 클래스들을 살펴보자.
