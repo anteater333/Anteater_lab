@@ -353,7 +353,7 @@ namespace Pizza
 namespace CSDesignPatternTrack
 {
     using Pizza;
-    class Class04
+    partial class Class04
     {
         public Class04()
         {
@@ -365,6 +365,8 @@ namespace CSDesignPatternTrack
             Console.WriteLine();
             Console.WriteLine("Joel ordered a Chicago Style Cheese Pizza.");
             pizza = chicagoStore.OrderPizza("cheese");
+
+            Section02();
         }
     }
 }
