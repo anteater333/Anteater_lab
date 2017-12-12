@@ -309,14 +309,14 @@ namespace CSDesignPatternTrack
 
             /// at OrderPizza()
             /// Pizza pizza = createPizza("cheese");
-            /// 
-            /// at CreatePizza()
-            /// Pizza pizza = new CheesePizza(nyIngredientFactory);
-            /// 
-            /// at CheesePizza.Prepare()
-            /// dough = factory.CreateDough();      // 씬 크러스트
-            /// sauce = factory.CreateSauce();      // 마리나라 소스
-            /// cheese = factory.CreateCheese();    // 레지아노 치즈
+                /// 
+                /// at CreatePizza()
+                /// Pizza pizza = new CheesePizza(nyIngredientFactory);
+                    /// 
+                    /// at CheesePizza.Prepare()
+                    /// dough = factory.CreateDough();      // 씬 크러스트
+                    /// sauce = factory.CreateSauce();      // 마리나라 소스
+                    /// cheese = factory.CreateCheese();    // 레지아노 치즈
         }
     }
 }
