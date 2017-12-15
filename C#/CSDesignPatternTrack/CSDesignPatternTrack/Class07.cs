@@ -143,6 +143,8 @@ namespace CSDesignPatternTrack
 
             Console.WriteLine("\nThe TurkeyAdapter says...");
             TestDuck(turkeyAdapter);
+
+            Section02();
         }
         
         void TestDuck(IDuck duck)

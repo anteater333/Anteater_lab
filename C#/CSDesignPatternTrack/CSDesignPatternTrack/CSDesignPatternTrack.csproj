@@ -54,6 +54,7 @@
     <Compile Include="Class06.cs" />
     <Compile Include="Class06_2.cs" />
     <Compile Include="Class07.cs" />
+    <Compile Include="Class07_2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
