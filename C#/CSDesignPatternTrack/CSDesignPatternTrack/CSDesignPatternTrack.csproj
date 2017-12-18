@@ -55,14 +55,17 @@
     <Compile Include="Class06_2.cs" />
     <Compile Include="Class07.cs" />
     <Compile Include="Class07_2.cs" />
+    <Compile Include="Class08.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Design Patterns Quick Reference.pdf" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DesignPatternBook.txt" />
+    <Content Include="DesignPrinciple.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
