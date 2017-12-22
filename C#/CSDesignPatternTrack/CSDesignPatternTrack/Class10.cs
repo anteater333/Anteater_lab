@@ -439,7 +439,7 @@ namespace Restaurant02
 namespace CSDesignPatternTrack
 {
     using Restaurant02;
-    class Class10
+    partial class Class10
     {
         public Class10()
         {
@@ -449,6 +449,8 @@ namespace CSDesignPatternTrack
             Waitress waitress = new Waitress(pancakeHouseMenu, dinerMenu);
 
             waitress.PrintMenu();
+
+            Section02();
         }
     }
 }
