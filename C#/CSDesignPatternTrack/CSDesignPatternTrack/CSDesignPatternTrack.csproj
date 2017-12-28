@@ -61,8 +61,12 @@
     <Compile Include="Class10_2.cs" />
     <Compile Include="Class11.cs" />
     <Compile Include="Class12.cs" />
+    <Compile Include="Class12_2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Remoting\Class12\GumballMachineRemote.cs" />
+    <Compile Include="Remoting\Class12\GumballMonitor.cs" />
+    <Compile Include="Remoting\Class12\MachineService.cs" />
     <Compile Include="Remoting\Client\Client.cs" />
     <Compile Include="Remoting\Listener\Listener.cs" />
     <Compile Include="Remoting\Type\RemotableType.cs" />
@@ -70,6 +74,8 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Design Patterns Quick Reference.pdf" />
+    <None Include="Remoting\Class12\GumballMonitor.exe.config" />
+    <None Include="Remoting\Class12\MachineService.exe.config" />
     <None Include="Remoting\Client\Client.exe.config" />
     <None Include="Remoting\Listener\Listener.exe.config" />
   </ItemGroup>
