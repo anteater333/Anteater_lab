@@ -12,10 +12,10 @@ namespace CSDesignPatternTrack
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine(" = Section #01 = ");
-            new Class12();
+            new Class13();
         }
     }
 }
