@@ -30,7 +30,7 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.parseButton = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.wordList = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +42,7 @@
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.Controls.Add(this.parseButton, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.listBox1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.wordList, 0, 0);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 8);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
@@ -65,17 +65,19 @@
             this.parseButton.UseVisualStyleBackColor = true;
             this.parseButton.Click += new System.EventHandler(this.parseButton_Click);
             // 
-            // listBox1
+            // wordList
             // 
-            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.wordList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(3, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(379, 304);
-            this.listBox1.TabIndex = 1;
+            this.wordList.FormattingEnabled = true;
+            this.wordList.HorizontalScrollbar = true;
+            this.wordList.ItemHeight = 15;
+            this.wordList.Location = new System.Drawing.Point(3, 3);
+            this.wordList.Name = "wordList";
+            this.wordList.Size = new System.Drawing.Size(379, 304);
+            this.wordList.TabIndex = 1;
+            this.wordList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.wordList_MouseDoubleClick);
             // 
             // MainForm
             // 
@@ -88,6 +90,7 @@
             this.MinimumSize = new System.Drawing.Size(420, 440);
             this.Name = "MainForm";
             this.Text = "Naver Parser";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -97,7 +100,7 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Button parseButton;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox wordList;
     }
 }
 
