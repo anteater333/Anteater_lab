@@ -98,7 +98,7 @@ namespace CSNaverParser
                     keyword = keyword.Substring(i);
                 }
 
-                string url = "https://search.naver.com/search.naver?&query=" + keyword;
+                string url = "https://search.naver.com/search.naver?where=nexearch&ie=utf8&query=" + keyword;
 
                 System.Diagnostics.Process.Start(url);
             }
