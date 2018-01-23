@@ -18,7 +18,6 @@ namespace CSHttpRequest
             Console.Write("PW : ");
             string PW = HttpUtility.UrlEncode(Console.ReadLine());
 
-
             if (NaverLogin(ID, PW))
             {
                 Console.WriteLine("로그인 성공");
@@ -56,7 +55,10 @@ namespace CSHttpRequest
                 reader.Close();
 
                 Console.WriteLine(result);
-
+                Console.WriteLine("===============================");
+                Console.WriteLine("===============================");
+                CookieAnalysis(webRequest, webRequest.CookieContainer);
+                           
                 if (result.Contains("https://nid.naver.com/login/sso/finalize.nhn?url"))
                     return true;
                 else
@@ -64,6 +66,31 @@ namespace CSHttpRequest
             }
             else
                 return false;
+        }
+
+        static private void CookieAnalysis(HttpWebRequest request, CookieContainer cookies)
+        {
+            foreach(Cookie cookie in cookies.GetCookies(request.RequestUri))
+            {
+                Console.WriteLine("Cookie:");
+                Console.WriteLine("{0} = {1}", cookie.Name, cookie.Value);
+                Console.WriteLine("Domain: {0}", cookie.Domain);
+                Console.WriteLine("Path: {0}", cookie.Path);
+                Console.WriteLine("Port: {0}", cookie.Port);
+                Console.WriteLine("Secure: {0}", cookie.Secure);
+
+                Console.WriteLine("When issued: {0}", cookie.TimeStamp);
+                Console.WriteLine("Expires: {0} (expired? {1})",
+                    cookie.Expires, cookie.Expired);
+                Console.WriteLine("Don't save: {0}", cookie.Discard);
+                Console.WriteLine("Comment: {0}", cookie.Comment);
+                Console.WriteLine("Uri for comments: {0}", cookie.CommentUri);
+                Console.WriteLine("Version: RFC {0}", cookie.Version == 1 ? "2109" : "2965");
+
+                // Show the string representation of the cookieie.
+                Console.WriteLine("String: {0}", cookie.ToString());
+                Console.WriteLine("===============================");
+            }
         }
     }
 }
