@@ -96,3 +96,5 @@ Pattern #22 Prototype [C]
 Pattern #23 Visitor [B]
 비지터 패턴은 객체의 구조와 기능을 분리할 수 있는 패턴이다.
 어떤 구조에 대해서 구조를 변경하지 않으면서 여러가지 기능을 추가할 수 있다.
+
+// Anteater
