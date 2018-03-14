@@ -533,3 +533,5 @@ public class Duck implements Comparable
 이외에도 스윙 프레임이나 애플릿등이 템플릿 메소드 패턴으로 이루어져있다.
 오늘 내용 끝.
 ******************************/
+
+// Anteater
