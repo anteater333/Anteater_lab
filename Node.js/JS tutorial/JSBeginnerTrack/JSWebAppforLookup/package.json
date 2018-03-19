@@ -1,0 +1,9 @@
+{
+  "name": "jsweb-appfor-lookup",
+  "version": "0.0.0",
+  "description": "JSWebAppforLookup",
+  "main": "server.js",
+  "author": {
+    "name": "JIHOON"
+  }
+}

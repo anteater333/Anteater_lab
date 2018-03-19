@@ -1,0 +1,9 @@
+{
+  "name": "jsbeginner-track",
+  "version": "0.0.0",
+  "description": "JSBeginnerTrack",
+  "main": "app.js",
+  "author": {
+    "name": "JIHOON"
+  }
+}
