@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 
 namespace TODOReader
 {
-    public partial class Form1 : Form
+    public partial class MainForm : MetroForm
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }

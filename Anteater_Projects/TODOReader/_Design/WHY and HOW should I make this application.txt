@@ -1,11 +1,29 @@
-�̹� ������Ʈ... ��� �ϱ⿣ �ʹ� ���� ����. �̹� ���α׷��� TODOReader ��� ���α׷�����,
-�����ϰ� ���ؼ�, �ٸ� ��ǻ�Ϳ��� �ۼ��� TODOs.txt�� �о �� ��ǻ�Ͱ� ���õ����� �ٷ� ����ִ� ���α׷��̴�.
+﻿이번 프로젝트... 라고 하기엔 너무 별거 없다. 이번 프로그램은 TODOReader 라는 프로그램으로,
+간단하게 말해서, 다른 컴퓨터에서 작성한 TODOs.txt를 읽어서 집 컴퓨터가 부팅됐을때 바로 띄워주는 프로그램이다.
 
-�켱, git�� �̿��ؼ� �ٷ� pc�� �ִ� ������ �о���̴� ������ �Ϸ��ߴ���, �װ� ���α׷� ���ο��� �귣ġ �ٲٰ� ��ġ-Ǯ �ϰ� �ϸ� ���������� ���Ƽ� �о�.
-��ſ� �̹��� �Ʒü� �������� http ������Ʈ �ϴ¹��� ����ڴ�, 
+우선, git을 이용해서 바로 pc에 있는 파일을 읽어들이는 식으로 하려했더니, 그건 프로그램 내부에서 브랜치 바꾸고 페치-풀 하고 하면 귀찮아질것 같아서 패쓰.
+대신에 이번에 훈련소 가기전에 http 리퀘스트 하는법도 배웠겠다, 
 
 https://raw.githubusercontent.com/anteater333/Anteater_lab/master/Txt/TODOs.txt
 
-git ��� github�� �̿��ظԴ°�. �� url�� ���� �׳� txt ���� �� ��ü�� ���´�. �׳� ��¥ ���缭 �о���� �ȴ�. ��.
+git 대신 github를 이용해먹는거. 저 url로 들어가면 그냥 txt 파일 그 자체가 나온다. 그냥 날짜 맞춰서 읽어오면 된다. 끝.
 
-���� �� �ڼ��� ����� ����.
+조금 더 자세한 설계는 내일.
+
+
+========================================================================
+2일차. 화요일. 3월 27일.
+오늘은 복지관에서 간단하게 자바스크립트로 코드를 짜서, 
+https://raw.githubusercontent.com/anteater333/Anteater_lab/master/Txt/TODOs.txt
+여기 있는 텍스트를 HttpRequest로 가져왔다.
+
+혹시나 해서 다음 주소로 해봤는데,
+https://github.com/anteater333/Anteater_lab/blob/master/Txt/TODOs.txt
+이건 못써먹겠음.
+
+어쨌든 첫번째로 테스트한 주소로는 잘 가져와진다. 일단 텍스트 가져오는거는 이제 문제 없음.
+
+그리고 오늘은 GUI를 바로 디자인해보자. 복지관에서 신박한걸 찾아왔다.
+http://psps.tistory.com/16?category=633544
+
+어 그리고... 설계는... 천천히...
