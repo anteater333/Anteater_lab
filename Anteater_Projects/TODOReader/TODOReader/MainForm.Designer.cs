@@ -28,21 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.settingButton = new System.Windows.Forms.Button();
             this.todoTextbox = new System.Windows.Forms.TextBox();
+            this.refreshButton = new System.Windows.Forms.Button();
+            this.settingButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // settingButton
-            // 
-            this.settingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingButton.FlatAppearance.BorderSize = 0;
-            this.settingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.settingButton.Image = global::TODOReader.Properties.Resources.gear_4_16x16;
-            this.settingButton.Location = new System.Drawing.Point(408, 280);
-            this.settingButton.Name = "settingButton";
-            this.settingButton.Size = new System.Drawing.Size(26, 24);
-            this.settingButton.TabIndex = 2;
-            this.settingButton.UseVisualStyleBackColor = true;
             // 
             // todoTextbox
             // 
@@ -59,12 +48,37 @@
             this.todoTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.todoTextbox.Size = new System.Drawing.Size(416, 208);
             this.todoTextbox.TabIndex = 3;
-            this.todoTextbox.Text = "임시텍스트PlaceHolder";
+            this.todoTextbox.Text = "임시텍스트PlaceHolder\r\n123456789\r\n!@#$%^&";
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshButton.FlatAppearance.BorderSize = 0;
+            this.refreshButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.refreshButton.Image = global::TODOReader.Properties.Resources.refresh_16x16;
+            this.refreshButton.Location = new System.Drawing.Point(384, 280);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(26, 24);
+            this.refreshButton.TabIndex = 4;
+            this.refreshButton.UseVisualStyleBackColor = true;
+            // 
+            // settingButton
+            // 
+            this.settingButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.settingButton.FlatAppearance.BorderSize = 0;
+            this.settingButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.settingButton.Image = global::TODOReader.Properties.Resources.gear_4_16x16;
+            this.settingButton.Location = new System.Drawing.Point(408, 280);
+            this.settingButton.Name = "settingButton";
+            this.settingButton.Size = new System.Drawing.Size(26, 24);
+            this.settingButton.TabIndex = 2;
+            this.settingButton.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(450, 310);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.todoTextbox);
             this.Controls.Add(this.settingButton);
             this.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Bold);
@@ -86,6 +100,7 @@
         #endregion
         private System.Windows.Forms.Button settingButton;
         private System.Windows.Forms.TextBox todoTextbox;
+        private System.Windows.Forms.Button refreshButton;
     }
 }
 

@@ -13,6 +13,13 @@ namespace TODOReader
 {
     public partial class MainForm : MetroForm
     {
+        private TodoRRequester todoRequest;
+        private TodoROption option;
+        /// <summary>
+        /// TODOs.txt가 위치하는 주소
+        /// </summary>
+        private string todoUrl;
+
         public MainForm()
         {
             InitializeComponent();

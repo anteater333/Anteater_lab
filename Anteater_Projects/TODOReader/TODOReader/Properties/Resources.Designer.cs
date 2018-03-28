@@ -73,6 +73,16 @@ namespace TODOReader.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
         /// </summary>
+        internal static System.Drawing.Bitmap gear_4_16x161 {
+            get {
+                object obj = ResourceManager.GetObject("gear-4-16x161", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
         internal static System.Drawing.Bitmap gear_4_32x32 {
             get {
                 object obj = ResourceManager.GetObject("gear-4-32x32", resourceCulture);
@@ -86,6 +96,16 @@ namespace TODOReader.Properties {
         internal static System.Drawing.Bitmap gear_4_64x64 {
             get {
                 object obj = ResourceManager.GetObject("gear-4-64x64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap 형식의 지역화된 리소스를 찾습니다.
+        /// </summary>
+        internal static System.Drawing.Bitmap refresh_16x16 {
+            get {
+                object obj = ResourceManager.GetObject("refresh-16x16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
