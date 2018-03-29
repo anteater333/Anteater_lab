@@ -48,7 +48,6 @@
             this.todoTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.todoTextbox.Size = new System.Drawing.Size(416, 208);
             this.todoTextbox.TabIndex = 3;
-            this.todoTextbox.Text = "임시텍스트PlaceHolder\r\n123456789\r\n!@#$%^&";
             // 
             // refreshButton
             // 
@@ -61,6 +60,7 @@
             this.refreshButton.Size = new System.Drawing.Size(26, 24);
             this.refreshButton.TabIndex = 4;
             this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // settingButton
             // 
@@ -73,6 +73,7 @@
             this.settingButton.Size = new System.Drawing.Size(26, 24);
             this.settingButton.TabIndex = 2;
             this.settingButton.UseVisualStyleBackColor = true;
+            this.settingButton.Click += new System.EventHandler(this.settingButton_Click);
             // 
             // MainForm
             // 
@@ -90,8 +91,10 @@
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(18, 68, 18, 26);
             this.Resizable = false;
+            this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.ShowIcon = false;
             this.Text = "오늘 할 일";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

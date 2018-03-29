@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="TODOReader.MainForm">
-    <Position X="5.25" Y="0.75" Width="1.5" />
+    <Position X="3.25" Y="0.5" Width="1.5" />
     <AssociationLine Name="todoRequest" Type="TODOReader.TodoRRequester">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.277" Y="0.052" />
@@ -12,27 +12,40 @@
         <Position X="0.268" Y="0.06" />
       </MemberNameLabel>
     </AssociationLine>
+    <AssociationLine Name="optionForm" Type="TODOReader.OptionForm">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.302" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAgISASAAIACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>BAAAACAAAiAAAAAISASAEIACAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>MainForm.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="todoRequest" />
       <Field Name="option" />
+      <Field Name="optionForm" />
     </ShowAsAssociation>
   </Class>
   <Class Name="TODOReader.TodoRRequester">
-    <Position X="8.25" Y="0.75" Width="1.5" />
+    <Position X="8" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAEAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>TodoRRequester.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TODOReader.TodoROption">
-    <Position X="2.5" Y="0.75" Width="1.5" />
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAABAAASAACAEgAAAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAASAACAEgAgAAAAIACAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>TodoROption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TODOReader.OptionForm">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAICAAAACUQgAAIAACAAAACAAAAAACAEAAQAAEAAAA=</HashCode>
+      <FileName>OptionForm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="맑은 고딕" Size="9" />
