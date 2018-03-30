@@ -15,8 +15,9 @@ namespace TODOReader
         private HttpWebRequest todoRequest;
         private DateTime dtToday;
         private string[] splitter;
+        private string format;
 
-        public TodoRRequester(string url, string splitter)
+        public TodoRRequester(string url, string splitter, string format)
         {
             todoRequest = WebRequest.CreateHttp(url);
             todoRequest.Method = "GET";
@@ -25,8 +26,12 @@ namespace TODOReader
             dtToday = DateTime.Now;
 
             this.splitter = new string[] { splitter };
+            this.format = format;
         }
 
+        /// <summary>
+        /// url에서 TODO.txt를 읽어옴
+        /// </summary>
         public string Request()
         {
             string todoToday = string.Empty;
@@ -37,8 +42,7 @@ namespace TODOReader
                     Stream responseStream = todoResponse.GetResponseStream();
                     using (StreamReader strReader = new StreamReader(responseStream))
                     {
-                        string[] todoList = strReader.ReadToEnd().Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                        todoToday = FindToday(todoList);
+                        todoToday = FindToday(strReader.ReadToEnd());
                     }
                 }
             }
@@ -46,11 +50,20 @@ namespace TODOReader
             return todoToday;
         }
 
-        private string FindToday(string[] todoList)
+        /// <summary>
+        /// TODO.txt에서 오늘 할 일을 찾음
+        /// </summary>
+        private string FindToday(string todoes)
         {
-            string today = dtToday.ToString("yyyy.MM.dd");
+            string[] todoList = todoes.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            string today = dtToday.ToString(format);
 
-            return Array.Find(todoList, todo => todo.Contains(today));
+            string todoToday = Array.Find(todoList, todo => todo.Contains(today));
+
+            if (todoToday == null)
+                todoToday = "오늘은 할 일이 없습니다.";
+
+            return todoToday;
         }
     }
 }

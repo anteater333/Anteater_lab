@@ -2,6 +2,15 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="TODOReader.MainForm">
     <Position X="3.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="MainForm" Hidden="true" />
+      <Field Name="refreshButton" Hidden="true" />
+      <Field Name="settingButton" Hidden="true" />
+      <Field Name="todoTextbox" Hidden="true" />
+    </Members>
     <AssociationLine Name="todoRequest" Type="TODOReader.TodoRRequester">
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.277" Y="0.052" />
@@ -29,22 +38,44 @@
   </Class>
   <Class Name="TODOReader.TodoRRequester">
     <Position X="8" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="TodoRRequester" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AQAAAAEAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAEAAAAAAAAAAAAACIAAAAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>TodoRRequester.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TODOReader.TodoROption">
     <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="TodoROption" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAABAAASAACAEgAgAAAAIACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAABAAACIACAEgAgAAAAIACBAgAAAAAACAAAAAAAAA=</HashCode>
       <FileName>TodoROption.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TODOReader.OptionForm">
     <Position X="6.25" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="cancelButton" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Field Name="confirmButton" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="fomatTextbox" Hidden="true" />
+      <Field Name="formatLable" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="OptionForm" Hidden="true" />
+      <Field Name="splitLable" Hidden="true" />
+      <Field Name="splitTextbox" Hidden="true" />
+      <Field Name="startUpLable" Hidden="true" />
+      <Field Name="startUpToggle" Hidden="true" />
+      <Field Name="urlLabel" Hidden="true" />
+      <Field Name="urlTextbox" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAICAAAACUQgAAIAACAAAACAAAAAACAEAAQAAEAAAA=</HashCode>
+      <HashCode>AAAECAAAACUQgAAIAADAAAACAACAAACEAAAQAAEAAAA=</HashCode>
       <FileName>OptionForm.cs</FileName>
     </TypeIdentifier>
   </Class>
