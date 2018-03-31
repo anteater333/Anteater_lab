@@ -29,6 +29,18 @@ namespace TODOReader
             this.format = format;
         }
 
+        public TodoRRequester(TodoROption option)
+        {
+            todoRequest = WebRequest.CreateHttp(option.TodoUrl);
+            todoRequest.Method = "GET";
+            todoRequest.Timeout = 10 * 1000;
+
+            dtToday = DateTime.Now;
+
+            this.splitter = new string[] { option.Splitter };
+            this.format = option.Format;
+        }
+
         /// <summary>
         /// url에서 TODO.txt를 읽어옴
         /// </summary>
@@ -61,9 +73,39 @@ namespace TODOReader
             string todoToday = Array.Find(todoList, todo => todo.Contains(today));
 
             if (todoToday == null)
-                todoToday = "오늘은 할 일이 없습니다.";
+                todoToday = GenerateHolidayMsg();
 
             return todoToday;
+        }
+
+        /// <summary>
+        /// 쉬는날 메세지 랜덤 생성
+        /// </summary>
+        private string GenerateHolidayMsg()
+        {
+            string[] messages =
+            {
+                "오늘 할 일이 없습니다.",
+                "오늘 날짜에 등록된 일이 없습니다."
+            };
+
+            string[] jokeMessages =
+            {
+                "오늘은 쉬는날?",
+                "주말인가요?",
+                "오늘 할 일: 휴식",
+                "오늘 날짜에 적힌 일은 없지만 스스로 찾아보시길 바랍니다.",
+                "오늘 딱히 할 일은 없습니다.",
+                "할일 없음. 알아서 하시오."
+            };
+            Random random = new Random();
+
+            int rVal = random.Next(50);
+
+            if (rVal >= 6)
+                return messages[rVal % 2];
+            else
+                return jokeMessages[rVal];
         }
     }
 }

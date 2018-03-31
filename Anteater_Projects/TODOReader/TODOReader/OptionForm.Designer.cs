@@ -132,6 +132,7 @@
             this.startUpToggle.Appearance = System.Windows.Forms.Appearance.Button;
             this.startUpToggle.AutoSize = true;
             this.startUpToggle.DisplayStatus = false;
+            this.startUpToggle.Enabled = false;
             this.startUpToggle.Location = new System.Drawing.Point(24, 336);
             this.startUpToggle.Name = "startUpToggle";
             this.startUpToggle.Size = new System.Drawing.Size(50, 50);
@@ -202,7 +203,9 @@
             this.Padding = new System.Windows.Forms.Padding(60, 160, 60, 53);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
+            this.ShowInTaskbar = false;
             this.Text = "설정";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

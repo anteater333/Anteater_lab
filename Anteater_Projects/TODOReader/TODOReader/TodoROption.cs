@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Configuration;
 using System.Windows.Forms;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace TODOReader
 {
@@ -110,6 +112,23 @@ namespace TODOReader
             todoUrl = Properties.Settings.Default.url;
             splitter = Properties.Settings.Default.seperator;
             dateFormat = Properties.Settings.Default.dateformat;
+        }
+
+        /// <summary>
+        /// 관리자 권한인지 확인
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+
+            if (null != identity)
+            {
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+
+            return false;
         }
     }
 }

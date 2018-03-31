@@ -62,6 +62,7 @@ namespace TODOReader
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "에러");
+                startUpToggle.Checked = !startUpToggle.Checked;
             }
         }
     }
