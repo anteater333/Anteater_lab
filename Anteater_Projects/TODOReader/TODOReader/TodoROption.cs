@@ -24,6 +24,7 @@ namespace TODOReader
         private string runKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
         private Microsoft.Win32.RegistryKey startupKey;
         private string appName = System.AppDomain.CurrentDomain.FriendlyName;
+        private string makeStartUp = @".\MakeStartup.exe";
         #endregion
 
         /// <summary>
@@ -52,34 +53,18 @@ namespace TODOReader
         /// <summary>
         /// 시작 프로그램 등록
         /// </summary>
-        public void AddStartup()
+        public int AddStartup()
         {
-            try
-            {
-                startupKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(runKey, true);
-                startupKey.SetValue(appName, Application.ExecutablePath.ToString());
-                startupKey.Close();
-            }
-            catch
-            {
-                throw;
-            }
+            string arg = appName + " " + Application.ExecutablePath.ToString() + " " + "a";
+            return RunProcess(makeStartUp, arg);
         }
         /// <summary>
         /// 시작 프로그램 해제
         /// </summary>
-        public void RemoveStartup()
+        public int RemoveStartup()
         {
-            try
-            {
-                startupKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(runKey, true);
-                startupKey.DeleteValue(appName, false);
-                startupKey.Close();
-            }
-            catch
-            {
-                throw;
-            }
+            string arg = appName + " " + Application.ExecutablePath.ToString() + " " + "r";
+            return RunProcess(makeStartUp, arg);
         }
 
         /// <summary>
@@ -115,20 +100,19 @@ namespace TODOReader
         }
 
         /// <summary>
-        /// 관리자 권한인지 확인
+        /// 시작 프로그램 등록용 프로세스 실행 메소드
         /// </summary>
-        /// <returns></returns>
-        private bool CheckAdministrator()
+        private int RunProcess(string fileName, string args)
         {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            Process process = new Process();
 
-            if (null != identity)
-            {
-                WindowsPrincipal principal = new WindowsPrincipal(identity);
-                return principal.IsInRole(WindowsBuiltInRole.Administrator);
-            }
+            process.StartInfo.FileName = fileName;
+            process.StartInfo.Arguments = args;
 
-            return false;
+            process.Start();
+            process.WaitForExit();
+
+            return process.ExitCode;
         }
     }
 }

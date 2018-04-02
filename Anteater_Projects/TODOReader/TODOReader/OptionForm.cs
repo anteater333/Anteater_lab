@@ -50,18 +50,28 @@ namespace TODOReader
             {
                 if (startUpToggle.Checked && !option.IsStartup)
                 {
-                    option.AddStartup();
-                    MessageBox.Show("시작 프로그램으로 등록되었습니다.", "알림");
+                    if (option.AddStartup() == 0)
+                        MessageBox.Show(this, "시작 프로그램으로 등록되었습니다.", "알림");
+                    else
+                    {
+                        MessageBox.Show(this, "시작 프로그램 설정에 실패했습니다.", "에러");
+                        startUpToggle.Checked = !startUpToggle.Checked;
+                    }
                 }
                 else if (!startUpToggle.Checked && option.IsStartup)
                 {
-                    option.RemoveStartup();
-                    MessageBox.Show("시작 프로그램 등록이 해제되었습니다.", "알림");
+                    if (option.RemoveStartup() == 0)
+                        MessageBox.Show(this, "시작 프로그램 등록이 해제되었습니다.", "알림");
+                    else
+                    {
+                        MessageBox.Show(this, "시작 프로그램 설정에 실패했습니다.", "에러");
+                        startUpToggle.Checked = !startUpToggle.Checked;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "에러");
+                MessageBox.Show(this, ex.Message, "에러");
                 startUpToggle.Checked = !startUpToggle.Checked;
             }
         }

@@ -132,7 +132,6 @@
             this.startUpToggle.Appearance = System.Windows.Forms.Appearance.Button;
             this.startUpToggle.AutoSize = true;
             this.startUpToggle.DisplayStatus = false;
-            this.startUpToggle.Enabled = false;
             this.startUpToggle.Location = new System.Drawing.Point(24, 336);
             this.startUpToggle.Name = "startUpToggle";
             this.startUpToggle.Size = new System.Drawing.Size(50, 50);
