@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TODOReader.MainForm">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="MainForm" Hidden="true" />
+      <Field Name="refreshButton" Hidden="true" />
+      <Field Name="settingButton" Hidden="true" />
+      <Field Name="todoTextbox" Hidden="true" />
+    </Members>
+    <AssociationLine Name="todoRequest" Type="TODOReader.TodoRRequester">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.277" Y="0.052" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="option" Type="TODOReader.TodoROption">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.268" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="optionForm" Type="TODOReader.OptionForm">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.302" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BAAAACAAAiAAAAAISASAEIACAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="todoRequest" />
+      <Field Name="option" />
+      <Field Name="optionForm" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TODOReader.TodoRRequester">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="TodoRRequester" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQAAAAEAAAAAAAAAAAAACIAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TodoRRequester.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TODOReader.TodoROption">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Members>
+      <Method Name="TodoROption" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAABAAACIACAEgAgAAAAIACBAgAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>TodoROption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TODOReader.OptionForm">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="cancelButton" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Field Name="confirmButton" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Field Name="fomatTextbox" Hidden="true" />
+      <Field Name="formatLable" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Method Name="OptionForm" Hidden="true" />
+      <Field Name="splitLable" Hidden="true" />
+      <Field Name="splitTextbox" Hidden="true" />
+      <Field Name="startUpLable" Hidden="true" />
+      <Field Name="startUpToggle" Hidden="true" />
+      <Field Name="urlLabel" Hidden="true" />
+      <Field Name="urlTextbox" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAECAAAACUQgAAIAADAAAACAACAAACEAAAQAAEAAAA=</HashCode>
+      <FileName>OptionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>
