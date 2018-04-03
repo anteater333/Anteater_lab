@@ -64,7 +64,15 @@ namespace TODOReader
         {
             todoRequest = new TodoRRequester(option.TodoUrl, option.Splitter, option.Format);
 
-            todoTextbox.Lines = todoRequest.Request().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                todoTextbox.Lines = todoRequest.Request().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            }
+            catch (Execption ex)
+            {
+                todoTextbox.Lines = "불러오기 실패";
+                MessageBox.Show(this, ex.ToString(), "에러!");
+            }
         }
 
         /// <summary>

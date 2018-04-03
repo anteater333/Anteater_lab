@@ -47,19 +47,27 @@ namespace TODOReader
         public string Request()
         {
             string todoToday = string.Empty;
-            using (HttpWebResponse todoResponse = (HttpWebResponse)todoRequest.GetResponse())
+            try
             {
-                if (todoResponse.StatusCode == HttpStatusCode.OK)
+                using (HttpWebResponse todoResponse = (HttpWebResponse)todoRequest.GetResponse())
                 {
-                    Stream responseStream = todoResponse.GetResponseStream();
-                    using (StreamReader strReader = new StreamReader(responseStream))
+                    if (todoResponse.StatusCode == HttpStatusCode.OK)
                     {
-                        todoToday = FindToday(strReader.ReadToEnd());
+                        Stream responseStream = todoResponse.GetResponseStream();
+                        using (StreamReader strReader = new StreamReader(responseStream))
+                        {
+                            todoToday = FindToday(strReader.ReadToEnd());
+                        }
                     }
                 }
+
+                return todoToday;
+            }
+            catch
+            {
+                throw;
             }
 
-            return todoToday;
         }
 
         /// <summary>
