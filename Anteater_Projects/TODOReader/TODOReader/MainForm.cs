@@ -62,16 +62,23 @@ namespace TODOReader
         /// </summary>
         private void ReadTodo()
         {
-            todoRequest = new TodoRRequester(option.TodoUrl, option.Splitter, option.Format);
+            if ( !(option.TodoUrl.Equals("") || option.Splitter.Equals("") || option.Format.Equals("")) )
+            {
+                todoRequest = new TodoRRequester(option.TodoUrl, option.Splitter, option.Format);
 
-            try
-            {
-                todoTextbox.Lines = todoRequest.Request().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                try
+                {
+                    todoTextbox.Lines = todoRequest.Request().Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                }
+                catch (Exception ex)
+                {
+                    todoTextbox.Text = "불러오기 실패";
+                    MessageBox.Show(this, ex.ToString(), "에러!");
+                }
             }
-            catch (Execption ex)
+            else
             {
-                todoTextbox.Lines = "불러오기 실패";
-                MessageBox.Show(this, ex.ToString(), "에러!");
+                todoTextbox.Text = "설정을 확인하세요.";
             }
         }
 

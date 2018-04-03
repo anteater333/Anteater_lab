@@ -22,11 +22,20 @@ namespace MakeStartup
 
         static int Main(string[] args)
         {
+            for (int i = 0; i < args.Length; i++)
+            {
+                Console.Write(args[i] + " ");
+            }
+
+            Console.WriteLine();
+
             /// Wrong Usage
             if (args.Length != 3)
             {
                 Console.WriteLine("Wrong Usage!");
                 Console.WriteLine("Usage : MakeStartup.exe [AppName] [ExePath] [a|r]");
+                Console.WriteLine("Press ANY Key to continue.");
+                Console.ReadKey();
                 return 1;
             }
             /// Not Administrator
@@ -44,8 +53,11 @@ namespace MakeStartup
                     P.WaitForExit();
                     return P.ExitCode;
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine("Press ANY Key to continue.");
+                    Console.ReadKey();
                     return 1;
                 }
             }
@@ -74,11 +86,16 @@ namespace MakeStartup
                             break;
                         default:
                             Console.WriteLine("Wrong Usage!");
+                            Console.WriteLine("Press ANY Key to continue.");
+                            Console.ReadKey();
                             return 1;
                     }
                 }
-                catch
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine("Press ANY Key to continue.");
+                    Console.ReadKey();
                     return 1;
                 }
                 return 0;
