@@ -422,3 +422,7 @@ OpenCover/
 
 ###########################################################################
 
+## Visual Studio Code
+
+# VS Code configuration files
+.vscode/
