@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2015
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TODOReader", "TODOReader.csproj", "{AF064AF1-B898-4914-92E2-8D2396B27E8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeStartup", "..\MakeStartup\MakeStartup.csproj", "{56BF2DF7-C711-4ECB-A232-B5E603A6B91F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF064AF1-B898-4914-92E2-8D2396B27E8E}.Debug|x86.ActiveCfg = Debug|x86
+		{AF064AF1-B898-4914-92E2-8D2396B27E8E}.Debug|x86.Build.0 = Debug|x86
+		{AF064AF1-B898-4914-92E2-8D2396B27E8E}.Release|x86.ActiveCfg = Release|x86
+		{AF064AF1-B898-4914-92E2-8D2396B27E8E}.Release|x86.Build.0 = Release|x86
+		{56BF2DF7-C711-4ECB-A232-B5E603A6B91F}.Debug|x86.ActiveCfg = Debug|x86
+		{56BF2DF7-C711-4ECB-A232-B5E603A6B91F}.Debug|x86.Build.0 = Debug|x86
+		{56BF2DF7-C711-4ECB-A232-B5E603A6B91F}.Release|x86.ActiveCfg = Release|x86
+		{56BF2DF7-C711-4ECB-A232-B5E603A6B91F}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A8A34473-2045-4FD9-8F5F-2EB0BFDAEC77}
+	EndGlobalSection
+EndGlobal
