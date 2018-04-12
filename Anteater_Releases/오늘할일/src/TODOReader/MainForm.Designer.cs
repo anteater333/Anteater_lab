@@ -86,8 +86,8 @@
             this.ForeColor = System.Drawing.SystemColors.WindowText;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Movable = false;
+            this.MinimizeBox = true;
+            this.Movable = true;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(18, 68, 18, 26);
             this.Resizable = false;
