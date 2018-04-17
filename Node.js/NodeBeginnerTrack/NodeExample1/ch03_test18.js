@@ -1,3 +1,4 @@
+/*
 function Person(name, age) {
     this.name = name;
     this.age = age;
@@ -6,8 +7,8 @@ function Person(name, age) {
 Person.prototype.walk = function(speed) {
     console.log(speed + 'km/h 속도로 걸어갑니다.');
 }
+*/
 
-/*
 // ES2015(ES6) Expression
 class Person {
     constructor(name, age) {
@@ -18,7 +19,6 @@ class Person {
         console.log(speed + 'km/h 속도로 걸어갑니다.');
     }
 }
-*/
 
 const person01 = new Person('소녀시대', 20);
 const person02 = new Person('걸스데이', 22);
