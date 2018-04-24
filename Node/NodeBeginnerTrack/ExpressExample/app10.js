@@ -31,7 +31,7 @@ router.route('/process/users/:id').get((req, res) => {
     res.write('<h1>Express 서버에서 응답한 결과입니다.</h1>');
     res.write('<div><p>Param id : ' + paramId + '</p></div>');
     res.end();
-})
+});
 
 // 라우터 객체 등록
 app.use('/', router);
