@@ -80,6 +80,41 @@ router.route('/process/login').post((req, res) => {
     }
 });
 
+// 사용자 추가 라우팅 함수 - 클라이언트에서 보내온 데이터를 이용해 데이터베이스에 추가
+router.route('/process/adduser').post((req, res) => {
+    console.log('/process/adduser 호출됨.');
+
+    let paramId = req.body.id || req.query.id;
+    let paramPassword = req.body.password || req.query.password;
+    let paramName = req.body.name || req.query.name;
+
+    console.log('요청 파라미터 : ' + paramId + ', ' + paramPassword + ', ' + paramName);
+
+    if (database) {
+        addUser(database, paramId, paramPassword, paramName, (err, result) => {
+            if (err) { throw err; }
+
+            // 결과 객체에 추가된 데이터가 있으면 성공 응답 전송
+            if (result && result.insertedCount > 0) {
+                console.dir(result);
+
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                res.write('<h2>사용자 추가 성공</h2>');
+                res.end();
+            } else {
+                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+                res.write('<h2>사용자 추가 실패</h2>');
+                res.end();
+            }
+        });
+    } else {
+        res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
+        res.write('<h2>데이터베이스 연결 실패</h2>');
+        res.write('<div><p>데이터베이스에 연결하지 못했습니다.</p></div>');
+        res.end();
+    }
+})
+
 // 라우터 객체 등록
 app.use('/', router);
 
@@ -136,6 +171,30 @@ const authUser = (database, id, password, callback) => {
             console.log("일치하는 사용자를 찾지 못함.");
             callback(null, null);
         }
+    });
+}
+
+// 사용자 추가
+const addUser = (databse, id, password, name, callback) => {
+    console.log('addUser 호출됨 : ' + id + ', ' + password + ', ' + name);
+
+    // users 컬렉션 참조
+    let users = database.collection('users');
+
+    // id, password, username을 사용해 사용자 추가
+    users.insertMany([{"id":id, "password":password, "name":name}], (err, result) => {
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        if (result.insertedCount > 0) {
+            console.log("사용자 레코드 추가됨 : " + result.insertedCount);
+        } else {
+            console.log("추가된 레코드가 없음.");
+        }
+
+        callback(null, result);
     });
 }
 
