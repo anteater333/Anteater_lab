@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework.Forms;
@@ -13,6 +14,8 @@ namespace TODOReader
 {
     public partial class MainForm : MetroForm
     {
+        static SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1, 1);
+
         private TodoRRequester todoRequest;
         private TodoROption option;
         private OptionForm optionForm;
@@ -62,7 +65,7 @@ namespace TODOReader
         /// </summary>
         private void ReadTodo()
         {
-            if ( !(option.TodoUrl.Equals("") || option.Splitter.Equals("") || option.Format.Equals("")) )
+            if (!(option.TodoUrl.Equals("") || option.Splitter.Equals("") || option.Format.Equals("")))
             {
                 todoRequest = new TodoRRequester(option.TodoUrl, option.Splitter, option.Format);
 
@@ -87,12 +90,20 @@ namespace TODOReader
         /// </summary>
         private async Task FadeIn(Form o, int interval = 80)
         {
-            while (o.Opacity < 1.0)
+            await semaphoreSlim.WaitAsync();
+            try
             {
-                await Task.Delay(interval);
-                o.Opacity += 0.05;
+                while (o.Opacity < 1.0)
+                {
+                    await Task.Delay(interval);
+                    o.Opacity += 0.05;
+                }
+                o.Opacity = 1.0;
             }
-            o.Opacity = 1.0;
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         /// <summary>
@@ -100,12 +111,20 @@ namespace TODOReader
         /// </summary>
         private async Task FadeOut(Form o, double min = 0.0, int interval = 80)
         {
-            while (o.Opacity > min)
+            await semaphoreSlim.WaitAsync();
+            try
             {
-                await Task.Delay(interval);
-                o.Opacity -= 0.05;
+                while (o.Opacity > min)
+                {
+                    await Task.Delay(interval);
+                    o.Opacity -= 0.05;
+                }
+                o.Opacity = min;
             }
-            o.Opacity = min;
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         /// <summary>
