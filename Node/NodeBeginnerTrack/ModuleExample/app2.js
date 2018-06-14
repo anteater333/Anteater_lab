@@ -23,6 +23,9 @@ const config = require('./config');
 // database 모듈
 const database = require('./database/database');
 
+// route 모듈
+const route_loader = require('./routes/route_loader');
+
 // Express 객체
 const app = express();
 
@@ -52,24 +55,7 @@ app.use(expressSession({
 
 /*************************************************************************/
 // 라우팅
-
-// routes/user 모듈
-const user = require('./routes/user');
-
-// 라우터 객체 참조
-const router = express.Router();
-
-// 샤용자 리스트 함수
-router.route('/process/listuser').post(user.listuser);
-
-// 로그인 라우팅 함수 - 데이터베이스의 정보와 비교
-router.route('/process/login').post(user.login);
-
-// 사용자 추가 라우팅 함수 - 클라이언트에서 보내온 데이터를 이용해 데이터베이스에 추가
-router.route('/process/adduser').post(user.adduser);
-
-// 라우터 객체 등록
-app.use('/', router);
+route_loader.init(app, express.Router());
 /*************************************************************************/
 
 // 404 Not Found
@@ -82,9 +68,22 @@ const errorHandler = expressErrorHandler({
 app.use(expressErrorHandler.httpError(404));
 app.use(errorHandler);
 
+// 프로세스 종료 시 데이터베이스 연결 해제
+process.on('SIGTERM', () => {
+    console.log('프로세스가 종료됩니다.');
+    app.close();
+});
+
+app.on('close', () => {
+    console.log('Express 서버 객체가 종료됩니다.');
+    if (database.db) {
+        database.db.close();
+    }
+})
+
 // 서버 시작
 http.createServer(app).listen(app.get('port'), () => {
-    console.log('서버가 시작되었습니다. 포트 : ' + app.get('port'));
+    console.log('======= 서버가 시작되었습니다. 포트 : ' + app.get('port') + ' =======');
 
     // 데이터베이스 연결
     database.init(app, config);

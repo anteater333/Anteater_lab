@@ -19,11 +19,11 @@ function connect(app, config) {
     console.log('데이터베이스 연결을 시도합니다.');
     mongoose.Promise = global.Promise;
     mongoose.connect(databaseUrl);
-    database = mongoose.connection;
+    database.db = mongoose.connection;  // database.db 주의
 
     // Events
-    database.on('error', console.error.bind(console, 'mongoose connection error.'));
-    database.on('open', () => {
+    database.db.on('error', console.error.bind(console, 'mongoose connection error.'));
+    database.db.on('open', () => {
         console.log('데이터베이스에 연결되었습니다. : ' + databaseUrl);
         
         // user 스키마 및 모델 객체 생성
@@ -31,7 +31,7 @@ function connect(app, config) {
     });
 
     // 연결 끊어졌을 때 5초 후 재연결
-    database.on('disconnected', () => {
+    database.db.on('disconnected', () => {
         console.log('연결이 끊어졌습니다. 5초 후 다시 연결합니다.');
         setInterval(connectDB, 5000);
     });
