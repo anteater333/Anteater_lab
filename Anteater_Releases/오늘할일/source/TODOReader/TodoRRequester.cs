@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
 
 namespace TODOReader
@@ -78,7 +77,13 @@ namespace TODOReader
             string[] todoList = todoes.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             string today = dtToday.ToString(format);
 
-            string todoToday = Array.Find(todoList, todo => todo.Contains(today));
+            string todoToday = Array.Find(todoList, (todo) =>
+            {
+                bool found = false;
+                found = todo.Contains("\n" + today + "\n") || todo.Contains(today + "\n");  // format이 ddd처럼 한글자인 경우를 해결할 수 있음.
+                                                                                            // 무조건 날짜 표시는 한 줄에, 날짜를 나타내는 문자들만 있도록 제약.
+                return found;
+            }); // 오늘에 해당하는 문자열 찾음
 
             if (todoToday == null)
                 todoToday = GenerateHolidayMsg();
