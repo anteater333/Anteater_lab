@@ -16,6 +16,11 @@ namespace TODOReader
         private string[] splitter;
         private string format;
 
+        /// <summary>
+        /// 주석 기호
+        /// </summary>
+        private const string ANNOTATION = "##";
+
         public TodoRRequester(string url, string splitter, string format)
         {
             todoRequest = WebRequest.CreateHttp(url);
@@ -87,8 +92,28 @@ namespace TODOReader
 
             if (todoToday == null)
                 todoToday = GenerateHolidayMsg();
-
+            else
+                todoToday = ExceptAnnotation(todoToday);
             return todoToday;
+        }
+
+        /// <summary>
+        /// 여러 줄로 이루어진 텍스트에서 주석 기호로 시작하는 줄을 제외합니다.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private string ExceptAnnotation(string text)
+        {
+            string[] lines = text.Split(new string[] { "\n" }, StringSplitOptions.None);
+            string reText = String.Empty;
+
+            foreach(string line in lines)
+            {
+                if (!line.StartsWith(ANNOTATION))
+                    reText += line + "\n";
+            }
+            
+            return reText;
         }
 
         /// <summary>
