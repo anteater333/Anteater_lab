@@ -26,9 +26,9 @@ namespace TODOReader
             InitializeComponent();
 
             // 테스트용 코드 ///////////////////////////////////////////////////////////////////////////////////////
-            //option.TodoUrl = @"https://raw.githubusercontent.com/anteater333/Anteater_lab/master/Txt/TODOs.txt";//
-            //option.Splitter = "======================================";                                         //
-            //option.Format = "yyyy.MM.dd";                                                                       //
+            //option.TodoUrl = @"https://raw.githubusercontent.com/anteater333/Anteater_lab/master/Txt/Work.txt"; //
+            //option.Splitter = "==========";                                                                     //
+            //option.Format = "ddd";                                                                              //
             ////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
 

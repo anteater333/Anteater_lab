@@ -2,7 +2,6 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Net;
 
 namespace TODOReader
@@ -16,6 +15,11 @@ namespace TODOReader
         private DateTime dtToday;
         private string[] splitter;
         private string format;
+
+        /// <summary>
+        /// 주석 기호
+        /// </summary>
+        private const string ANNOTATION = "##";
 
         public TodoRRequester(string url, string splitter, string format)
         {
@@ -78,12 +82,38 @@ namespace TODOReader
             string[] todoList = todoes.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
             string today = dtToday.ToString(format);
 
-            string todoToday = Array.Find(todoList, todo => todo.Contains(today));
+            string todoToday = Array.Find(todoList, (todo) =>
+            {
+                bool found = false;
+                found = todo.Contains("\n" + today + "\n") || todo.Contains(today + "\n");  // format이 ddd처럼 한글자인 경우를 해결할 수 있음.
+                                                                                            // 무조건 날짜 표시는 한 줄에, 날짜를 나타내는 문자들만 있도록 제약.
+                return found;
+            }); // 오늘에 해당하는 문자열 찾음
 
             if (todoToday == null)
                 todoToday = GenerateHolidayMsg();
-
+            else
+                todoToday = ExceptAnnotation(todoToday);
             return todoToday;
+        }
+
+        /// <summary>
+        /// 여러 줄로 이루어진 텍스트에서 주석 기호로 시작하는 줄을 제외합니다.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        private string ExceptAnnotation(string text)
+        {
+            string[] lines = text.Split(new string[] { "\n" }, StringSplitOptions.None);
+            string reText = String.Empty;
+
+            foreach(string line in lines)
+            {
+                if (!line.StartsWith(ANNOTATION))
+                    reText += line + "\n";
+            }
+            
+            return reText;
         }
 
         /// <summary>

@@ -45,7 +45,6 @@
             this.todoTextbox.Multiline = true;
             this.todoTextbox.Name = "todoTextbox";
             this.todoTextbox.ReadOnly = true;
-            this.todoTextbox.ScrollBars = System.Windows.Forms.ScrollBars.Horizontal;
             this.todoTextbox.Size = new System.Drawing.Size(416, 208);
             this.todoTextbox.TabIndex = 3;
             // 
@@ -86,11 +85,10 @@
             this.ForeColor = System.Drawing.SystemColors.WindowText;
             this.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeBox = false;
-            this.MinimizeBox = true;
-            this.Movable = true;
+            this.MaximumSize = new System.Drawing.Size(675, 465);
+            this.MinimumSize = new System.Drawing.Size(225, 155);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(18, 68, 18, 26);
-            this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroFormShadowType.AeroShadow;
             this.ShowIcon = false;
             this.Text = "오늘 할 일";
