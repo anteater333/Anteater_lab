@@ -5,7 +5,7 @@ const login = (req, res) => {
     let paramId = req.param('id');
     let paramPassword = req.param('password');
 
-    console.log('요청 파라미터 : ' + paramId + ', ' + paramPassword);
+    console.log('요청 파라미터 : ' + paramId + ', ' + 'PASSWORD');
 
     // 데이터베이스 객체 참조
     let database = req.app.get('database');
@@ -55,7 +55,7 @@ const adduser = (req, res) => {
     let paramPassword = req.body.password || req.query.password;
     let paramName = req.body.name || req.query.name;
 
-    console.log('요청 파라미터 : ' + paramId + ', ' + paramPassword + ', ' + paramName);
+    console.log('요청 파라미터 : ' + paramId + ', ' + 'PASSWORD' + ', ' + paramName);
 
     // 데이터베이스 객체 참조
     let database = req.app.get('database');
