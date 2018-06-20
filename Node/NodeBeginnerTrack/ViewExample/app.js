@@ -29,6 +29,7 @@ const route_loader = require('./routes/route_loader');
 // Express 객체
 const app = express();
 
+/*************************************************************************/
 // 기본 속성 설정
 console.log('config.server_port : %d', config.server_port);
 app.set('port', config.server_port);
@@ -52,6 +53,13 @@ app.use(expressSession({
     resave:true,
     saveUninitialized:true
 }));
+
+// 뷰 엔진 설정
+const viewEngine = 'ejs';
+app.set('views', __dirname + '/views');
+app.set('view engine', viewEngine);
+console.log('뷰 엔진이 ' + viewEngine + '로 설정되었습니다.');
+/*************************************************************************/
 
 /*************************************************************************/
 // 라우팅

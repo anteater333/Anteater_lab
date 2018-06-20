@@ -25,15 +25,29 @@ const login = (req, res) => {
 
             if (docs) {
                 console.dir(docs);
+
+                // 조회 결과에서 사용자 이름 확인
                 let username = docs[0].name;
+
                 res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
-                res.write('<h1>로그인 성공</h1>');
-                res.write('<div><p>사용자 아이디 : ' + paramId + '</p></div>');
-                res.write('<div><p>사용자 이름 : ' + username + '</p></div>');
-                res.write("<br><br><a href='/public/login.html'>다시 로그인하기</a>");
-                res.end();
+                
+                // 뷰 템플릿을 사용하여 렌더링한 후 전송
+                let context = {userid:paramId, username:username}; // ejs 파일에서 사용할 변수
+                req.app.render('login_success', context, (err, html) => {   // ejs 파일 rendering
+                    if (err) {
+                        console.error('뷰 렌더링 중 오류 발생 : ' + err.stack);
+                        res.write('<h2>뷰 렌더링 중 오류 발생</h2>');
+                        res.write('<p>' + err.stack + '</p>');
+                        res.end();
+
+                        return;
+                    }
+                    console.log('rendered : ', html);
+
+                    res.end(html); // 전송
+                });
+
             } else {
-                res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
                 res.write('<h1>로그인 실패</h1>');
                 res.write('<div><p>아이디와 비밀번호를 다시 확인하십시오.</p></div>');
                 res.write("<br><br><a href='/public/login.html'>다시 로그인하기</a>");
@@ -41,7 +55,6 @@ const login = (req, res) => {
             }
         });
     } else {
-        res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
         res.write('<h2>데이터베이스 연결 실패</h2>');
         res.write('<div><p>데이터베이스에 연결하지 못했습니다.</p></div>');
         res.end();
@@ -119,17 +132,13 @@ const listuser = (req, res) => {
                 console.dir(results);
 
                 res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
-                res.write('<h2>사용자 리스트</h2>');
-                res.write('<div><ul>');
-
-                for (let i = 0; i < results.length; i++) {
-                    let curId = results[i]._doc.id;
-                    let curName = results[i]._doc.name;
-                    res.write('    <li>#' + i + ' : ' + curId + ', ' + curName + '</li>');
-                }
-
-                res.write('</ul></div>');
-                res.end();
+                
+                // 뷰 템플릿을 이용하여 렌더링한 후 전송
+                let context = {results : results};
+                req.app.render('listuser', context, (err, html) => {
+                    if (err) {throw err;}
+                    res.end(html);
+                });
             } else { // 결과 객체가 없으면
                 res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
                 res.write('<h2>사용자 리스트 조회 실패</h2>');
