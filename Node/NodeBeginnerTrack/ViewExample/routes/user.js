@@ -86,15 +86,28 @@ const adduser = (req, res) => {
                 return;
             }
 
+            res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
             // 결과 객체에 추가된 데이터가 있으면 성공 응답 전송
             if (result /*&& result.insertedCount > 0*/) {
                 console.dir(result);
 
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-                res.write('<h2>사용자 추가 성공</h2>');
-                res.end();
+                let context = {title: '사용자 추가 성공'};
+                req.app.render('adduser', context, (err, html) => {
+                    if (err) {
+                        console.error('뷰 렌더링 중 오류 발생 : ' + err.stack);
+
+                        res.write('<h2>뷰 렌더링 중 오류 발생</h2>');
+                        res.write('<p>' + err.stack + '</p>');
+                        res.end();
+
+                        return;
+                    }
+
+                    console.log("rendered : " + html);
+
+                    res.end(html);
+                });
             } else {
-                res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
                 res.write('<h2>사용자 추가 실패</h2>');
                 res.end();
             }
