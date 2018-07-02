@@ -77,7 +77,7 @@ passport.use('local-login', new LocalStrategy({
     console.log('passport의 local-login 호출됨 : ' + email + ', ' + password);
     
     const database= app.get('database');
-    database.UserModel.findOne({'email' : email}, (err, use) => {
+    database.UserModel.findOne({'email' : email}, (err, user) => {
         if(err) {return done(err);}
 
         // 등록된 사용자가 없는 경우
@@ -87,7 +87,7 @@ passport.use('local-login', new LocalStrategy({
         }
 
         // 비밀번호를 비교하여 맞지 않는 경우
-        const authenticated = user.authenticated(password, user._doc.salt, user._doc.hashed_password);
+        const authenticated = user.authenticate(password, user._doc.salt, user._doc.hashed_password);
         if (!authenticated) {
             console.log('비밀번호 일치하지 않음.');
             return done(null, false, req.flash('loginMessage', '비밀번호가 일치하지 않습니다.'));
@@ -166,7 +166,69 @@ console.log('뷰 엔진이 ' + viewEngine + '로 설정되었습니다.');
 
 /*************************************************************************/
 // 라우팅
-route_loader.init(app, express.Router());
+const router = express.Router();
+route_loader.init(app, router);
+
+// 홈 화면 - index.ejs 템플릿으로 홈 화면이 보이도록 함
+router.route('/').get((req, res) => {
+    console.log('/ 패스 요청됨.');
+    res.render('index.ejs');
+});
+
+// 로그인 폼 링크
+app.get('/login', (req, res) => {
+    console.log('/login 패스 요청됨.');
+    res.render('login.ejs', {message : req.flash('loginMessage')});
+});
+
+app.post('/login', passport.authenticate('local-login', {
+    successRedirect : '/profile'
+    , failureRedirect : '/login'
+    , failureFlash : true
+}));
+
+// 회원가입 폼 링크
+app.get('/signup', (req, res) => {
+    console.log('/signup 패스 요청됨.');
+    res.render('signup.ejs', {message : req.flash('signupMessage')});
+});
+
+app.post('/signup', passport.authenticate('local-signup', {
+    successRedirect : '/profile'
+    , failureRedirect : '/signup'
+    , failureFlash : true
+}));
+
+// ㅍ로필 화면 - 로그인 여부를 확인할 수 있도록 먼저 isLoggedIn 미들웨어 실행
+router.route('/profile').get((req, res) => {
+    console.log('/profile 패스 요청됨.');
+
+    // 인증된 경우 req.user 객체에 사용자 정보가 있으며, 인증이 안 된 경우 req.user는 false
+    console.log('req.user 객체의 값');
+    console.dir(req.user);
+
+    // 인증이 안 된 경우
+    if (!req.user) {    // !req.isAuthenticated() 메소드를 사용해도 됨
+        console.log('사용자 인증이 안 된 상태임.');
+        res.redirect('/');
+        return;
+    }
+
+    // 인증된 경우
+    console.log('사용자 인증된 상태임.');
+    if (Array.isArray(req.user)) {
+        res.render('profile.ejs', {user: req.user[0]._doc});
+    } else {
+        res.render('profile.ejs', {user: req.user});
+    }
+});
+
+// 로그아웃
+app.get('/logout', (req, res) => {
+    console.log('/logout 패스 요청됨.');
+    req.logout();
+    res.redirect('/');
+});
 /*************************************************************************/
 
 // 404 Not Found
