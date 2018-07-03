@@ -63,4 +63,15 @@ module.exports = (router, passport) => {
         req.logout();
         res.redirect('/');
     });
+
+    // facebook 인증 라우팅
+    router.route('/auth/facebook').get(passport.authenticate('facebook', {
+        scope : ['email']
+    }));
+
+    // facebook 인증 콜백 라우팅
+    router.route('/auth/facebook/callback').get(passport.authenticate('facebook', {
+        successRedirect : '/profile'
+        , failureRedirect : '/'
+    }));
 };

@@ -8,9 +8,12 @@ Schema.createSchema = (mongoose) => {
         email: {type: String, 'default' : ''}
         , name: {type: String, index: 'hashed', 'default' : ' '} // 쉼표 위치도 중요함. 수정에 용이.
         , hashed_password: {type: String, required: true, 'default' : ' '}
-        , salt: {type: String, required: true}
+        , salt: {type: String}
         , created_at: {type: Date, index: {unique: false}, 'default': Date.now}
         , updated_at: {type: Date, index: {unique: false}, 'default': Date.now}
+        , provider: {type: String, 'default': ''}
+        , authToken: {type: String, 'default': ''}
+        , facebook: { }
     });
 
     // 스키마에 static 메소드 추가

@@ -27,13 +27,22 @@
 		
 		        <div class="col-sm-6">
 		            <div class="well">
-		                <h3><span class="fa fa-user"></span> 로컬 프로필 정보</h3>
-						<br>
-						<p>
-		                	<strong>이메일</strong>: <%= user.email %>
-		                	<br><br>
-		                	<strong>별명</strong>: <%= user.name %>
-		                </p>
+						<% if(user.provider == undefined || user.provider == '') { %>
+							<h3><span class="fa fa-user"></span> 로컬 프로필 정보</h3>
+							<br>
+							<p>
+								<strong>이메일</strong>: <%= user.email %>
+								<br><br>
+								<strong>별명</strong>: <%= user.name %>
+							</p>
+						<% } else if(user.provider == 'facebook') { %>
+							<h3><span class="fa fa-user"></span> 페이스북 프로필 정보</h3>
+							<br>
+							<p>
+								<strong>이메일</strong>: <%= user.facebook.email %><br><br>
+								<strong>이름</strong>: <%= user.facebook.first_name + ' ' + user.facebook.last_name %>
+							</p>
+						<% } %>
 						<br>
 		            </div>
 		        </div>
