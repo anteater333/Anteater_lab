@@ -199,7 +199,7 @@ app.post('/signup', passport.authenticate('local-signup', {
     , failureFlash : true
 }));
 
-// ㅍ로필 화면 - 로그인 여부를 확인할 수 있도록 먼저 isLoggedIn 미들웨어 실행
+// 프로필 화면 - 로그인 여부를 확인할 수 있도록 먼저 isLoggedIn 미들웨어 실행
 router.route('/profile').get((req, res) => {
     console.log('/profile 패스 요청됨.');
 
