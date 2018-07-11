@@ -157,11 +157,15 @@ io.sockets.on('connection', (socket) => {
                     sendResponse(socket, 'login', '404', '상대방의 로그인 ID를 찾을 수 없습니다.');
                 }
             } else if(message.command == 'groupchat') {
-                // 방에 들어 있는 모든 사용자에게 메시지 전달
-                io.sockets.in(message.recepient).emit('message', message);
-
-                // response
-                sendResponse(socket, 'message', '200', '방 [' + message.recepient + '] 의 모든 사용자들에게 메시지를 전송했습니다.');
+                if(message.room == null) {
+                    sendResponse(socket, 'message', '200', '입장한 방이 없습니다.');
+                } else if(io.sockets.adapter.rooms[message.room]) {
+                    // 방에 들어 있는 모든 사용자에게 메시지 전달
+                    io.sockets.in(message.room).emit('message', message);
+                    sendResponse(socket, 'message', '200', '방 [' + message.room + '] 의 모든 사용자들에게 메시지를 전송했습니다.');
+                } else {
+                    sendResponse(socket, 'message', '200', '방이 존재하지 않습니다.');
+                }
             }
         }
     });
@@ -198,6 +202,7 @@ io.sockets.on('connection', (socket) => {
 
     // 'room' 이벤트
     socket.on('room', (room) => {
+        let output = { };
         console.log('room 이벤트를 받았습니다.');
         console.dir(room);
 
@@ -246,10 +251,12 @@ io.sockets.on('connection', (socket) => {
 
         const roomList = getRoomList();
 
-        const output = {command : 'list', rooms : roomList};
+        output.command = 'list';
+        output.rooms = roomList;
+
         console.log('클라이언트로 보낼 데이터 : ' + JSON.stringify(output));
 
-        io.sockets.emit('room', output);
+        socket.emit('room', output);
     });
 });
 
