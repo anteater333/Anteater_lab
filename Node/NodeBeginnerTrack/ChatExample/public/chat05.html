@@ -186,6 +186,16 @@
 
                     socket.emit('room', output);
                 });
+
+                // 그룹 채팅 시 받는 사람 비활성화
+                $("#chattype").bind('change', function(event) {
+                    if($(this).val() == "chat") {
+                        $("#recepientInput").prop("disabled", false);
+                    } else {
+                        $("#recepientInput").val("")
+                        $("#recepientInput").prop("disabled", true);
+                    }
+                });
             });
             /* cf. (참고자료 : http://blog.naver.com/PostView.nhn?blogId=miniwikibook&logNo=60201102354)
             $(function() {} ) 의 용도.
@@ -256,7 +266,7 @@
 
             function println(data) {
                 console.log(data);
-                $('#result').append('<p>' + data + '</p>');
+                $('#result').prepend('<p>' + data + '</p>');
             }
 
             function logout() {
@@ -318,7 +328,7 @@
                 </div>
                 <div>
                     <span>받는 사람 아이디 : </span>
-                    <input type="text" id="recepientInput" value="ALL">
+                    <input type="text" id="recepientInput" value="" disabled=true>
                 </div>
                 <!-- command 선택 <select> 채팅, 그룹 채팅 -->
                 <select name="chattype" id="chattype">
