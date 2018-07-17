@@ -105,4 +105,3 @@ function initHandlers(jayson, app, api_path) {
 }
 
 module.exports = handler_loader;
-
