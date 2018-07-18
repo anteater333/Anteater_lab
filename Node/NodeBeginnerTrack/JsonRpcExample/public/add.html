@@ -9,25 +9,19 @@
             });
 
             $("#requestButton").click(function() {
-                var id = 1004;
-                var method = 'listuser';
-                var params = [];
+                var aStr = $("#aInput").val();
+                var bStr = $("#bInput").val();
+                var a = parseInt(aStr);
+                var b = parseInt(bStr);
+                var method = 'add';
 
-                sendRequest(method, id, params);
-                
-                println('[' + method + '] method로 요청을 보냈습니다.');
-            });
-        });
-
-        // 요청 메소드 (캡슐화)
-        function sendRequest(method, id, params) {
-            $.jsonRPC.request(method, {
-                    id : id
-                    , params : params
+                $.jsonRPC.request(method, {
+                    id : 1001
+                    , params : [a, b]
                     , success : function(data) {
                         println('정상 응답을 받았습니다.');
                         console.dir(data);
-                        processResponse(data);
+                        println(data.result);
                     }
                     , error : function(data) {
                         println('오류 응답을 받았습니다.');
@@ -35,19 +29,10 @@
                         println(data.error.message);
                     }
                 });
-        }
-
-        // 성공 응답 시 처리
-        function processResponse(data) {
-            if (Array.isArray(data.result)) {
-                println('사용자 수 : ' + data.result.length);
-                data.result.forEach(function(item, index) {
-                    println('#' + index + ' : ' + item.id + ', ' + item.name);
-                });
-            } else {
-                println('결과 데이터가 배열 타입이 아닙니다.');
-            }
-        }
+                
+                println('[' + method + '] method로 요청을 보냈습니다.');
+            });
+        });
 
         function println(data) {
             console.log(data);
@@ -56,7 +41,12 @@
     </script>
 </head>
 <body>
-    <h3>JSON-RPC Listuser 테스트</h3>
+    <h3>JSON-RPC Add 테스트</h3>
+    <br>
+    <input type="text" value="21" name="aInput" id="aInput">
+    <p>+</p>
+    <input type="text" value="21" name="bInput" id="bInput">
+    <br>
     <br>
     <input type="button" name="requestButton" id="requestButton" value="요청하기">
     <br>

@@ -62,6 +62,7 @@ function createSchema(app, config) {
     }
 
     app.set('database', database);
+    global.database = database;
     console.log('database 객체가 app 객체의 속성으로 추가됨.');
 }
 
