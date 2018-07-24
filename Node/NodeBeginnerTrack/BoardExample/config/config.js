@@ -6,6 +6,7 @@ module.exports = {
     , db_url : 'mongodb://localhost:27017/local'
     , db_schemas: [ // Array
         {file:'./user_schema', collection:'users6', schemaName:'UserSchema', modelName:'UserModel'}
+        , {file:'./post_schema', collection:'post', schemaName:'PostSchema', modelName:'PostModel'}
     ]
     
     // route
