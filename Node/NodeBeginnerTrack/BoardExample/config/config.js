@@ -11,6 +11,8 @@ module.exports = {
     
     // route
     , route_info : [
+        {file : './post', path : '/process/addpost', method : 'addpost', type : 'post'}
+        , {file : './post', path : '/process/showpost/:id', method : 'showpost', type : 'get'}
     ]
 
     // facebook API

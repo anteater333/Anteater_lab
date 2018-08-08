@@ -1,6 +1,6 @@
 const route_loader = {};
 
-const config = {};
+let config = {};
 
 route_loader.init = (app, router, route_config) => {
     console.log('route_loader.init 호출됨.');

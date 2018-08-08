@@ -66,6 +66,10 @@ app.use(flash());
 
 const configPassport = require('./config/passport');
 configPassport(app, passport);
+
+// Passport 관련 함수 라우팅
+const userPassport = require('./routes/user_passport');
+userPassport(app, passport);
 /*************************************************************************/
 
 /*************************************************************************/
@@ -77,9 +81,9 @@ console.log('뷰 엔진이 ' + viewEngine + '로 설정되었습니다.');
 /*************************************************************************/
 
 /*************************************************************************/
-// 패스포트 관련 함수 라우팅
-const userPassport = require('./routes/user_passport');
-userPassport(app, passport);
+// 라우팅
+const router = express.Router();
+route_loader.init(app, router, config);
 /*************************************************************************/
 
 // 404 Not Found

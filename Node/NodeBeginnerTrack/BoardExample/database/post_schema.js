@@ -7,13 +7,13 @@ SchemaObj.createSchema = (mongoose) => {
     const PostSchema = mongoose.Schema({
         title : {type : String, trim : true, 'default' : ''} // 글 제목
         , contents : {type : String, trim : true, 'default' : ''} // 글 내용
-        , writer : {type : mongoose.Schema.ObjectId, ref : 'users'} // 글쓴이
+        , writer : {type : mongoose.Schema.ObjectId, ref : 'users6'} // 글쓴이
         , tags : {type : [ ], 'defaults' : ''} // 태그
         , created_at : {type : Date, index : {unique : false}, 'default' : Date.now} // 작성일
         , updated_at : {type : Date, index : {unique : false}, 'default' : Date.now} // 수정일
         , comments : [{ // 댓글
             contents : {type : String, trim : true, 'default' : ''} // 댓글 내용
-            , writer : {type : mongoose.Schema.ObjectId, ref : 'users'} // 댓글 작성자
+            , writer : {type : mongoose.Schema.ObjectId, ref : 'users6'} // 댓글 작성자
             , created_at : {type : Date, 'default' : Date.now} // 댓글 작성일
         }]
     });
