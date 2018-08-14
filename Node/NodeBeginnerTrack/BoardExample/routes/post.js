@@ -102,5 +102,16 @@ const showpost = (req, res) => {
     }
 };
 
+const listpost = (req, res) => {
+    console.log('post 모듈 안에 있는 listpost 호출됨.');
+
+    const paramPage = req.body.page || req.query.page;
+    const paramPerPage = req.body.perPage || req.query.perPage;
+
+    console.log('요청 파라미터 : ' + paramPage + ', ' + paramPerPage);
+
+    
+};
+
 module.exports.addpost = addpost;
 module.exports.showpost = showpost;
