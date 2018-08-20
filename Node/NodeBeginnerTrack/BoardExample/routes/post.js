@@ -110,8 +110,64 @@ const listpost = (req, res) => {
 
     console.log('요청 파라미터 : ' + paramPage + ', ' + paramPerPage);
 
-    
+    const database = req.app.get('database');
+
+    // 데이터베이스 객체가 초기화된 경우
+    if (database.db) {
+        // 1. 글 목록
+        const options = {
+            page : paramPage
+            , perPage : paramPerPage
+        };
+
+        database.PostModel.list(options, (err, results) => {
+            if (err) {
+                console.error('게시판 글 목록 조회 중 오류 발생 : ' + err.stack);
+                res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
+                res.write('<h2>게시판 글 목록 조회 중 오류 발생</h2>');
+                res.write('<p>' + err.stack + '</p>');
+                res.end();
+                return;
+            }
+
+            if (results) {
+                console.dir(results);
+
+                // 전체 문서 객체 수 확인
+                database.PostModel.count().exec((err, count) => {
+                    res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
+
+                    // 뷰 템플릿을 사용하여 렌더링한 후 전송
+                    const context = {
+                        title : '글 목록'
+                        , posts : results
+                        , page : parseInt(paramPage)
+                        , pageCount : Math.ceil(count / paramPerPage)
+                        , perPage : paramPerPage
+                        , totalRecords : count
+                        , size : paramPerPage
+                    };
+
+                    req.app.render('listpost', context, (err, html) => {
+                        if (err) {
+                            console.error('응답 웹문서 생성 중 오류 발생 : ' + err.stack);
+
+                            res.writeHead('200', {'Content-Type' : 'text/html;charset=utf8'});
+                            res.write('<h2>응답 웹문서 생성 중 오류 발생</h2>');
+                            res.write('<p>' + err.stack + '</p>');
+                            res.end();
+
+                            return;
+                        }
+
+                        res.end(html);
+                    });
+                });
+            }
+        });
+    }
 };
 
 module.exports.addpost = addpost;
 module.exports.showpost = showpost;
+module.exports.listpost = listpost;
