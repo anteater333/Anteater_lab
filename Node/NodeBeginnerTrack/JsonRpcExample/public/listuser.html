@@ -1,0 +1,65 @@
+<head>
+    <script src="jquery.min.js"></script>
+    <script src="jquery.jsonrpc.js"></script>
+    <script>
+        $(function() {
+            $.jsonRPC.setup({
+                endPoint : 'http://localhost:3000/api'
+                , namespace : ''
+            });
+
+            $("#requestButton").click(function() {
+                var id = 1004;
+                var method = 'listuser';
+                var params = [];
+
+                sendRequest(method, id, params);
+                
+                println('[' + method + '] method로 요청을 보냈습니다.');
+            });
+        });
+
+        // 요청 메소드 (캡슐화)
+        function sendRequest(method, id, params) {
+            $.jsonRPC.request(method, {
+                    id : id
+                    , params : params
+                    , success : function(data) {
+                        println('정상 응답을 받았습니다.');
+                        console.dir(data);
+                        processResponse(data);
+                    }
+                    , error : function(data) {
+                        println('오류 응답을 받았습니다.');
+                        console.dir(data);
+                        println(data.error.message);
+                    }
+                });
+        }
+
+        // 성공 응답 시 처리
+        function processResponse(data) {
+            if (Array.isArray(data.result)) {
+                println('사용자 수 : ' + data.result.length);
+                data.result.forEach(function(item, index) {
+                    println('#' + index + ' : ' + item.id + ', ' + item.name);
+                });
+            } else {
+                println('결과 데이터가 배열 타입이 아닙니다.');
+            }
+        }
+
+        function println(data) {
+            console.log(data);
+            $('#result').prepend('<p>' + data + '</p>');
+        }
+    </script>
+</head>
+<body>
+    <h3>JSON-RPC Listuser 테스트</h3>
+    <br>
+    <input type="button" name="requestButton" id="requestButton" value="요청하기">
+    <br>
+    <p>결과</p>
+    <div id="result"></div>
+</body>
