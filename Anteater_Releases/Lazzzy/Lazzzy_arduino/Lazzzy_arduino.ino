@@ -13,7 +13,7 @@
 #define DEBUG false
 
 Servo servo1;
-SoftwareSerial esp(3,5); // RX, TX 핀 설정 (주의. Rx --- Tx로 연결)
+SoftwareSerial esp(2, 3); // RX, TX 핀 설정 (주의. Rx --- Tx로 연결)
 
 int switchState; // 아두이노에 연결된 toggle switch의 상태
 int preswitchState;
