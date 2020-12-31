@@ -6,10 +6,10 @@ const rl = require('readline').createInterface({
 });
 
 let input = []; // 입력 큐
-let inputNum = 2; // 입력 갯수
+let inputNum = 0; // 입력 갯수
 
 rl.on('line', function(line) {
-    if (inputNum == -1) {
+    if (inputNum == 0) {
         inputNum = line
     }
     else {
@@ -24,5 +24,7 @@ rl.on('line', function(line) {
 });
 
 function algorila() {
-
+    input.forEach(sum => {
+        console.log(parseInt(sum.split(",")[0]) + parseInt(sum.split(",")[1]))
+    });
 }
