@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+    <body>
+        Hello World!
+        <br/>
+        <button id="ajaxBtn" type="button">Request</button>
+        <button id="myBtn" type="button" onclick="myOnClickAction()">MyButton</button>
+    </body>
+
+    <script type="text/javascript">
+        (
+            function() {
+                var httpRequest;
+                document.getElementById("ajaxBtn").addEventListener('click', makeRequest);
+
+                function makeRequest() {
+                    httpRequest = new XMLHttpRequest();
+
+                    if(!httpRequest) {
+                        alert('XMLHTTP 인스턴스를 만들 수가 없다.')
+                        return false;
+                    }
+                    httpRequest.onreadystatechange = alertContents;
+                    httpRequest.open('GET', 'data.json');
+                    httpRequest.send();
+                }
+                
+                function alertContents() {
+                    if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                        if (httpRequest.status === 200) {
+                            var response = JSON.parse(httpRequest.responseText);
+                            alert(response.name);
+                        } else {
+                            alert('request에 뭔가 문제가 있어요.(200 코드가 아님)')
+                        }
+                    }
+                }
+            }
+        )();
+
+        function myOnClickAction() {
+            console.log('Hello')
+        }
+    </script>
+</html>
