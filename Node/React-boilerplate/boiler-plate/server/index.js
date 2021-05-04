@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 5000;
 
 const { User } = require('./models/User');
 
@@ -47,6 +47,7 @@ app.post('/api/users/register', async (req, res) => {
             success: true,
         });
     } catch (err) {
+        console.log(err)
         return res.json({ success: false, err });
     }
 });
@@ -113,6 +114,10 @@ app.get('/api/users/logout', auth, (req, res) => {
             });
         }
     );
+});
+
+app.get('/api/hello', (req, res) => {
+    res.send('Hello');
 });
 
 app.listen(port, () =>
