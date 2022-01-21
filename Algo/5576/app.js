@@ -1,0 +1,1 @@
+const i=require("fs").readFileSync("dev/stdin").toString().split("\n").map((a)=>+a);console.log(`${i.splice(0,10).sort((a,b)=>b-a).slice(0,3).reduce((s,a)=>s+a)} ${i.sort((a,b)=>b-a).slice(0,3).reduce((s,a)=>s+a)}`);
