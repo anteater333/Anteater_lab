@@ -85,11 +85,11 @@ function calcMinJumps(x, y) {
  * @param {*} msg 메세지
  */
 function dashboard(jumped, current, destination, msg) {
-  //   console.log(
-  //     `jumped ${jumped}, current ${current}, destination ${destination}, remaining ${
-  //       destination - current
-  //     }, prediction ${predict(jumped)} - ${msg}`
-  //   );
+  console.log(
+    `jumped ${jumped}, current ${current}, destination ${destination}, remaining ${
+      destination - current
+    }, prediction ${predict(jumped)} - ${msg}`
+  );
 }
 
 /**
