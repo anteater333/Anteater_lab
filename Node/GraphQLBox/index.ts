@@ -1,5 +1,11 @@
 import express from "express";
-import { buildSchema } from "graphql";
+import {
+  buildSchema,
+  graphql,
+  GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+} from "graphql";
 import { createHandler } from "graphql-http/lib/use/express";
 import sqlite3 from "sqlite3";
 
@@ -44,12 +50,24 @@ db.close();
 // https://github.com/graphql/graphql-http
 // LEARN GraphQL over HTTP
 
-// The GraphQL
-const gqlSchema = buildSchema(
-  `type Query {
-    hello: String
-  }`
-);
+// Ref https://stackoverflow.com/questions/53984094/notable-differences-between-buildschema-and-graphqlschema
+/** The GraphQL root schema **/
+// const gqlSchema = buildSchema(
+//   `type Query {
+//     hello: String
+//   }`
+// );
+const gqlSchema = new GraphQLSchema({
+  query: new GraphQLObjectType({
+    name: "RootQueryType",
+    fields: () => ({
+      hello: {
+        type: GraphQLString,
+      },
+    }),
+  }),
+  // mutation: new GraphQLObjectType({}),
+});
 
 // provides a resolve function for each API endpoint
 const root = {
@@ -66,6 +84,11 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(function (req, res, next) {
+  console.log(req.url, req.body, res.statusCode);
+  next();
+});
+
 // API endpoint provides graphql service
 app.use(
   "/graphql",
@@ -78,12 +101,11 @@ app.use(
 
 app.get("/", (req, res) => {
   res.send({
-    hello: "world",
+    title: "Welcome to the Server Dobuy",
   });
 });
 
 app.post("/", (req, res) => {
-  console.log(req.body);
   res.json(req.body);
 });
 
