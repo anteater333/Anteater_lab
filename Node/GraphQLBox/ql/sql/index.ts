@@ -21,3 +21,11 @@ export const selectAllFromToDo = readFileSync(
 export const selectAllFromToBuy = readFileSync(
   join(sqlDir, "./selectAllFromToBuy.sql")
 ).toString();
+
+export const insertToDo = readFileSync(
+  join(sqlDir, "./insertToDo.sql")
+).toString();
+
+export const insertToBuy = readFileSync(
+  join(sqlDir, "./insertToBuy.sql")
+).toString();
