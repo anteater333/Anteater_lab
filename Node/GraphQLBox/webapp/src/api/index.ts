@@ -1,17 +1,27 @@
-export const getRoot = async () => {
-  const response = await (await fetch("http://localhost:4321/")).json();
-  return response;
+const serverAddr = "http://localhost:4321";
+
+export const getTitle = async (): Promise<string> => {
+  const response = await (await fetch(`${serverAddr}/`)).json();
+  return response.title;
 };
 
+/** Not used, Do Nothing */
 export const postRoot = async (data: any) => {
-  const response = await fetch("http://localhost:4321", {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+  // TBD
+};
 
-  return await response.json();
+export const checkGQL = async () => {
+  const query = `{
+    hello
+  }`;
+
+  const res = await (
+    await fetch(`${serverAddr}/graphql`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query }),
+    })
+  ).json();
+
+  return res;
 };
