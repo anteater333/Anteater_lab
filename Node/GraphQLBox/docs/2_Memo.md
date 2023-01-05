@@ -42,3 +42,16 @@ https://graphql.org/learn/serving-over-http/
 GraphQL over HTTP의 가장 큰 의의는 Best practice였던 HTTP를 통한 GQL 사용을 명세화 한다는 것에 있는듯.
 
 GET 메소드는 어떤 식으로 사용되어야 하는가, 특히 Mutation에는 사용되지 말아야 한다던가, POST 메소드는 어떤 식으로 사용되어야 하는가 등등을 안내하고있다.
+
+## GraphQL Mutation 설계하기
+
+https://fe-developers.kakaoent.com/2022/220113-designing-graphql-mutation/
+갓갓캇카오. 사실 대단한건 원문 작성한곳이 아닌가..
+
+아무튼, Mutation이란 개념은 아직도 생소하다. 일단은 쿼리와 비슷하게 행동을 나타낸다고는 한다.
+
+- 작명. mutation 이름에 동사를 먼저 작성한다. 가능하다면 그 뒤에 목적어나 명사를 사용한다. 그리고 camelCase를 사용한다.
+- 명확성. 가능한 구체적으로 만든다. mutation은 사용자가 취할 수 있는 의미있는 행동을 나타내야 한다.
+- 입력 객체. 클라이언트에서 더 쉽게 mutation을 실행할 수 있도록 단일하고(single), 필수적이고(required), 고유한(unique) 입력(input) 객체 타입으로 작성한다.
+- 고유한 Payload 타입. 각 mutation에 맞는 고유한 payload 타입을 사용하고 mutation 결괏값을 payload 타입에 필드로 추가한다.
+- 중첩. 가능하면 어디서든 중첩을 사용한다.
