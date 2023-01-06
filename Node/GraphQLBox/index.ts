@@ -2,8 +2,8 @@ import express from "express";
 import { createHandler } from "graphql-http/lib/use/express";
 import sqlite3 from "sqlite3";
 
-import * as sql from "./ql/sql";
-import gqlSchema from "./ql/gql";
+import * as sql from "./src/schema/sql";
+import gqlSchema from "./src/schema/gql";
 
 import cors from "cors";
 
