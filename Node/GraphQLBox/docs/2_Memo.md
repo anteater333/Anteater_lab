@@ -55,3 +55,78 @@ https://fe-developers.kakaoent.com/2022/220113-designing-graphql-mutation/
 - 입력 객체. 클라이언트에서 더 쉽게 mutation을 실행할 수 있도록 단일하고(single), 필수적이고(required), 고유한(unique) 입력(input) 객체 타입으로 작성한다.
 - 고유한 Payload 타입. 각 mutation에 맞는 고유한 payload 타입을 사용하고 mutation 결괏값을 payload 타입에 필드로 추가한다.
 - 중첩. 가능하면 어디서든 중첩을 사용한다.
+
+## `gql` Tagged Template Literal
+
+### Tagged Template Literal
+TTL이 뭐냐 일단.
+
+```javascript
+gql`
+  query {
+    ...
+  }
+`
+```
+
+이거에요 이거.
+
+Template Literal(``)에 이름을 달아놓은 문법.
+
+```javascript
+const person = "Mike";
+const age = 28;
+
+function myTag(strings, personExp, ageExp) {
+  const str0 = strings[0]; // "That "
+  const str1 = strings[1]; // " is a "
+  const str2 = strings[2]; // "."
+
+  const ageStr = ageExp > 99 ? "centenarian" : "youngster";
+
+  // We can even return a string built using a template literal
+  return `${str0}${personExp}${str1}${ageStr}${str2}`;
+}
+
+const output = myTag`That ${person} is a ${age}.`;
+
+console.log(output);
+// That Mike is a youngster.
+
+```
+
+실제론 이런 식으로 구현/사용 한다고함. 함수의 두 번째 인자를 `...args` 이렇게 만드는 방식이 많이 사용되는듯.
+
+### graphql-tag
+
+여기에 눈길을 주게 된 이유는, `graphql-js`로만 구현하는게 영 불만족스러워서. `GraphQLSchema` 클래스를 사용하는 방식 보단 좀 더 graphql 본연의 문법을 쓰고싶은데, `buildSchema`에 GQL 문자열을 넣으면 되긴 하지만... 뭔가 2% 부족한 느낌.
+
+`Apollo`는 최대한 안쓰려고 하고 있지만(너무 이거까지 해버린다고? 싶어서), 얘네가 만든 `gql` tagged template은 조금 탐나더라. 그래서 그 기능만 떼서 만들어놓은 [`graphql-tag`](https://github.com/apollographql/graphql-tag)란걸 찾았다. 알아서 GQL AST를 반환해준다는데, 자세한건 써보고 더 적어보자.
+
+`buildASTSchema` 라는것도 있었다. 생각보다 `graphql-js` 다채로운데, 문제는 이거 도큐먼트가 안보여... 이거 맞나 의심이 피어오르는중.
+
+## Mutation을 사용하는 법
+
+이렇게 쿼리를 정의하고
+```graphql
+mutation CreateTodo($input: CreateTodoInput!) {
+    createTodo(input: $input) {
+        todo {
+            title
+            content
+        }
+    }
+}
+```
+
+이렇게 variable을 사용하면 된다.
+```
+{
+    "input": {
+        "title": "콤퓨타",
+        "content": "좋은걸로"
+    }
+}
+```
+
+클라이언트에서 보내는 것에 variables라는게 또 있는줄은 몰랐음. 어떻게 저 $input에 값을 넣나 계속 고민중이었는데

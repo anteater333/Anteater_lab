@@ -1,7 +1,0 @@
-interface ToInterface {
-  
-}
-
-type Query {
-  hello: String
-}

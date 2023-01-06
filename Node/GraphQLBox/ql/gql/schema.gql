@@ -1,0 +1,48 @@
+interface To {
+  id: ID!
+  title: String
+  content: String
+  createdAt: String
+}
+
+type Todo implements To {
+  id: ID!
+  title: String
+  content: String
+  createdAt: String
+  done: Boolean
+  doneAt: String
+}
+
+type Tobuy implements To {
+  id: ID!
+  title: String
+  content: String
+  const: Int
+  createdAt: String
+  bought: Boolean
+  boughtAt: String
+}
+
+type Query {
+  tobuy: Tobuy
+  todo: Todo
+}
+
+type Mutation {
+  createTodo(input: CreateTodoInput!): CreateTodoPayload
+}
+
+input CreateTodoInput {
+  title: String!
+  content: String
+}
+
+type CreateTodoPayload {
+  todo: Todo
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
