@@ -1,42 +1,17 @@
 import express from "express";
 import { createHandler } from "graphql-http/lib/use/express";
-import sqlite3 from "sqlite3";
-
-import * as sql from "./src/schema/sql";
-import gqlSchema from "./src/schema/gql";
-
+import dotenv from "dotenv";
 import cors from "cors";
 
-// DB (SQLite)
-const db = new sqlite3.Database("./db/to.db.sqlite");
+// .env
+dotenv.config();
 
-db.serialize(() => {
-  // ref https://www.npmjs.com/package/sqlite3
+import gqlSchema from "./src/controllers/gql";
+import ToService from "./src/services/to.service";
+import db from "./src/db";
 
-  console.log("DB :: initializing DB tables");
-  db.run(sql.createToDo);
-  db.run(sql.createToBuy);
-
-  let tobuyCnt = 0;
-  db.all(sql.selectAllFromToBuy, (err: any, rows: any) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    tobuyCnt = rows.length;
-  });
-
-  let todoCnt = 0;
-  db.all(sql.selectAllFromToDo, (err: any, rows: any) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    todoCnt = rows.length;
-
-    console.log(`DB :: ${tobuyCnt} ToBuy, ${todoCnt} ToDo`);
-  });
-});
+// Services
+const toServiceInstance = new ToService(db);
 
 // build express app
 
@@ -56,7 +31,7 @@ app.use(
   "/graphql",
   createHandler({
     schema: gqlSchema,
-    context: { db },
+    context: { toService: toServiceInstance },
     // graphiql: true, // enable graphiql mode, the in-browser graphQL editor
   })
 );

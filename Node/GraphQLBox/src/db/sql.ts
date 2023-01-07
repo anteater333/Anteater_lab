@@ -14,4 +14,12 @@ export const selectAllFromToBuy = readFileSync(
 
 export const insertToDo = readFileSync("ql/sql/insertToDo.sql").toString();
 
-export const insertToBuy = readFileSync("ql/sql/insertToDo.sql").toString();
+export const insertToBuy = readFileSync("ql/sql/insertToBuy.sql").toString();
+
+export const updateToDo = readFileSync("ql/sql/updateToDo.sql").toString();
+
+export const updateToBuy = readFileSync("ql/sql/updateToBuy.sql").toString();
+
+export const deleteToDo = readFileSync("ql/sql/deleteToDo.sql").toString();
+
+export const deleteToBuy = readFileSync("ql/sql/deleteToBuy.sql").toString();
