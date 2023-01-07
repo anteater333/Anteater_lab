@@ -18,7 +18,7 @@ export class todoDto {
     this.createdAt = createdAt;
     this.done = done;
     this.doneAt = doneAt;
-    this.id = id ? id : undefined;
+    this.id = id;
   }
 }
 
@@ -45,6 +45,6 @@ export class tobuyDto {
     this.createdAt = createdAt;
     this.bought = bought;
     this.boughtAt = boughtAt;
-    this.id = id ? id : undefined;
+    this.id = id;
   }
 }

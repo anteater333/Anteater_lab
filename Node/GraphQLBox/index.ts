@@ -3,7 +3,7 @@ import { createHandler } from "graphql-http/lib/use/express";
 import sqlite3 from "sqlite3";
 
 import * as sql from "./src/schema/sql";
-import {RootResolverMap, RootSchema} from "./src/schema/gql";
+import gqlSchema from "./src/schema/gql";
 
 import cors from "cors";
 
@@ -38,8 +38,6 @@ db.serialize(() => {
   });
 });
 
-db.close();
-
 // build express app
 
 const app = express();
@@ -57,8 +55,8 @@ app.use(function (req, res, next) {
 app.use(
   "/graphql",
   createHandler({
-    schema: RootSchema,
-    rootValue: RootResolverMap
+    schema: gqlSchema,
+    context: { db },
     // graphiql: true, // enable graphiql mode, the in-browser graphQL editor
   })
 );

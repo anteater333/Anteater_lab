@@ -130,3 +130,9 @@ mutation CreateTodo($input: CreateTodoInput!) {
 ```
 
 클라이언트에서 보내는 것에 variables라는게 또 있는줄은 몰랐음. 어떻게 저 $input에 값을 넣나 계속 고민중이었는데
+
+## Type-Graphql
+
+[Typescript w/ graphql](https://m.blog.naver.com/izure/222443538184)
+
+Typescript에서 GraphQL은 거추장스럽다. Type 선언이 반복된다. 따라서 Type-GraphQL을 사용한다. 끝.
