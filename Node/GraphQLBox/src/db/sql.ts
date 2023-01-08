@@ -23,3 +23,11 @@ export const updateToBuy = readFileSync("ql/sql/updateToBuy.sql").toString();
 export const deleteToDo = readFileSync("ql/sql/deleteToDo.sql").toString();
 
 export const deleteToBuy = readFileSync("ql/sql/deleteToBuy.sql").toString();
+
+export const selectToDoById = readFileSync(
+  "ql/sql/selectToDoById.sql"
+).toString();
+
+export const selectToBuyById = readFileSync(
+  "ql/sql/selectToBuyById.sql"
+).toString();

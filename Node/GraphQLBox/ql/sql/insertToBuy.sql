@@ -1,9 +1,2 @@
-insert into tobuy(
-    title,
-    content,
-    cost,
-    createdAt,
-    bought,
-    boughtAt
-  )
-VALUES(?, ?, ?, ?, ?, ?)
+insert into tobuy(title, content, cost, createdAt, bought)
+VALUES(?, ?, ?, ?, ?)

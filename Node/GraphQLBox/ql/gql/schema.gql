@@ -1,3 +1,28 @@
+# Ref. https://medium.com/swlh/graphql-query-design-2c502097cb66
+type Query {
+  "Search by ID"
+  todo(id: ID!): Todo
+  "Search by conditions"
+  todos(searchBy: TodoSearchInput!): [Todo]!
+  "Get All"
+  allTodos: [Todo]!
+  tobuy(id: ID!): Tobuy
+  tobuys(searchBy: TobuySearchInput!): [Tobuy]!
+  allTobuys: [Tobuy]!
+  budget: Int!
+}
+
+input TodoSearchInput {
+  title: String
+}
+
+input TobuySearchInput {
+  title: String
+  greaterThan: Int
+  equals: [Int]
+  smallerThan: Int
+}
+
 interface To {
   id: ID!
   title: String
@@ -24,24 +49,112 @@ type Tobuy implements To {
   boughtAt: String
 }
 
-type Query {
-  tobuy: Tobuy
-  todo: Todo
-}
-
 type Mutation {
-  createTodo(input: CreateTodoInput!): CreateTodoPayload
+  # Ref. https://fe-developers.kakaoent.com/2022/220113-designing-graphql-mutation/
+  todoCreate(input: TodoCreateInput!): TodoPayload
+  todoUpdateContent(input: TodoUpdateContentInput!): TodoPayload
+  todoUpdateDone(input: TodoUpdateDoneInput!): TodoPayload
+  todoUpdateDoneAll(input: TodoUpdateDoneAllInput!): TodoListPayload
+  todoUpdateUndone(input: TodoUpdateUndoneInput!): TodoPayload
+  todoUpdateUndoneAll(input: TodoUpdateUndoneAllInput!): TodoListPayload
+  todoDelete(input: TodoDeleteInput!): TodoPayload
+
+  tobuyCreate(input: TobuyCreateInput!): TobuyPayload
+  tobuyUpdateContent(input: TobuyUpdateContentInput!): TobuyPayload
+  tobuyUpdateBounght(input: TobuyUpdateBoughtInput!): TobuyPayload
+  tobuyUpdateUnbounghtAll(input: TobuyUpdateUnboughtAllInput!): TobuyListPayload
+  tobuyDelete(input: TobuyDeleteInput!): TobuyPayload
 }
 
-input CreateTodoInput {
+"""
+Mutation inputs
+"""
+input TodoCreateInput {
   title: String!
   content: String
 }
 
-type CreateTodoPayload {
+input TodoUpdateContentInput {
+  id: ID!
+  newTitle: String
+  newContent: String
+}
+
+input TodoUpdateDoneInput {
+  id: ID!
+}
+
+input TodoUpdateDoneAllInput {
+  _: Boolean # empty input type
+}
+
+input TodoUpdateUndoneInput {
+  id: ID!
+}
+
+input TodoUpdateUndoneAllInput {
+  _: Boolean # empty input type
+}
+
+input TodoDeleteInput {
+  id: ID!
+}
+
+input TobuyCreateInput {
+  title: String!
+  content: String
+  cost: Int
+}
+
+input TobuyUpdateContentInput {
+  id: ID!
+  newTitle: String
+  newContent: String
+  newCost: Int
+}
+
+input TobuyUpdateBoughtInput {
+  id: ID!
+}
+
+input TobuyUpdateBoughtAllInput {
+  _: Boolean # empty input type
+}
+
+input TobuyUpdateUnboughtInput {
+  id: ID!
+}
+
+input TobuyUpdateUnboughtAllInput {
+  _: Boolean # empty input type
+}
+
+input TobuyDeleteInput {
+  id: ID!
+}
+
+"""
+Payloads
+"""
+type TodoPayload {
   todo: Todo
 }
 
+type TodoListPayload {
+  todo: [Todo]
+}
+
+type TobuyPayload {
+  tobuy: Tobuy
+}
+
+type TobuyListPayload {
+  tobuy: [Tobuy]
+}
+
+"""
+Root Schema
+"""
 schema {
   query: Query
   mutation: Mutation

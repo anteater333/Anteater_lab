@@ -1,2 +1,2 @@
-insert into todo(title, content, createdAt, done, doneAt)
-VALUES(?, ?, ?, ?, ?)
+insert into todo(title, content, createdAt, done)
+VALUES(?, ?, ?, ?)

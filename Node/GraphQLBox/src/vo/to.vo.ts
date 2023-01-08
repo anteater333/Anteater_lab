@@ -1,13 +1,13 @@
-export class todoDto {
+export class Todo {
   title: string;
-  content: string;
+  content?: string;
   createdAt?: string;
   done?: boolean;
   doneAt?: string;
   id?: number;
   constructor(
     title: string,
-    content: string,
+    content?: string,
     createdAt?: string,
     done?: boolean,
     doneAt?: string,
@@ -22,18 +22,18 @@ export class todoDto {
   }
 }
 
-export class tobuyDto {
+export class Tobuy {
   title: string;
-  content: string;
-  cost: number;
+  content?: string;
+  cost?: number;
   createdAt?: string;
   bought?: boolean;
   boughtAt?: string;
   id?: number;
   constructor(
     title: string,
-    content: string,
-    cost: number,
+    content?: string,
+    cost?: number,
     createdAt?: string,
     bought?: boolean,
     boughtAt?: string,
