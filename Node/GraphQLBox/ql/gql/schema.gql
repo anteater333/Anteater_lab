@@ -61,8 +61,10 @@ type Mutation {
 
   tobuyCreate(input: TobuyCreateInput!): TobuyPayload
   tobuyUpdateContent(input: TobuyUpdateContentInput!): TobuyPayload
-  tobuyUpdateBounght(input: TobuyUpdateBoughtInput!): TobuyPayload
-  tobuyUpdateUnbounghtAll(input: TobuyUpdateUnboughtAllInput!): TobuyListPayload
+  tobuyUpdateBought(input: TobuyUpdateBoughtInput!): TobuyPayload
+  tobuyUpdateBoughtAll(input: TobuyUpdateBoughtAllInput!): TobuyListPayload
+  tobuyUpdateUnbought(input: TobuyUpdateUnboughtInput!): TobuyPayload
+  tobuyUpdateUnboughtAll(input: TobuyUpdateUnboughtAllInput!): TobuyListPayload
   tobuyDelete(input: TobuyDeleteInput!): TobuyPayload
 }
 
