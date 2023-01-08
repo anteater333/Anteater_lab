@@ -1,1 +1,1 @@
-update tobuy set title = ?, content = ?, cost = ?, bought = ?, boughtAt = ? where id = ?
+update tobuy set title=?, content=?, cost=?, bought=?, boughtAt=? where id=?

@@ -1,1 +1,1 @@
-update tobuy set title = ?, content = ?, done = ?, doneAt = ? where id = ?
+update todo set title=?, content=?, done=?, doneAt=? where id=?
