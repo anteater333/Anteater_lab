@@ -10,9 +10,10 @@ export const postRoot = async (data: any) => {
   // TBD
 };
 
+/** My GQL Call func */
 export const checkGQL = async () => {
   const query = `{
-    hello
+    allTodos { id }
   }`;
 
   const res = await (

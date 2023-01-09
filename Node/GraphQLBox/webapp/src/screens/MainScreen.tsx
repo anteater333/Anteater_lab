@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { checkGQL, getTitle, postRoot } from "../api";
+import { useQuery as useGQLQuery, gql } from "@apollo/client";
 
 export default function MainScreen() {
   const [gqlResult, setGqlResult] = useState();
@@ -9,6 +10,21 @@ export default function MainScreen() {
 
   /** useQuery: 조회 */
   const query = useQuery("root", getTitle);
+
+  /** GQL */
+  const GET_TODOS = gql`
+    query GetTodos {
+      allTodos {
+        id
+        title
+        content
+        done
+      }
+    }
+  `;
+
+  /** useQuery: GQL ToDo 조회 */
+  const { loading, error, data } = useGQLQuery(GET_TODOS);
 
   /** useMutation: 생성 / 업데이트 / 삭제 */
   const mutation = useMutation(postRoot, {
@@ -28,6 +44,8 @@ export default function MainScreen() {
       /** 성공 실패 여부 관계없이 실행 */
     },
   });
+
+  console.log(data);
 
   return (
     <div>
@@ -49,6 +67,31 @@ export default function MainScreen() {
       >
         Check GQL
       </button>
+      <br />
+      <span>GQL</span>
+      <div>
+        {data.allTodos.map(
+          ({
+            id,
+            title,
+            content,
+            done,
+          }: {
+            id: number;
+            title: string;
+            content: string;
+            done: boolean;
+          }) => (
+            <div key={`${id}_todo`}>
+              <h3>{title}</h3>
+              <br />
+              <span>{content}</span>
+              <br />
+              <span>{done ? `undone` : `done`}</span>
+            </div>
+          )
+        )}
+      </div>
     </div>
   );
 }

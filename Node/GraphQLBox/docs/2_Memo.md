@@ -59,6 +59,7 @@ https://fe-developers.kakaoent.com/2022/220113-designing-graphql-mutation/
 ## `gql` Tagged Template Literal
 
 ### Tagged Template Literal
+
 TTL이 뭐냐 일단.
 
 ```javascript
@@ -66,7 +67,7 @@ gql`
   query {
     ...
   }
-`
+`;
 ```
 
 이거에요 이거.
@@ -92,7 +93,6 @@ const output = myTag`That ${person} is a ${age}.`;
 
 console.log(output);
 // That Mike is a youngster.
-
 ```
 
 실제론 이런 식으로 구현/사용 한다고함. 함수의 두 번째 인자를 `...args` 이렇게 만드는 방식이 많이 사용되는듯.
@@ -108,18 +108,20 @@ console.log(output);
 ## Mutation을 사용하는 법
 
 이렇게 쿼리를 정의하고
+
 ```graphql
 mutation CreateTodo($input: CreateTodoInput!) {
-    createTodo(input: $input) {
-        todo {
-            title
-            content
-        }
+  createTodo(input: $input) {
+    todo {
+      title
+      content
     }
+  }
 }
 ```
 
 이렇게 variable을 사용하면 된다.
+
 ```
 {
     "input": {
@@ -136,3 +138,45 @@ mutation CreateTodo($input: CreateTodoInput!) {
 [Typescript w/ graphql](https://m.blog.naver.com/izure/222443538184)
 
 Typescript에서 GraphQL은 거추장스럽다. Type 선언이 반복된다. 따라서 Type-GraphQL을 사용한다. 끝.
+
+## GraphQL Client
+
+혼자서 GraphQL을 배우겠다고 난리치고 있으니까 상당히 불편한게, 백엔드 만드는데 며칠 걸리고, 프론트엔드 만드는데 며칠 걸리고...
+
+아무튼 조금이라도 공수를 줄여보고자 클라이언트는 유명 라이브러리를 써보고자 한다. Apollo(이건 서버/클라이언트 둘 다 있음)라는게 제일 유명한 것 같고, Relay도 아주 많이 들어봄. 일단은... Relay..?
+
+문제는, React-Query와의 관계가 아주 애매해졌다. relay를 쓰던 apollo를 쓰던 어쨌든 얘네들이 요청에 대한 상태 관리도 해준다. 그럼 굳이 React-query를 들고 있을 이유가...?
+
+> "뭐라고요?, GraphQL 은 서버의 쿼리 언어, Redux 는 클라이언트의 상태 관리 라이브러리잖아요. 어떻게 대체가 되죠?"
+
+https://velog.io/@minsangk/%EB%B2%88%EC%97%AD-GraphQL%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-Redux%EB%A5%BC-%EB%8C%80%EC%B2%B4%ED%95%98%EB%8A%94%EA%B0%80-cijz6lfvf4
+
+유익한 글이었다
+
+근데 Relay 솔직히, 설치부터 머리 어프다. relay 라는 단일 라이브러리 하나만 받는게 아니라 뭐 많어...  
+프레임워크 수준인데?
+
+Relay is a JavaScript framework for building data ... - GitHub
+
+아니 진짜 프레임워크인데?
+
+일단 가능성을 정리해보자..
+
+- 직접 GQL을 래핑한 Server Call 함수들 + react-query를 통해 상태 관리
+  - 백엔드에서 구현한 방식과 가장 유사
+  - 현재 스택(백엔드에선 express)에 딱 GQL만 최소로 올린 느낌
+  - 기본 + 심플에 충실하자
+  - 근데 그냥 REST API를 GQL로 거울 복제 하는 것과 다를바 없는게 아닌가 = GQL만의 장점을 학습하기 위해 또 학습을 많이 해야할지도
+- Apollo Client
+  - 일단 얘는 안찾아봐서 사이즈가 얼마만할지 모르겠다.
+  - 적어도 프레임워크를 표방하고 있는 것 같진 않다.
+  - useQuery를 주는등, react-query가 제공하는 기능을 대체.. 할 수 있나..?
+    - REST API를 사용하는 부분은 남겨놔야해서 react-query도 남겨놓는다고 한들, 둘이 제공하는 메소드 이름이 똑같은데, 같이 쓰면 조금 난감할 수도 있겠다.
+- Relay
+  - React 만들고 GraphQL도 만든 페이스북이 만든 GraphQL 클라이언트 **프레임워크**
+  - 프레임워크를 표방한다는 점에서 충격
+    - 배울거 너무 많아짐
+  - 자체적으로 무슨 컴파일러도 쓰고 있고, CR(elay)A도 있고
+  - 좋아보이는 것과 별개로, 지금 이거 시작해버리면 또 1주 동안 이거 배우는데 시간 날릴 것 같다.
+  - 괜히 레퍼런스들에서 Relay를 망설이는 분위기가 느껴지는게 아니었구나
+    - 진짜 딱 "좋긴 한데, 지금 상황엔 너무 무겁지 않나.." 라는 느낌
