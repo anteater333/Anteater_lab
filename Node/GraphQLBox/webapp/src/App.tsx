@@ -1,8 +1,10 @@
 import React from "react";
 import logo from "./logo.svg";
-import "./App.css";
 import MainScreen from "./screens/MainScreen";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+import "./App.scss";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const queryClient = new QueryClient();
 

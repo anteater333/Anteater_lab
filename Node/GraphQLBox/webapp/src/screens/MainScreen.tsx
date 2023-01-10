@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { checkGQL, getTitle, postRoot } from "../api";
-import { useQuery as useGQLQuery, gql } from "@apollo/client";
+
+import Button from "react-bootstrap/Button";
+
+import "./MainScreen.scss";
+import ToContainer from "../components/ToContainer";
 
 export default function MainScreen() {
   const [gqlResult, setGqlResult] = useState();
@@ -10,21 +14,6 @@ export default function MainScreen() {
 
   /** useQuery: 조회 */
   const query = useQuery("root", getTitle);
-
-  /** GQL */
-  const GET_TODOS = gql`
-    query GetTodos {
-      allTodos {
-        id
-        title
-        content
-        done
-      }
-    }
-  `;
-
-  /** useQuery: GQL ToDo 조회 */
-  const { loading, error, data } = useGQLQuery(GET_TODOS);
 
   /** useMutation: 생성 / 업데이트 / 삭제 */
   const mutation = useMutation(postRoot, {
@@ -45,53 +34,33 @@ export default function MainScreen() {
     },
   });
 
-  console.log(data);
-
   return (
-    <div>
-      <span>{JSON.stringify(query.data)}</span>
+    <>
+      <div className="main-header">
+        <span className="main-title">{JSON.stringify(query.data)}</span>
 
-      <button
-        onClick={() => {
-          mutation.mutate({ hello: "Server" });
-        }}
-      >
-        Update Title
-      </button>
-      <br />
-      <span>{JSON.stringify(gqlResult)}</span>
-      <button
-        onClick={() => {
-          checkGQL().then((result) => setGqlResult(result));
-        }}
-      >
-        Check GQL
-      </button>
-      <br />
-      <span>GQL</span>
-      <div>
-        {data.allTodos.map(
-          ({
-            id,
-            title,
-            content,
-            done,
-          }: {
-            id: number;
-            title: string;
-            content: string;
-            done: boolean;
-          }) => (
-            <div key={`${id}_todo`}>
-              <h3>{title}</h3>
-              <br />
-              <span>{content}</span>
-              <br />
-              <span>{done ? `undone` : `done`}</span>
-            </div>
-          )
-        )}
+        <br />
+
+        <Button
+          onClick={() => {
+            mutation.mutate({ hello: "Server" });
+          }}
+        >
+          Update Title
+        </Button>
+        <br />
+        <br />
+        <span>{JSON.stringify(gqlResult)}</span>
+        <br />
+        <Button
+          onClick={() => {
+            checkGQL().then((result) => setGqlResult(result));
+          }}
+        >
+          Check GQL
+        </Button>
       </div>
-    </div>
+      <ToContainer />
+    </>
   );
 }

@@ -43,7 +43,7 @@ type Tobuy implements To {
   id: ID!
   title: String
   content: String
-  const: Int
+  cost: Int
   createdAt: String
   bought: Boolean
   boughtAt: String
