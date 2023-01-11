@@ -1,3 +1,5 @@
+@import "./styles/rootStyle.scss";
+
 .App {
   display: flex;
   flex-direction: column;
@@ -5,11 +7,23 @@
   text-align: center;
 
   height: 100vh;
+
+  width: 100vw;
+
+  max-width: 62.5rem;
+
+  background-color: #ffffff;
 }
 
 .App-logo {
   height: 5vmin;
+  margin-right: $spacing-unit * 5;
   pointer-events: none;
+}
+
+.App-logo:nth-child(2) {
+  margin-right: 0;
+  height: 4vmin;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -19,13 +33,12 @@
 }
 
 .App-header {
-  background-color: #282c34;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-top: $spacing-unit;
 }
 
 .App-body {

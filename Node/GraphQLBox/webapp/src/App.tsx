@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "./logo.svg";
+import logoGql from "./logo-gql.svg";
 import MainScreen from "./screens/MainScreen";
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -14,6 +15,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
+          <img src={logoGql} className="App-logo" alt="logoGql" />
         </header>
         <div className="App-body">
           <MainScreen />

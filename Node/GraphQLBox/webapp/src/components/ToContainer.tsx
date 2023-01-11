@@ -16,6 +16,7 @@ export default function ToContainer() {
   const [newContent, setNewContent] = useState<string>("");
   const [newCost, setNewCost] = useState<number>(0);
 
+  // #region gql queries
   /** GQL */
   const GET_TODOS = gql`
     query GetTodos {
@@ -65,7 +66,6 @@ export default function ToContainer() {
       }
     }
   `;
-
   const DONE_TODO = gql`
     mutation TodoSetDone($input: TodoUpdateDoneInput!) {
       todoUpdateDone(input: $input) {
@@ -76,7 +76,6 @@ export default function ToContainer() {
       }
     }
   `;
-
   const UNDONE_TODO = gql`
     mutation TodoSetUndone($input: TodoUpdateUndoneInput!) {
       todoUpdateUndone(input: $input) {
@@ -87,7 +86,6 @@ export default function ToContainer() {
       }
     }
   `;
-
   const BOUGHT_TOBUY = gql`
     mutation TobuySetBought($input: TobuyUpdateBoughtInput!) {
       tobuyUpdateBought(input: $input) {
@@ -98,7 +96,6 @@ export default function ToContainer() {
       }
     }
   `;
-
   const UNBOUGHT_TOBUY = gql`
     mutation TobuySetUnbought($input: TobuyUpdateUnboughtInput!) {
       tobuyUpdateUnbought(input: $input) {
@@ -109,6 +106,25 @@ export default function ToContainer() {
       }
     }
   `;
+  const DELETE_TODO = gql`
+    mutation TodoDelete($input: TodoDeleteInput!) {
+      todoDelete(input: $input) {
+        todo {
+          id
+        }
+      }
+    }
+  `;
+  const DELETE_TOBUY = gql`
+    mutation TobuyDelete($input: TobuyDeleteInput!) {
+      tobuyDelete(input: $input) {
+        tobuy {
+          id
+        }
+      }
+    }
+  `;
+  // #endregion
 
   /** useQuery: GQL ToDo 조회 */
   const {
@@ -168,6 +184,22 @@ export default function ToContainer() {
       error: errorUnboughtTobuy,
     },
   ] = useMutation(UNBOUGHT_TOBUY);
+  const [
+    deleteTodo,
+    {
+      data: dataDeleteTodo,
+      loading: loadingDeleteTodo,
+      error: errorDeleteTodo,
+    },
+  ] = useMutation(DELETE_TODO);
+  const [
+    deleteTobuy,
+    {
+      data: dataDeleteTobuy,
+      loading: loadingDeleteTobuy,
+      error: errorDeleteTobuy,
+    },
+  ] = useMutation(DELETE_TODO);
 
   return (
     <div className="main-to-container">
@@ -177,41 +209,49 @@ export default function ToContainer() {
           <div className="main-to-list">
             {!todoLoading ? (
               todoData ? (
-                todoData.allTodos.map(
-                  ({
-                    id,
-                    title,
-                    content,
-                    done,
-                    createdAt,
-                    doneAt,
-                  }: {
-                    id: number;
-                    title: string;
-                    content: string;
-                    done: boolean;
-                    createdAt: string;
-                    doneAt: string;
-                  }) => (
-                    <Card className="main-to-card" key={`${id}_todo`}>
-                      <Card.Body>
-                        <Card.Title>{`#${id} ${title}`}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">
-                          {`❎${createdAt}`}
-                        </Card.Subtitle>
-                        {doneAt ? (
+                todoData.allTodos
+                  .slice()
+                  .reverse()
+                  .map(
+                    ({
+                      id,
+                      title,
+                      content,
+                      done,
+                      createdAt,
+                      doneAt,
+                    }: {
+                      id: number;
+                      title: string;
+                      content: string;
+                      done: boolean;
+                      createdAt: string;
+                      doneAt: string;
+                    }) => (
+                      <Card className="main-to-card" key={`${id}_todo`}>
+                        <Card.Body>
+                          <Card.Title className="main-to-card-title-container">
+                            <div>{`#${id} ${title}`}</div>
+                            <Button className="btn-outline-danger main-to-card-delete-button">
+                              X
+                            </Button>
+                          </Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">
-                            {`✅${doneAt}`}
+                            {`❎${createdAt}`}
                           </Card.Subtitle>
-                        ) : undefined}
-                        <Card.Text>{content}</Card.Text>
-                      </Card.Body>
-                      <Card.Footer>
-                        <Button>{done ? "Undone" : "Done"}</Button>
-                      </Card.Footer>
-                    </Card>
+                          {doneAt ? (
+                            <Card.Subtitle className="mb-2 text-muted">
+                              {`✅${doneAt}`}
+                            </Card.Subtitle>
+                          ) : undefined}
+                          <Card.Text>{content}</Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                          <Button>{done ? "Undone" : "Done"}</Button>
+                        </Card.Footer>
+                      </Card>
+                    )
                   )
-                )
               ) : (
                 <div>데이터가 없다.</div>
               )
@@ -249,43 +289,51 @@ export default function ToContainer() {
           <div className="main-to-list">
             {!tobuyLoading ? (
               tobuyData ? (
-                tobuyData.allTobuys.map(
-                  ({
-                    id,
-                    title,
-                    content,
-                    bought,
-                    boughtAt,
-                    createdAt,
-                    cost,
-                  }: {
-                    id: number;
-                    title: string;
-                    content: string;
-                    done: boolean;
-                    cost: number;
-                    bought: boolean;
-                    createdAt: string;
-                    boughtAt: string;
-                  }) => (
-                    <Card className="main-to-card" key={`${id}_tobuy`}>
-                      <Card.Body>
-                        <Card.Title>{`#${id} ${title}`}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">{`❎${createdAt}`}</Card.Subtitle>
-                        {boughtAt ? (
-                          <Card.Subtitle className="mb-2 text-muted">
-                            {`✅${boughtAt}`}
-                          </Card.Subtitle>
-                        ) : undefined}
-                        <Card.Text>{content}</Card.Text>
-                        <Card.Text>{`${cost.toLocaleString()} ₩`}</Card.Text>
-                      </Card.Body>
-                      <Card.Footer>
-                        <Button>{bought ? "Undone" : "Done"}</Button>
-                      </Card.Footer>
-                    </Card>
+                tobuyData.allTobuys
+                  .slice()
+                  .reverse()
+                  .map(
+                    ({
+                      id,
+                      title,
+                      content,
+                      bought,
+                      boughtAt,
+                      createdAt,
+                      cost,
+                    }: {
+                      id: number;
+                      title: string;
+                      content: string;
+                      done: boolean;
+                      cost: number;
+                      bought: boolean;
+                      createdAt: string;
+                      boughtAt: string;
+                    }) => (
+                      <Card className="main-to-card" key={`${id}_tobuy`}>
+                        <Card.Body>
+                          <Card.Title className="main-to-card-title-container">
+                            <div>{`#${id} ${title}`}</div>
+                            <Button className="btn-outline-danger main-to-card-delete-button">
+                              X
+                            </Button>
+                          </Card.Title>{" "}
+                          <Card.Subtitle className="mb-2 text-muted">{`❎${createdAt}`}</Card.Subtitle>
+                          {boughtAt ? (
+                            <Card.Subtitle className="mb-2 text-muted">
+                              {`✅${boughtAt}`}
+                            </Card.Subtitle>
+                          ) : undefined}
+                          <Card.Text>{content}</Card.Text>
+                          <Card.Text>{`${cost.toLocaleString()} ₩`}</Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                          <Button>{bought ? "Undone" : "Done"}</Button>
+                        </Card.Footer>
+                      </Card>
+                    )
                   )
-                )
               ) : (
                 <div>데이터가 없다.</div>
               )

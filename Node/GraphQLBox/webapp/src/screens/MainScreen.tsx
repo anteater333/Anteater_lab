@@ -37,8 +37,8 @@ export default function MainScreen() {
   return (
     <>
       <div className="main-header">
-        <span className="main-title">{JSON.stringify(query.data)}</span>
-
+        <span className="main-title">{query.data}</span>
+        {/* 
         <br />
 
         <Button
@@ -58,7 +58,7 @@ export default function MainScreen() {
           }}
         >
           Check GQL
-        </Button>
+        </Button> */}
       </div>
       <ToContainer />
     </>
