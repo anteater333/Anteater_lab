@@ -6,7 +6,9 @@ import Form from "react-bootstrap/Form";
 
 import gql from "graphql-tag";
 import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import logoGql from "../logo-gql.svg";
 
 export default function ToContainer() {
   const [isInputMode, setIsInputMode] = useState<boolean>(false);
@@ -201,8 +203,32 @@ export default function ToContainer() {
     },
   ] = useMutation(DELETE_TOBUY);
 
+  const [showLoading, setShowLoading] = useState(false);
+  useEffect(() => {
+    setShowLoading(
+      loadingDeleteTobuy ||
+        loadingDeleteTodo ||
+        loadingDoneTodo ||
+        loadingUndoneTodo ||
+        loadingBoughtTobuy ||
+        loadingUnboughtTobuy
+    );
+  }, [
+    loadingDeleteTobuy,
+    loadingDeleteTodo,
+    loadingDoneTodo,
+    loadingUndoneTodo,
+    loadingBoughtTobuy,
+    loadingUnboughtTobuy,
+  ]);
+
   return (
     <div className="main-to-container">
+      {showLoading ? (
+        <div className="loading-indicator-area">
+          <img src={logoGql} className="gql-spinner" alt="logoGql" />
+        </div>
+      ) : undefined}
       <div className="main-to-area">
         <div className="main-to-title">To Do</div>
         <div className="main-to-list-scroll">
@@ -261,7 +287,25 @@ export default function ToContainer() {
                           <Card.Text>{content}</Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                          <Button>{done ? "Undone" : "Done"}</Button>
+                          <Button
+                            onClick={() => {
+                              if (done) {
+                                setUndoneTodo({
+                                  variables: { input: { id: id } },
+                                }).then(() => {
+                                  refetchTobuy();
+                                });
+                              } else {
+                                setDoneTodo({
+                                  variables: { input: { id: id } },
+                                }).then(() => {
+                                  refetchTobuy();
+                                });
+                              }
+                            }}
+                          >
+                            {done ? "Undone" : "Done"}
+                          </Button>
                         </Card.Footer>
                       </Card>
                     )
@@ -276,8 +320,8 @@ export default function ToContainer() {
                     <Placeholder xs={6} />
                   </Placeholder>
                   <Placeholder as={Card.Text} animation="wave">
-                    <Placeholder xs={7} /> <Placeholder xs={4} />{" "}
-                    <Placeholder xs={4} /> <Placeholder xs={6} />{" "}
+                    <Placeholder xs={7} /> <Placeholder xs={4} />
+                    <Placeholder xs={4} /> <Placeholder xs={6} />
                     <Placeholder xs={8} />
                   </Placeholder>
                   <Placeholder.Button variant="primary" xs={6} />
@@ -346,7 +390,7 @@ export default function ToContainer() {
                             >
                               X
                             </Button>
-                          </Card.Title>{" "}
+                          </Card.Title>
                           <Card.Subtitle className="mb-2 text-muted">{`❎${createdAt}`}</Card.Subtitle>
                           {boughtAt ? (
                             <Card.Subtitle className="mb-2 text-muted">
@@ -357,7 +401,25 @@ export default function ToContainer() {
                           <Card.Text>{`${cost.toLocaleString()} ₩`}</Card.Text>
                         </Card.Body>
                         <Card.Footer>
-                          <Button>{bought ? "Undone" : "Done"}</Button>
+                          <Button
+                            onClick={() => {
+                              if (bought) {
+                                setUnboughtTobuy({
+                                  variables: { input: { id: id } },
+                                }).then((result) => {
+                                  refetchTobuy();
+                                });
+                              } else {
+                                setBoughtTobuy({
+                                  variables: { input: { id: id } },
+                                }).then((result) => {
+                                  refetchTobuy();
+                                });
+                              }
+                            }}
+                          >
+                            {bought ? "Undone" : "Done"}
+                          </Button>
                         </Card.Footer>
                       </Card>
                     )
@@ -372,8 +434,8 @@ export default function ToContainer() {
                     <Placeholder xs={6} />
                   </Placeholder>
                   <Placeholder as={Card.Text} animation="wave">
-                    <Placeholder xs={7} /> <Placeholder xs={4} />{" "}
-                    <Placeholder xs={4} /> <Placeholder xs={6} />{" "}
+                    <Placeholder xs={7} /> <Placeholder xs={4} />
+                    <Placeholder xs={4} /> <Placeholder xs={6} />
                     <Placeholder xs={8} />
                   </Placeholder>
                   <Placeholder.Button variant="primary" xs={6} />

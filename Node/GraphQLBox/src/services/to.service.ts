@@ -198,7 +198,8 @@ export default class ToService {
       title: newTobuy.title ? newTobuy.title : prevTobuy.title,
       content: newTobuy.content ? newTobuy.content : prevTobuy.content,
       cost: newTobuy.cost ? newTobuy.cost : prevTobuy.cost,
-      bought: newTobuy.bought ? newTobuy.bought : prevTobuy.bought,
+      bought:
+        newTobuy.bought !== undefined ? newTobuy.bought : prevTobuy.bought,
       boughtAt:
         newTobuy.bought === true
           ? moment().format()
