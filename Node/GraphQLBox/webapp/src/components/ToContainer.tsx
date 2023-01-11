@@ -199,7 +199,7 @@ export default function ToContainer() {
       loading: loadingDeleteTobuy,
       error: errorDeleteTobuy,
     },
-  ] = useMutation(DELETE_TODO);
+  ] = useMutation(DELETE_TOBUY);
 
   return (
     <div className="main-to-container">
@@ -232,7 +232,21 @@ export default function ToContainer() {
                         <Card.Body>
                           <Card.Title className="main-to-card-title-container">
                             <div>{`#${id} ${title}`}</div>
-                            <Button className="btn-outline-danger main-to-card-delete-button">
+                            <Button
+                              onClick={() => {
+                                if (window.confirm("삭제하시겠습니까?"))
+                                  deleteTodo({
+                                    variables: {
+                                      input: {
+                                        id: id,
+                                      },
+                                    },
+                                  }).then(() => {
+                                    refetchTodo();
+                                  });
+                              }}
+                              className="btn-outline-danger main-to-card-delete-button"
+                            >
                               X
                             </Button>
                           </Card.Title>
@@ -315,7 +329,21 @@ export default function ToContainer() {
                         <Card.Body>
                           <Card.Title className="main-to-card-title-container">
                             <div>{`#${id} ${title}`}</div>
-                            <Button className="btn-outline-danger main-to-card-delete-button">
+                            <Button
+                              onClick={() => {
+                                if (window.confirm("삭제하시겠습니까?"))
+                                  deleteTobuy({
+                                    variables: {
+                                      input: {
+                                        id: id,
+                                      },
+                                    },
+                                  }).then(() => {
+                                    refetchTobuy();
+                                  });
+                              }}
+                              className="btn-outline-danger main-to-card-delete-button"
+                            >
                               X
                             </Button>
                           </Card.Title>{" "}
