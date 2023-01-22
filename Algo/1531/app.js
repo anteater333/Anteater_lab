@@ -38,7 +38,7 @@ function algorila() {
 
   // #1
   input.forEach((box) => {
-    const [x1, y1, x2, y2] = box.split(" ").map((a) => +a);
+    const [x1, y1, x2, y2] = box.split(" ").map((a) => +a - 1);
     for (let i = x1; i <= x2; i++) {
       for (let j = y1; j <= y2; j++) {
         arr[i][j] += 1;
