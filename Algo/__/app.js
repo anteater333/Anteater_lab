@@ -1,11 +1,17 @@
 /* node.js */
 
+const { createReadStream } = require("fs");
+
 const rl = require("readline").createInterface({
   input: process.stdin,
+  // input: createReadStream("./tc.txt"),
   output: process.stdout,
+  terminal: false,
 });
 
+/** @type {Array<string>} */
 let input = []; // 입력 큐
+/** @type {number} */
 let inputNum = 2; // 입력 갯수
 
 rl.on("line", function (line) {
