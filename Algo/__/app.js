@@ -12,7 +12,7 @@ const rl = require("readline").createInterface({
 /** @type {Array<string>} */
 let input = []; // 입력 큐
 /** @type {number} */
-let inputNum = 2; // 입력 갯수
+let inputNum = 2; // 입력 개수
 
 rl.on("line", function (line) {
   if (inputNum == -1) {
