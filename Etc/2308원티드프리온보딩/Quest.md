@@ -106,7 +106,9 @@ FID는 사용자가 페이지에서 처음으로 클릭 등으로 상호 작용�
 
 #### Cumulative Layout Shift
 
+<p>
 <figure><video autoplay="" controls="" loop="" muted="" poster="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability-poster.png" width="658" height="510"><source type="video/webm; codecs=vp8" src="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability2.webm"> <source type="video/mp4; codecs=h264" src="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability2.mp4"></video></figure>
+</p>
 
 CLS는 웹 페이지의 **시각적 안정성**에 대한 수준을 나타내는 지표입니다. 시각적 안정성이란 현재 웹 페이지에서 발생한 레이아웃의 변경이 사용자에게 불편함을 유발하지 않아야 함을 의미합니다. CLS는 레이아웃 이동 점수(layout shift score)라는 기준을 통해 계산되며, CLS 점수가 0.1 이하여야 준수한 웹 페이지로 판단됩니다.
 
