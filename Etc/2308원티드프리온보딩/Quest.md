@@ -46,7 +46,7 @@
   데이터 검증과 관련된 로직이 담긴 모듈과 모듈에 대한 테스트 코드
 </p>
 
-유닛 테스트에선 프로그램의 가장 작은 단위, 모듈에 대한 테스트가 수행 됩니다. 모듈의 동작(메소드)들을 개별적으로 실행해 그 결과가 작성한 테스트 케이스에 부합하는지 확인하는 방식으로 진행합니다. 테스트 유형 중 가장 개별 테스트의 규모가 작지만, 그만큼 테스트 케이스의 수가 많습니다.
+유닛 테스트에선 프로그램의 가장 작은 단위, 모듈에 대한 테스트가 수행됩니다. 모듈의 동작(메소드)을 개별적으로 실행해 그 결과가 작성한 테스트 케이스에 부합하는지 확인하는 방식으로 진행합니다. 테스트 유형 중 가장 개별 테스트의 규모가 작지만, 그만큼 테스트 케이스의 수가 많습니다.
 
 #### 통합 테스트
 
@@ -76,6 +76,55 @@ E2E(End to End) 테스트 혹은 기능(Functional) 테스트는 개발된 프�
 
 ### 1. CDN(Content Distributed Network)에 대해 설명해주세요
 
+<p align="center">
+  <img width="512" alt="CDN" src="https://i.postimg.cc/BvG4hCVB/cdn.png"/>
+</p>
+
+CDN은 네트워크로부터 물리적으로 떨어져 있는 사용자에게 콘텐츠를 더 빠르게 제공하기 위해 제안된 기술입니다. 마치 현실의 물류창고와 같이 서비스에 사용될 리소스를 미리 원격지 서버에 캐시해 사용자가 빠르게 서비스의 콘텐츠를 얻을 수 있도록 만들어줍니다.
+
+속도 측면의 장점과 더불어 큰 리소스를 처리할 때 발생하는 병목현상과 서버에 가해지는 부하를 줄여 서비스 운영에 도움을 주는 기술입니다.
+
 ### 2. Web Vitals에 대해 설명해주세요
 
+<p align="center">
+  <img alt="webVitals" src="https://i.postimg.cc/2ykq8HVz/webvitals.png"/>
+</p>
+
+Web Vitals는 웹에서 사용자 경험 품질을 측정할 수 있도록 구글에서 제안한 정량적 지표입니다. 위와 같은 지표들이 존재하지만 구글은 현대 웹에서 가장 주요한 세 가지 지표를 별도로 Core Web Vitals로 소개하고 있습니다.
+
+<p align="center">
+  <img alt="coreWebVitals" src="https://i.postimg.cc/jSxrgGBq/core-Web-Vitals.png"/>
+</p>
+
+#### Largest Contentful Paint
+
+LCP는 페이지가 처음으로 로드를 시작한 시점을 기준으로 뷰포트 내에 있는 가장 큰 이미지/텍스트 블록이 렌더링된 시간을 의미합니다. 웹 페이지의 **로딩**에 대한 수준을 나타내며, LCP가 2.5초 이내에 발생해야 준수한 웹 페이지로 판단됩니다.
+
+#### First Input Delay
+
+FID는 사용자가 페이지에서 처음으로 클릭 등으로 상호 작용할 때부터 그 응답으로 이벤트 핸들러의 처리가 시작되기까지의 시간을 의미합니다. FID는 웹 페이지의 **상호 작용**에 대한 수준을 나타냅니다. 응답 지연을 100ms 이하로 발생시켜야 준수한 웹 페이지로 판단됩니다.
+
+#### Cumulative Layout Shift
+
+<figure><video autoplay="" controls="" loop="" muted="" poster="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability-poster.png" width="658" height="510"><source type="video/webm; codecs=vp8" src="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability2.webm"> <source type="video/mp4; codecs=h264" src="https://storage.googleapis.com/web-dev-assets/layout-instability-api/layout-instability2.mp4"></video></figure>
+
+CLS는 웹 페이지의 **시각적 안정성**에 대한 수준을 나타내는 지표입니다. 시각적 안정성이란 현재 웹 페이지에서 발생한 레이아웃의 변경이 사용자에게 불편함을 유발하지 않아야 함을 의미합니다. CLS는 레이아웃 이동 점수(layout shift score)라는 기준을 통해 계산되며, CLS 점수가 0.1 이하여야 준수한 웹 페이지로 판단됩니다.
+
 ### 3. Lighthouse에 대해 설명해주세요
+
+<p align="center">
+  <img alt="lighthouse" src="https://i.postimg.cc/6pW2CVx7/lighthouse.png"/>
+</p>
+
+[Chrome 확장 프로그램](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk?hl=ko)  
+[Firefox Add-on](https://addons.mozilla.org/ko/firefox/addon/google-lighthouse/)
+
+Lighthouse는 구글에서 만든 웹 페이지의 성능 측정 도구입니다.
+
+<p align="center">
+  <img alt="lighthouse-sample" src="https://i.postimg.cc/qvHsC6jS/image.png"/>
+</p>
+
+<p align="center"><a href="https://googlechrome.github.io/lighthouse/viewer/?psiurl=https%3A%2F%2Fblog.anteater-lab.link%2F&strategy=mobile&category=performance&category=accessibility&category=best-practices&category=seo&category=pwa&utm_source=lh-chrome-ext" target="_blank">개인 블로그 활용 리포트 샘플</a></p>
+
+Lighthouse를 사용하면 Web Vitals에 기반해 웹 페이지에 대한 리포트를 생성할 수 있습니다. 전체적인 점수와 개선 사항에 대한 인사이트를 간편하게 생성해 주는 도구입니다.
